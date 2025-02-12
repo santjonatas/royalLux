@@ -1,4 +1,4 @@
-package jonatas.santos.royal.lux;
+package jonatasSantos.royalLux;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

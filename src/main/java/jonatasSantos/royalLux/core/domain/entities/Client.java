@@ -1,6 +1,6 @@
-package jonatas.santos.royal.lux.core.domain.entities;
+package jonatasSantos.royalLux.core.domain.entities;
 
-import jonatas.santos.royal.lux.core.domain.entities.common.Base;
+import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
 public class Client extends Base {
     protected int UserId;

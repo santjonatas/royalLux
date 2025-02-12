@@ -1,4 +1,4 @@
-package jonatas.santos.royal.lux.core.domain.entities.common;
+package jonatasSantos.royalLux.core.domain.entities.common;
 
 import java.time.LocalDateTime;
 

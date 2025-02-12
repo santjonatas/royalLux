@@ -1,4 +1,4 @@
-package jonatas.santos.royal.lux;
+package jonatasSantos.royalLux;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
