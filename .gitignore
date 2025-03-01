@@ -1,5 +1,7 @@
 # Configuração do Spring Boot
 application.properties
+src/main/resources/application.properties
+src/main/resources/*.properties
 application.yml
 application-dev.properties
 application-prod.properties
