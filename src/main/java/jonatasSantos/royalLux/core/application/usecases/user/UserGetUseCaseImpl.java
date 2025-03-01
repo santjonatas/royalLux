@@ -4,9 +4,11 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class UserGetUseCaseImpl implements UserGetUseCase {
 
     private final UserRepository userRepository;

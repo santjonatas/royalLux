@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.naming.AuthenticationException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
