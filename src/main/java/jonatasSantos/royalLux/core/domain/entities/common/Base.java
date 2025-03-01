@@ -2,11 +2,15 @@ package jonatasSantos.royalLux.core.domain.entities.common;
 
 import java.time.LocalDateTime;
 
-public class Base {
+public class Base<T> {
 
     protected int Id;
     protected LocalDateTime CreatedAt;
     protected LocalDateTime UpdatedAt;
+
+    public Base() {
+        this.CreatedAt = LocalDateTime.now(); // Sempre define a data ao criar um objeto
+    }
 
     public int getId() {
         return Id;
