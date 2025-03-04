@@ -43,8 +43,8 @@ public class User extends Base {
         if (username.isEmpty()){
             throw new IllegalArgumentException("Username não pode ser vazio");
         }
-        if (username.length() < 8){
-            throw new IllegalArgumentException("Username deve conter pelo menos 8 caracteres");
+        if (username.length() < 5){
+            throw new IllegalArgumentException("Username deve conter pelo menos 5 caracteres");
         }
         if (username.length() > 25){
             throw new IllegalArgumentException("Username não deve conter mais que 25 caracteres");

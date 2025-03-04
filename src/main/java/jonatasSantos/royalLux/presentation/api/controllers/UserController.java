@@ -4,11 +4,12 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserDelet
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,15 @@ public class UserController {
             var input = new UserGetUseCaseInputDto(id, username);
 
             var response = userGetUseCase.execute(input);
-            return ResponseEntity.ok(response);
+
+            var responsePresenter = new ResponsePresenter(response);
+
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+
+            return ResponseEntity.ok(responsePresenter);
         }
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
@@ -54,7 +63,15 @@ public class UserController {
     public ResponseEntity getAllUsers(){
         try {
             var response = userGetAllUseCase.execute();
-            return ResponseEntity.ok(response);
+
+            var responsePresenter = new ResponsePresenter(response);
+
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+
+            return ResponseEntity.ok(responsePresenter);
         }
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
@@ -71,7 +88,15 @@ public class UserController {
         @RequestBody UserUpdateUseCaseInputDto body){
         try {
             var response = userUpdateUseCase.execute(id, body);
-            return ResponseEntity.ok(response);
+
+            var responsePresenter = new ResponsePresenter(response);
+
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+
+            return ResponseEntity.ok(responsePresenter);
         }
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
@@ -86,7 +111,15 @@ public class UserController {
     public ResponseEntity deleteUser(@RequestParam(required = true) Integer id){
         try {
             var response = userDeleteUseCase.execute(id);
-            return ResponseEntity.ok(response);
+
+            var responsePresenter = new ResponsePresenter(response);
+
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+
+            return ResponseEntity.ok(responsePresenter);
         }
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
