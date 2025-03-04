@@ -49,8 +49,8 @@ public class User extends Base {
         if (username.length() > 25){
             throw new IllegalArgumentException("Username não deve conter mais que 25 caracteres");
         }
-        if (!username.matches("^[A-Za-z0-9_.]+$")) {
-            throw new IllegalArgumentException("O nome de usuário só pode conter letras, números, '.' e '_'");
+        if (!username.matches("^[a-z0-9_.]+$")) {
+            throw new IllegalArgumentException("O nome de usuário só pode conter letras minúsculas, números, '.' e '_'");
         }
 
         this.username = username;

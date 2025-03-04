@@ -1,5 +1,6 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
+import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
@@ -26,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserUpdateUseCase userUpdateUseCase;
+
+    @Autowired
+    private UserDeleteUseCase userDeleteUseCase;
 
     @GetMapping
     public ResponseEntity getUsers(
@@ -72,6 +76,21 @@ public class UserController {
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
             errorResponse.put("error", "Erro ao atualizar user");
+            errorResponse.put("message", exception.getMessage());
+
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteUser(@RequestParam(required = true) Integer id){
+        try {
+            var response = userDeleteUseCase.execute(id);
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception exception){
+            var errorResponse = new LinkedHashMap<String, String>();
+            errorResponse.put("error", "Erro ao deletar user");
             errorResponse.put("message", exception.getMessage());
 
             return ResponseEntity.badRequest().body(errorResponse);
