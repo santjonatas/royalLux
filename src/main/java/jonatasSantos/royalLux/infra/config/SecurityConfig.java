@@ -1,7 +1,7 @@
-package jonatasSantos.royalLux.infra.infrastructure.config;
+package jonatasSantos.royalLux.infra.config;
 
-import jonatasSantos.royalLux.infra.infrastructure.services.CustomUserDetailsService;
-import jonatasSantos.royalLux.infra.infrastructure.services.SecurityFilter;
+import jonatasSantos.royalLux.infra.services.CustomUserDetailsService;
+import jonatasSantos.royalLux.infra.services.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

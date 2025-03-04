@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.infra.infrastructure.config;
+package jonatasSantos.royalLux.infra.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

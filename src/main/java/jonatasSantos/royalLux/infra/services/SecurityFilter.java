@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.infra.infrastructure.services;
+package jonatasSantos.royalLux.infra.services;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

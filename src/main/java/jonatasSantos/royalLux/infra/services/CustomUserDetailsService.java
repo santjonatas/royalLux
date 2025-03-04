@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.infra.infrastructure.services;
+package jonatasSantos.royalLux.infra.services;
 
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
