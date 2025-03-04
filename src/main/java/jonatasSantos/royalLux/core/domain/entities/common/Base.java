@@ -2,7 +2,7 @@ package jonatasSantos.royalLux.core.domain.entities.common;
 
 import java.time.LocalDateTime;
 
-public class Base<T> {
+public class Base {
 
     protected int Id;
     protected LocalDateTime CreatedAt;

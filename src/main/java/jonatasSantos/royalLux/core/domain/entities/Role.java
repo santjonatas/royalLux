@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 public class Role extends Base {
     protected String Name;
     protected String Detail;
-    protected BigDecimal Salary;
 
     public String getName() {
         return Name;
@@ -32,13 +31,5 @@ public class Role extends Base {
             throw new IllegalArgumentException("Detalhes não deve conter mais que 255 caracteres");
         }
         Detail = detail;
-    }
-
-    public BigDecimal getSalary() {
-        return Salary;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        Salary = salary;
     }
 }

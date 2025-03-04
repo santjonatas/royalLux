@@ -3,9 +3,14 @@ package jonatasSantos.royalLux.core.domain.entities;
 import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
 public class MaterialService extends Base {
+    protected int ServiceCustomerServiceId;
     protected int ServiceId;
     protected int MaterialId;
     protected int QuantityMaterial;
+
+    public int getServiceCustomerServiceId() {return ServiceCustomerServiceId;}
+
+    public void setServiceCustomerServiceId(int serviceCustomerServiceId) {ServiceCustomerServiceId = serviceCustomerServiceId;}
 
     public int getServiceId() {
         return ServiceId;

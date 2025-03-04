@@ -10,7 +10,7 @@ public class Person extends Base {
     protected Date DateBirth;
     protected String Cpf;
     protected String Phone;
-    protected String Address;
+    protected String Email;
 
     public int getUserId() {
         return UserId;
@@ -67,14 +67,14 @@ public class Person extends Base {
         Phone = phone;
     }
 
-    public String getAddress() {
-        return Address;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setAddress(String address) {
-        if (address.length() > 255){
-            throw new IllegalArgumentException("Endereço não deve conter mais que 255 caracteres");
+    public void setEmail(String email) {
+        if (email.length() > 255){
+            throw new IllegalArgumentException("Email não deve conter mais que 255 caracteres");
         }
-        Address = address;
+        Email = email;
     }
 }

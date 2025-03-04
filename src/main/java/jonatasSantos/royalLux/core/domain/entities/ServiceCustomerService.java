@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 public class ServiceCustomerService extends Base {
     protected int CustomerServiceId;
     protected int ServiceId;
+    protected int EmployeeId;
     protected LocalDateTime StartTime;
     protected LocalDateTime FinishingTime;
+    protected boolean Completed = false;
 
     public int getCustomerServiceId() {
         return CustomerServiceId;
@@ -26,6 +28,14 @@ public class ServiceCustomerService extends Base {
         ServiceId = serviceId;
     }
 
+    public int getEmployeeId() {
+        return EmployeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        EmployeeId = employeeId;
+    }
+
     public LocalDateTime getStartTime() {
         return StartTime;
     }
@@ -41,4 +51,8 @@ public class ServiceCustomerService extends Base {
     public void setFinishingTime(LocalDateTime finishingTime) {
         FinishingTime = finishingTime;
     }
+
+    public boolean isCompleted() { return Completed; }
+
+    public void setCompleted(boolean completed) { Completed = completed; }
 }

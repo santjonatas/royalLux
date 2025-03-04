@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class CustomerService extends Base {
-    protected int EmployeeId;
     protected int ClientId;
     protected String Status;
     protected LocalDateTime StartTime;
@@ -14,14 +13,7 @@ public class CustomerService extends Base {
     protected LocalDateTime FinishingTime;
     protected BigDecimal TotalValue;
     protected String Details;
-
-    public int getEmployeeId() {
-        return EmployeeId;
-    }
-
-    public void setEmployeeId(int employeeId) {
-        EmployeeId = employeeId;
-    }
+    protected boolean Completed = false;
 
     public int getClientId() {
         return ClientId;
@@ -87,4 +79,8 @@ public class CustomerService extends Base {
         }
         Details = details;
     }
+
+    public boolean isCompleted() { return Completed; }
+
+    public void setCompleted(boolean completed) { Completed = completed; }
 }
