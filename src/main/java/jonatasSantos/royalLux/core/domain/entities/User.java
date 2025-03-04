@@ -69,6 +69,33 @@ public class User extends Base {
         this.password = password;
     }
 
+    public void validatePassword(String password){
+        if (password.isEmpty()){
+            throw new IllegalArgumentException("Senha não pode ser vazia");
+        }
+        if (password.length() < 8){
+            throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
+        }
+        if (password.length() > 255){
+            throw new IllegalArgumentException("Senha não deve conter mais que 255 caracteres");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("Senha deve conter pelo menos uma letra maiúscula");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new IllegalArgumentException("Senha deve conter pelo menos uma letra minúscula");
+        }
+        if (!password.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("Senha deve conter pelo menos um número");
+        }
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/].*")) {
+            throw new IllegalArgumentException("Senha deve conter pelo menos um caractere especial");
+        }
+        if (!password.matches("^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/]+$")) {
+            throw new IllegalArgumentException("Senha contém caracteres inválidos");
+        }
+    }
+
     public boolean isActive() {
         return this.active;
     }

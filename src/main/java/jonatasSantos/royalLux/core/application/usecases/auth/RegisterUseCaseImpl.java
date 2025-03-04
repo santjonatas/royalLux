@@ -31,6 +31,7 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
         }
 
         User newUser = new User();
+        newUser.validatePassword(input.password());
         newUser.setPassword(passwordEncoder.encode(input.password()));
         newUser.setUsername(input.username());
         newUser.setActive(true);

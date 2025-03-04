@@ -5,17 +5,18 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserUpdateUseCaseImpl(UserRepository userRepository) {
+    public UserUpdateUseCaseImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,7 +24,8 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
         user.setUsername(input.username());
-        user.setPassword(input.password());
+        user.validatePassword(input.password());
+        user.setPassword(passwordEncoder.encode(input.password()));
         user.setActive(input.active());
 
         this.userRepository.save(user);
