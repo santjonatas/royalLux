@@ -1,5 +1,6 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
+import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     @Autowired
     private UserGetUseCase userGetUseCase;
+
+    @Autowired
+    private UserGetAllUseCase userGetAllUseCase;
 
     @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable Integer id){
@@ -29,6 +33,21 @@ public class UserController {
         catch (Exception exception){
             var errorResponse = new LinkedHashMap<String, String>();
             errorResponse.put("error", "Erro ao buscar user");
+            errorResponse.put("message", exception.getMessage());
+
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getAllUsers(){
+        try {
+            var response = userGetAllUseCase.execute();
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception exception){
+            var errorResponse = new LinkedHashMap<String, String>();
+            errorResponse.put("error", "Erro ao buscar todos users");
             errorResponse.put("message", exception.getMessage());
 
             return ResponseEntity.badRequest().body(errorResponse);

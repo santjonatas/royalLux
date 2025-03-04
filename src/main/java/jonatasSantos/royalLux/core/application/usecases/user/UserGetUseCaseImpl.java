@@ -22,7 +22,7 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
         Optional<User> userOptional = this.userRepository.findById(id.toString());
 
         return userOptional.map(user ->
-                new UserGetUseCaseOutputDto(user.getId(), user.getUsername())
+                new UserGetUseCaseOutputDto(user.getId(), user.getUsername(), user.isActive())
         ).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }

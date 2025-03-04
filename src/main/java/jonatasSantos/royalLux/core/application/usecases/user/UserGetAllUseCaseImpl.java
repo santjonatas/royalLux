@@ -1,0 +1,29 @@
+package jonatasSantos.royalLux.core.application.usecases.user;
+
+import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
+import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetAllUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class UserGetAllUseCaseImpl implements UserGetAllUseCase {
+
+    private final UserRepository userRepository;
+
+    public UserGetAllUseCaseImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<UserGetAllUseCaseOutputDto> execute() {
+        List<User> users = this.userRepository.findAll();
+
+        return users.stream()
+                .map(user -> new UserGetAllUseCaseOutputDto(user.getId(), user.getUsername(), user.isActive()))
+                .collect(Collectors.toList());
+    }
+}
