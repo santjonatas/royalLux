@@ -27,16 +27,16 @@ public class User extends Base {
     }
 
     @Column(name = "username", nullable = false, length = 25)
-    protected String Username;
+    protected String username;
 
     @Column(name = "password", nullable = false, length = 255)
-    protected String Password;
+    protected String password;
 
     @Column(name = "active", columnDefinition = "BOOLEAN")
-    protected boolean Active = false;
+    protected boolean active = false;
 
     public String getUsername() {
-        return Username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -49,11 +49,11 @@ public class User extends Base {
         if (username.length() > 25){
             throw new IllegalArgumentException("Username não deve conter mais que 25 caracteres");
         }
-        Username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -66,14 +66,14 @@ public class User extends Base {
         if (password.length() > 255){
             throw new IllegalArgumentException("Senha não deve conter mais que 255 caracteres");
         }
-        Password = password;
+        this.password = password;
     }
 
     public boolean isActive() {
-        return Active;
+        return this.active;
     }
 
     public void setActive(boolean active) {
-        Active = active;
+        this.active = active;
     }
 }

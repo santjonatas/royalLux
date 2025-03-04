@@ -1,3 +1,3 @@
 package jonatasSantos.royalLux.core.application.models.dtos.user;
 
-public record UserGetAllUseCaseOutputDto (Integer Id, String username, boolean active){}
+public record UserGetAllUseCaseOutputDto (Integer id, String username, boolean active){}

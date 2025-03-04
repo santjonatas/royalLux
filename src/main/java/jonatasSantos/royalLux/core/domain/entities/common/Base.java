@@ -4,35 +4,35 @@ import java.time.LocalDateTime;
 
 public class Base {
 
-    protected int Id;
-    protected LocalDateTime CreatedAt;
-    protected LocalDateTime UpdatedAt;
+    protected int id;
+    protected LocalDateTime createdAt;
+    protected LocalDateTime updatedAt;
 
     public Base() {
-        this.CreatedAt = LocalDateTime.now(); // Sempre define a data ao criar um objeto
+        this.createdAt = LocalDateTime.now(); // Sempre define a data ao criar um objeto
     }
 
     public int getId() {
-        return Id;
+        return this.id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public LocalDateTime getCreatedAt() {
-        return CreatedAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        CreatedAt = createdAt;
+        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
-        return UpdatedAt;
+        return this.updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
-        UpdatedAt = updatedAt;
+        this.updatedAt = updatedAt;
     }
 }

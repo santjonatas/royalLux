@@ -20,9 +20,10 @@ public class UserGetAllUseCaseImpl implements UserGetAllUseCase {
 
     @Override
     public List<UserGetAllUseCaseOutputDto> execute() {
-        List<User> users = this.userRepository.findAll();
+        var users = this.userRepository.findAll();
 
         return users.stream()
+                .sorted((u1, u2) -> Long.compare(u2.getId(), u1.getId()))
                 .map(user -> new UserGetAllUseCaseOutputDto(user.getId(), user.getUsername(), user.isActive()))
                 .collect(Collectors.toList());
     }

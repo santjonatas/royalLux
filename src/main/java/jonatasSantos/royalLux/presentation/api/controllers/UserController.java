@@ -2,16 +2,13 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -24,10 +21,14 @@ public class UserController {
     @Autowired
     private UserGetAllUseCase userGetAllUseCase;
 
-    @GetMapping("/{id}")
-    public ResponseEntity getUser(@PathVariable Integer id){
+    @GetMapping
+    public ResponseEntity getUser(
+      @RequestParam(required = false) Integer id,
+      @RequestParam(required = false) String username){
         try {
-            var response = userGetUseCase.execute(id);
+            var input = new UserGetUseCaseInputDto(id, username);
+
+            var response = userGetUseCase.execute(input);
             return ResponseEntity.ok(response);
         }
         catch (Exception exception){
@@ -39,7 +40,7 @@ public class UserController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity getAllUsers(){
         try {
             var response = userGetAllUseCase.execute();
