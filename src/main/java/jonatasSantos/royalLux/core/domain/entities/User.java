@@ -49,6 +49,10 @@ public class User extends Base {
         if (username.length() > 25){
             throw new IllegalArgumentException("Username não deve conter mais que 25 caracteres");
         }
+        if (!username.matches("^[A-Za-z0-9_.]+$")) {
+            throw new IllegalArgumentException("O nome de usuário só pode conter letras, números, '.' e '_'");
+        }
+
         this.username = username;
     }
 
@@ -76,8 +80,8 @@ public class User extends Base {
         if (password.length() < 8){
             throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
         }
-        if (password.length() > 255){
-            throw new IllegalArgumentException("Senha não deve conter mais que 255 caracteres");
+        if (password.length() > 50){
+            throw new IllegalArgumentException("Senha não deve conter mais que 50 caracteres");
         }
         if (!password.matches(".*[A-Z].*")) {
             throw new IllegalArgumentException("Senha deve conter pelo menos uma letra maiúscula");
