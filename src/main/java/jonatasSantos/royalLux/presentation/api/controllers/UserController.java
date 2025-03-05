@@ -13,8 +13,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -36,97 +34,61 @@ public class UserController {
     public ResponseEntity getUsers(
         @RequestParam(required = false) Integer id,
         @RequestParam(required = false) String username){
-        try {
-            var input = new UserGetUseCaseInputDto(id, username);
+        var input = new UserGetUseCaseInputDto(id, username);
 
-            var response = userGetUseCase.execute(input);
+        var response = userGetUseCase.execute(input);
 
-            var responsePresenter = new ResponsePresenter(response);
+        var responsePresenter = new ResponsePresenter(response);
 
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
 
-            return ResponseEntity.ok(responsePresenter);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao buscar user");
-            errorResponse.put("message", exception.getMessage());
-
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        return ResponseEntity.ok(responsePresenter);
     }
 
     @GetMapping("/all")
     public ResponseEntity getAllUsers(){
-        try {
-            var response = userGetAllUseCase.execute();
+        var response = userGetAllUseCase.execute();
 
-            var responsePresenter = new ResponsePresenter(response);
+        var responsePresenter = new ResponsePresenter(response);
 
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
 
-            return ResponseEntity.ok(responsePresenter);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao buscar todos users");
-            errorResponse.put("message", exception.getMessage());
-
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        return ResponseEntity.ok(responsePresenter);
     }
 
     @PatchMapping
     public ResponseEntity updateUser(
         @RequestParam(required = true) Integer id,
         @RequestBody UserUpdateUseCaseInputDto body){
-        try {
-            var response = userUpdateUseCase.execute(id, body);
+        var response = userUpdateUseCase.execute(id, body);
 
-            var responsePresenter = new ResponsePresenter(response);
+        var responsePresenter = new ResponsePresenter(response);
 
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
 
-            return ResponseEntity.ok(responsePresenter);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao atualizar user");
-            errorResponse.put("message", exception.getMessage());
-
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        return ResponseEntity.ok(responsePresenter);
     }
 
     @DeleteMapping
     public ResponseEntity deleteUser(@RequestParam(required = true) Integer id){
-        try {
-            var response = userDeleteUseCase.execute(id);
+        var response = userDeleteUseCase.execute(id);
 
-            var responsePresenter = new ResponsePresenter(response);
+        var responsePresenter = new ResponsePresenter(response);
 
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
-            responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
 
-            return ResponseEntity.ok(responsePresenter);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao deletar user");
-            errorResponse.put("message", exception.getMessage());
-
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        return ResponseEntity.ok(responsePresenter);
     }
 }

@@ -1,8 +1,8 @@
 package jonatasSantos.royalLux.core.application.usecases.user;
 
-import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ResourceNotFoundException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
     @Override
     public UserUpdateUseCaseOutputDto execute(Integer id, UserUpdateUseCaseInputDto input) {
-        var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+        var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new ResourceNotFoundException("Usuário inexistente"));
 
         user.setUsername(input.username());
         user.validatePassword(input.password());
