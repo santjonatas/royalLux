@@ -1,11 +1,16 @@
 package jonatasSantos.royalLux.presentation.api.middlewares;
 
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.exceptions.*;
 import jonatasSantos.royalLux.presentation.api.presenters.ErrorResponsePresenter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.naming.AuthenticationException;
 
 @RestControllerAdvice
 public class ExceptionHandlerMiddleware  {
@@ -15,8 +20,8 @@ public class ExceptionHandlerMiddleware  {
         return new ResponseEntity<>(errorResponsePresenter, status);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponsePresenter> handleResourceNotFound(ResourceNotFoundException exception) {
+    @ExceptionHandler({ResourceNotFoundException.class, UsernameNotFoundException.class, EntityNotFoundException.class})
+    public ResponseEntity<ErrorResponsePresenter> handleResourceNotFound(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
     }
 
@@ -25,8 +30,8 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponsePresenter> handleUnauthorized(UnauthorizedException exception) {
+    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class})
+    public ResponseEntity<ErrorResponsePresenter> handleUnauthorized(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.UNAUTHORIZED);
     }
 
@@ -35,8 +40,8 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ErrorResponsePresenter> handleConflict(ConflictException exception) {
+    @ExceptionHandler({ConflictException.class, EntityExistsException.class})
+    public ResponseEntity<ErrorResponsePresenter> handleConflict(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.CONFLICT);
     }
 

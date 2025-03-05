@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.auth;
 import jakarta.persistence.EntityExistsException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;

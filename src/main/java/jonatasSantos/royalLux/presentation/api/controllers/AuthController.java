@@ -4,13 +4,14 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.auth.LoginUseC
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
+import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,31 +26,25 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUseCaseInputDto body) throws AuthenticationException {
-        try {
-            var response = loginUseCase.execute(body);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao realizar login");
-            errorResponse.put("message", exception.getMessage());
+        var response = loginUseCase.execute(body);
 
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withSelfRel());
+
+        return ResponseEntity.ok(responsePresenter);
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterUseCaseInputDto body){
-        try {
-            var response = registerUseCase.execute(body);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception exception){
-            var errorResponse = new LinkedHashMap<String, String>();
-            errorResponse.put("error", "Erro ao realizar registro");
-            errorResponse.put("message", exception.getMessage());
+    public ResponseEntity register(@RequestBody RegisterUseCaseInputDto body) throws AuthenticationException {
+        var response = registerUseCase.execute(body);
 
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withSelfRel());
+
+        return ResponseEntity.ok(responsePresenter);
     }
 }
