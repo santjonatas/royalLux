@@ -6,11 +6,13 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUs
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,10 +36,11 @@ public class UserController {
     public ResponseEntity getUsers(
         @RequestParam(required = false) Integer id,
         @RequestParam(required = false) String username){
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         var input = new UserGetUseCaseInputDto(id, username);
-
         var response = userGetUseCase.execute(input);
-
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
@@ -50,8 +53,10 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity getAllUsers(){
-        var response = userGetAllUseCase.execute();
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = userGetAllUseCase.execute();
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
@@ -66,8 +71,10 @@ public class UserController {
     public ResponseEntity updateUser(
         @RequestParam(required = true) Integer id,
         @RequestBody UserUpdateUseCaseInputDto body){
-        var response = userUpdateUseCase.execute(id, body);
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = userUpdateUseCase.execute(id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withRel("get"));
@@ -80,8 +87,10 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity deleteUser(@RequestParam(required = true) Integer id){
-        var response = userDeleteUseCase.execute(id);
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = userDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withRel("get"));
