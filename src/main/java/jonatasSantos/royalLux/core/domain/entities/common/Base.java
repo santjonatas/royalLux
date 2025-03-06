@@ -9,7 +9,7 @@ public class Base {
     protected LocalDateTime updatedAt;
 
     public Base() {
-        this.createdAt = LocalDateTime.now(); // Sempre define a data ao criar um objeto
+        this.createdAt = LocalDateTime.now();
     }
 
     public int getId() {

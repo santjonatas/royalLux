@@ -23,6 +23,11 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
     public UserUpdateUseCaseOutputDto execute(Integer id, UserUpdateUseCaseInputDto input) {
         var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
+        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), user.getId());
+        if (usernameExists) {
+            throw new IllegalArgumentException("Nome de usuário já está em uso.");
+        }
+
         user.setUsername(input.username());
         user.validatePassword(input.password());
         user.setPassword(passwordEncoder.encode(input.password()));
