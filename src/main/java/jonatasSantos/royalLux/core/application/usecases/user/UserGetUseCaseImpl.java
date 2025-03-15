@@ -37,7 +37,7 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
         List<Predicate> predicates = new ArrayList<>();
 
         if (input.id() != null) {
-            predicates.add(cb.equal(root.get("Id"), input.id()));
+            predicates.add(cb.equal(root.get("id"), input.id()));
         }
 
         if (input.username() != null) {

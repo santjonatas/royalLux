@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.exceptions.*;
 import jonatasSantos.royalLux.presentation.api.presenters.ErrorResponsePresenter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,7 +31,7 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class})
+    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class, AccessDeniedException.class})
     public ResponseEntity<ErrorResponsePresenter> handleUnauthorized(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.UNAUTHORIZED);
     }

@@ -1,30 +1,33 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
+import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User extends Base {
+public class User implements UserDetails{
+    public User(String username, String password, UserRole role, boolean active) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.active = active;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public User(){
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int getId() {
-        return super.getId();
-    }
-
-    @Column(name = "createdAt", nullable = false, updatable = false)
-    public LocalDateTime getCreatedAt() {
-        return super.getCreatedAt();
-    }
-
-    @Column(name = "updatedAt", nullable = true, updatable = true)
-    public LocalDateTime getUpdatedAt() {
-        return super.getUpdatedAt();
-    }
+    protected int id;
 
     @Column(name = "username", nullable = false, length = 25)
     protected String username;
@@ -32,8 +35,26 @@ public class User extends Base {
     @Column(name = "password", nullable = false, length = 255)
     protected String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 15)
+    protected UserRole role;
+
     @Column(name = "active", columnDefinition = "BOOLEAN")
     protected boolean active = false;
+
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Column(name = "updatedAt", nullable = true, updatable = true)
+    protected LocalDateTime updatedAt;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return this.username;
@@ -100,11 +121,61 @@ public class User extends Base {
         }
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     public boolean isActive() {
         return this.active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    // Implementação de UserDetails
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> this.role.name());
     }
 }
