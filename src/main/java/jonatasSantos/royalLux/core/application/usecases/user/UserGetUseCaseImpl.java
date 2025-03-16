@@ -36,13 +36,11 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (input.id() != null) {
+        if (input.id() != null)
             predicates.add(cb.equal(root.get("id"), input.id()));
-        }
 
-        if (input.username() != null) {
+        if (input.username() != null)
             predicates.add(cb.like(root.get("username"), "%" + input.username() + "%"));
-        }
 
         query.where(predicates.toArray(new Predicate[0]));
 

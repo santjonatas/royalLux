@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.exceptions.*;
 import jonatasSantos.royalLux.presentation.api.presenters.ErrorResponsePresenter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +28,7 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
+    @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponsePresenter> handleBadRequest(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
     }

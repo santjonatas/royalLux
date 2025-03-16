@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails{
+
     public User(String username, String password, UserRole role, boolean active) {
         this.setUsername(username);
         this.setPassword(password);

@@ -29,13 +29,12 @@ public class LoginUseCaseImpl implements LoginUseCase {
     @Override
     public LoginUseCaseOutputDto execute(LoginUseCaseInputDto input) throws AuthenticationException {
         User user = this.userRepository.findByUsername(input.username()).orElseThrow(() -> new UsernameNotFoundException("Usuário ou senha inválidos"));
-        if(!passwordEncoder.matches(input.password(), user.getPassword())) {
-            throw new AuthenticationException("Usuário ou senha inválidos");
-        }
 
-        if (!user.isActive()) {
+        if(!passwordEncoder.matches(input.password(), user.getPassword()))
+            throw new AuthenticationException("Usuário ou senha inválidos");
+
+        if (!user.isActive())
             throw new DisabledException("Usuário está inativo");
-        }
 
         String token = this.authenticationService.generateToken(user);
         return new LoginUseCaseOutputDto(token);

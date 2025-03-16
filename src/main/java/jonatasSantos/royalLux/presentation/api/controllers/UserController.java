@@ -1,9 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserDeleteUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetAllUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.user.*;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -16,10 +14,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
+    @Autowired
+    private UserCreateUseCase userCreateUseCase;
 
     @Autowired
     private UserGetUseCase userGetUseCase;
@@ -33,10 +36,26 @@ public class UserController {
     @Autowired
     private UserDeleteUseCase userDeleteUseCase;
 
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity createUser(@RequestBody UserCreateUseCaseInputDto body) throws AuthenticationException {
+        var response = userCreateUseCase.execute(body);
+
+        var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).deleteUser(null)).withRel("delete"));
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
     @GetMapping
     public ResponseEntity getUsers(
         @RequestParam(required = false) Integer id,
-        @RequestParam(required = false) String username){
+        @RequestParam(required = false) String username) throws AuthenticationException {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -44,6 +63,7 @@ public class UserController {
         var response = userGetUseCase.execute(input);
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
@@ -54,13 +74,14 @@ public class UserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
-    public ResponseEntity getAllUsers(){
+    public ResponseEntity getAllUsers() throws AuthenticationException {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = userGetAllUseCase.execute();
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
@@ -72,13 +93,14 @@ public class UserController {
     @PatchMapping
     public ResponseEntity updateUser(
         @RequestParam(required = true) Integer id,
-        @RequestBody UserUpdateUseCaseInputDto body){
+        @RequestBody UserUpdateUseCaseInputDto body) throws AuthenticationException {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = userUpdateUseCase.execute(id, body);
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withSelfRel());
@@ -88,13 +110,14 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteUser(@RequestParam(required = true) Integer id){
+    public ResponseEntity deleteUser(@RequestParam(required = true) Integer id) throws AuthenticationException {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = userDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUsers(null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAllUsers()).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).updateUser(null, null)).withRel("update"));
