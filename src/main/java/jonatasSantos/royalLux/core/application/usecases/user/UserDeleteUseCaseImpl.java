@@ -19,7 +19,8 @@ public class UserDeleteUseCaseImpl implements UserDeleteUseCase {
 
     @Override
     public UserDeleteUseCaseOutputDto execute(Integer id) {
-        var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+        var user = this.userRepository.findById(id.toString())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
         if(user.getRole().equals(UserRole.ADMIN))
             throw new UnauthorizedException("Admin não pode ser deletado");

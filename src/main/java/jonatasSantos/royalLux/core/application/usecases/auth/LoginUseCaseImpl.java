@@ -28,7 +28,8 @@ public class LoginUseCaseImpl implements LoginUseCase {
 
     @Override
     public LoginUseCaseOutputDto execute(LoginUseCaseInputDto input) throws AuthenticationException {
-        User user = this.userRepository.findByUsername(input.username()).orElseThrow(() -> new UsernameNotFoundException("Usuário ou senha inválidos"));
+        User user = this.userRepository.findByUsername(input.username())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário ou senha inválidos"));
 
         if(!passwordEncoder.matches(input.password(), user.getPassword()))
             throw new AuthenticationException("Usuário ou senha inválidos");

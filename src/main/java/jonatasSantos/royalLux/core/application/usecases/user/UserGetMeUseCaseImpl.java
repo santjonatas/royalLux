@@ -19,7 +19,8 @@ public class UserGetMeUseCaseImpl implements UserGetMeUseCase {
     @Override
     public UserGetMeUseCaseOutputDto execute(User user) {
 
-        var myUser = this.userRepository.findById(String.valueOf(user.getId())).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+        var myUser = this.userRepository.findById(String.valueOf(user.getId()))
+                .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
         return new UserGetMeUseCaseOutputDto(
                 myUser.getId(),
