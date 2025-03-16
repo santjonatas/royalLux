@@ -13,8 +13,15 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails{
     public User(String username, String password, UserRole role, boolean active) {
-        this.username = username;
-        this.password = password;
+        this.setUsername(username);
+        this.setPassword(password);
+        this.role = role;
+        this.active = active;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public User(String username, UserRole role, boolean active) {
+        this.setUsername(username);
         this.role = role;
         this.active = active;
         this.createdAt = LocalDateTime.now();
@@ -32,7 +39,7 @@ public class User implements UserDetails{
     @Column(name = "username", nullable = false, length = 25)
     protected String username;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false)
     protected String password;
 
     @Enumerated(EnumType.STRING)
@@ -88,13 +95,10 @@ public class User implements UserDetails{
         if (password.length() < 8){
             throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
         }
-        if (password.length() > 255){
-            throw new IllegalArgumentException("Senha não deve conter mais que 255 caracteres");
-        }
         this.password = password;
     }
 
-    public void validatePassword(String password){
+    public String validatePassword(String password){
         if (password.isEmpty()){
             throw new IllegalArgumentException("Senha não pode ser vazia");
         }
@@ -119,15 +123,13 @@ public class User implements UserDetails{
         if (!password.matches("^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/]+$")) {
             throw new IllegalArgumentException("Senha contém caracteres inválidos");
         }
+
+        return password;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
+    public UserRole getRole() { return role; }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
+    public void setRole(UserRole role) { this.role = role; }
 
     public boolean isActive() {
         return this.active;
@@ -137,45 +139,30 @@ public class User implements UserDetails{
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     // Implementação de UserDetails
     @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
+    public boolean isEnabled() { return this.active; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> this.role.name());
     }
+
+    // Não utilizados
+    @Override
+    public boolean isAccountNonExpired() { return UserDetails.super.isAccountNonExpired(); }
+
+    @Override
+    public boolean isAccountNonLocked() { return UserDetails.super.isAccountNonLocked(); }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return UserDetails.super.isCredentialsNonExpired(); }
 }

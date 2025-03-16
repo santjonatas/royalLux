@@ -32,7 +32,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = authenticationServiceImpl.validateToken(token);
 
         if(login != null){
-            User user = userRepository.findByUsername(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+            User user = userRepository.findByUsername(login).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+            if (!user.isEnabled()) {
+                throw new RuntimeException("Usuário está inativo");
+            }
+
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.auth.LoginUseC
 import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ public class LoginUseCaseImpl implements LoginUseCase {
         User user = this.userRepository.findByUsername(input.username()).orElseThrow(() -> new UsernameNotFoundException("Usuário ou senha inválidos"));
         if(!passwordEncoder.matches(input.password(), user.getPassword())) {
             throw new AuthenticationException("Usuário ou senha inválidos");
+        }
+
+        if (!user.isActive()) {
+            throw new DisabledException("Usuário está inativo");
         }
 
         String token = this.authenticationService.generateToken(user);

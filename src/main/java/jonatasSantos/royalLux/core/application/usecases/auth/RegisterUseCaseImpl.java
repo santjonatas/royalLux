@@ -3,10 +3,10 @@ package jonatasSantos.royalLux.core.application.usecases.auth;
 import jakarta.persistence.EntityExistsException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterUseCase;
-import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +31,9 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
             throw new EntityExistsException("Usuário já existe");
         }
 
-        User newUser = new User();
+        User newUser = new User(input.username(), UserRole.CLIENT, true);
         newUser.validatePassword(input.password());
         newUser.setPassword(passwordEncoder.encode(input.password()));
-        newUser.setUsername(input.username());
-        newUser.setActive(true);
         this.userRepository.save(newUser);
 
         return new RegisterUseCaseOutputDto(newUser.getId());

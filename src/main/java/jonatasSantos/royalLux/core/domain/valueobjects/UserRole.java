@@ -1,9 +1,9 @@
 package jonatasSantos.royalLux.core.domain.valueobjects;
 
 public enum UserRole {
-    ADMIN("admin"),
-    EMPLOYEE("employee"),
-    CLIENT("client");
+    ADMIN("ADMIN"),
+    EMPLOYEE("EMPLOYEE"),
+    CLIENT("CLIENT");
 
     private String role;
 
