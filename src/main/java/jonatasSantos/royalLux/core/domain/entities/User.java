@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails{
-    
+
     public User(String username, UserRole role, boolean active) {
         this.setUsername(username);
         this.role = role;
@@ -19,9 +19,7 @@ public class User implements UserDetails{
         this.createdAt = LocalDateTime.now();
     }
 
-    public User(){
-
-    }
+    public User(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,11 +42,11 @@ public class User implements UserDetails{
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
 
-    @Column(name = "updatedAt", nullable = true, updatable = true)
+    @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -117,7 +115,7 @@ public class User implements UserDetails{
         return password;
     }
 
-    public UserRole getRole() { return role; }
+    public UserRole getRole() { return this.role; }
 
     public void setRole(UserRole role) { this.role = role; }
 
@@ -125,11 +123,11 @@ public class User implements UserDetails{
 
     public void setActive(boolean active) { this.active = active; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
 
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
 
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
