@@ -11,15 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails{
-
-    public User(String username, String password, UserRole role, boolean active) {
-        this.setUsername(username);
-        this.setPassword(password);
-        this.role = role;
-        this.active = active;
-        this.createdAt = LocalDateTime.now();
-    }
-
+    
     public User(String username, UserRole role, boolean active) {
         this.setUsername(username);
         this.role = role;

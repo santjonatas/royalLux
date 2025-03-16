@@ -108,11 +108,12 @@ public class UserController {
     }
 
     @PatchMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity updateUser(
         @RequestParam(required = true) Integer id,
         @RequestBody UserUpdateUseCaseInputDto body) throws AuthenticationException {
-        var response = userUpdateUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = userUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));

@@ -5,8 +5,12 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.management.relation.RoleNotFoundException;
 
 @Service
 public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
@@ -20,20 +24,32 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
     }
 
     @Override
-    public UserUpdateUseCaseOutputDto execute(Integer id, UserUpdateUseCaseInputDto input) {
-        var user = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+    public UserUpdateUseCaseOutputDto execute(User user, Integer id, UserUpdateUseCaseInputDto input) throws RoleNotFoundException {
+        var userLogged = this.userRepository.findById(String.valueOf(user.getId())).orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
-        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), user.getId());
+        var userToBeUpdated = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+
+        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
 
         if (usernameExists)
-            throw new IllegalArgumentException("Nome de usuário já está em uso.");
+            throw new IllegalArgumentException("Nome de usuário já está em uso");
 
-        user.setUsername(input.username());
-        user.validatePassword(input.password());
-        user.setPassword(passwordEncoder.encode(input.password()));
-        user.setActive(input.active());
+        if(!UserRole.ROLES.contains(userLogged.getRole()))
+            throw new RoleNotFoundException("Permissão inexistente");
 
-        this.userRepository.save(user);
+        if(userLogged.getRole().equals(UserRole.ADMIN)){
+
+        }
+
+        else if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
+
+        }
+
+        else if(userLogged.getRole().equals(UserRole.CLIENT)){
+
+        }
+
+        this.userRepository.save(userToBeUpdated);
 
         return new UserUpdateUseCaseOutputDto(true);
     }

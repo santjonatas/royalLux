@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.relation.RoleNotFoundException;
 import javax.naming.AuthenticationException;
 
 @RestControllerAdvice
@@ -23,7 +24,7 @@ public class ExceptionHandlerMiddleware  {
         return new ResponseEntity<>(errorResponsePresenter, status);
     }
 
-    @ExceptionHandler({ResourceNotFoundException.class, UsernameNotFoundException.class, EntityNotFoundException.class})
+    @ExceptionHandler({ResourceNotFoundException.class, UsernameNotFoundException.class, EntityNotFoundException.class, RoleNotFoundException.class})
     public ResponseEntity<ErrorResponsePresenter> handleResourceNotFound(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
     }
