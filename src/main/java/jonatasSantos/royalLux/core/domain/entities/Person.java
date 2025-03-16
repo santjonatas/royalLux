@@ -18,6 +18,7 @@ public class Person extends Base {
         this.setCpf(cpf);
         this.setPhone(phone);
         this.setEmail(email);
+        this.createdAt = LocalDateTime.now();
     }
 
     public Person(){}
