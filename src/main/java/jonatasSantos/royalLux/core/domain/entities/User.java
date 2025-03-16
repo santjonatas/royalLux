@@ -14,7 +14,7 @@ public class User implements UserDetails{
     
     public User(String username, UserRole role, boolean active) {
         this.setUsername(username);
-        this.setRole(role);
+        this.role = role;
         this.active = active;
         this.createdAt = LocalDateTime.now();
     }
@@ -119,20 +119,11 @@ public class User implements UserDetails{
 
     public UserRole getRole() { return role; }
 
-    public void setRole(UserRole role) {
-        if(role.equals(UserRole.ADMIN))
-            throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
+    public void setRole(UserRole role) { this.role = role; }
 
-        this.role = role;
-    }
+    public boolean isActive() { return this.active; }
 
-    public boolean isActive() {
-        return this.active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public void setActive(boolean active) { this.active = active; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 

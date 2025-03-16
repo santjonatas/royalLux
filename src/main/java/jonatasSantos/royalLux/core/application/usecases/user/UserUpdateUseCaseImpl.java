@@ -49,6 +49,9 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
             if(userToBeUpdated.getRole().equals(UserRole.ADMIN) && input.active() == false)
                 throw new IllegalArgumentException("Admin não pode ter usuário inativo");
 
+            if(!userToBeUpdated.getRole().equals(UserRole.ADMIN) && input.role().equals(UserRole.ADMIN))
+                throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
+
             userToBeUpdated.setUsername(input.username());
             if(!userToBeUpdated.getRole().equals(UserRole.ADMIN))
                 userToBeUpdated.setRole(input.role());
@@ -64,6 +67,9 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         else if(userLogged.getRole().equals(UserRole.CLIENT)){
             if (userLogged.getId() != userToBeUpdated.getId())
                 throw new UnauthorizedException("Você não possui autorização para atualizar outro usuário");
+
+            if(input.role().equals(UserRole.ADMIN))
+                throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
 
             userToBeUpdated.setUsername(input.username());
             userToBeUpdated.setUpdatedAt(LocalDateTime.now());

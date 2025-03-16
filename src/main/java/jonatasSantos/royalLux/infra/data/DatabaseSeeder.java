@@ -38,7 +38,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     public void createAdmin(){
         User admin = new User(adminUsername, UserRole.ADMIN, true);
         admin.validatePassword(adminPassword);
-        admin.setPassword(adminPassword);
+        admin.setPassword(passwordEncoder.encode(adminPassword));
         userRepository.save(admin);
     }
 }
