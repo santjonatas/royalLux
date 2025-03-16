@@ -45,7 +45,7 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         }
 
         else if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
-
+            throw new UnauthorizedException("Você não possui autorização para atualizar usuário");
         }
 
         else if(userLogged.getRole().equals(UserRole.CLIENT)){
@@ -53,8 +53,10 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
                 throw new UnauthorizedException("Você não possui autorização para atualizar outro usuário");
 
             userToBeUpdated.setUsername(input.username());
-            userToBeUpdated.setActive(input.active());
             userToBeUpdated.setUpdatedAt(LocalDateTime.now());
+
+            if(userToBeUpdated.isActive() != input.active())
+                warningList.add("Você não possui autorização para atualizar o status de atividade");
 
             if(!userToBeUpdated.getRole().equals(input.role()))
                 warningList.add("Você não possui autorização para atualizar a permissão");
