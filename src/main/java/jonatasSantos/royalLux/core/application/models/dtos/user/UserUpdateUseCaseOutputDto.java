@@ -1,7 +1,5 @@
 package jonatasSantos.royalLux.core.application.models.dtos.user;
 
-public record UserUpdateUseCaseOutputDto (boolean success){
-    public UserUpdateUseCaseOutputDto() {
-        this(false);
-    }
-}
+import java.util.ArrayList;
+
+public record UserUpdateUseCaseOutputDto (boolean success, ArrayList<String> warningList){}

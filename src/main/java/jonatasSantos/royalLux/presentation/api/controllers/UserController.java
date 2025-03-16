@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.relation.RoleNotFoundException;
 import javax.naming.AuthenticationException;
 
 @RestController
@@ -41,7 +42,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity createUser(@RequestBody UserCreateUseCaseInputDto body) throws AuthenticationException {
+    public ResponseEntity createUser(@RequestBody UserCreateUseCaseInputDto body) throws AuthenticationException, RoleNotFoundException {
         var response = userCreateUseCase.execute(body);
 
         var responsePresenter = new ResponsePresenter(response);
@@ -59,7 +60,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity getUsers(
         @RequestParam(required = false) Integer id,
-        @RequestParam(required = false) String username) throws AuthenticationException {
+        @RequestParam(required = false) String username) throws AuthenticationException, RoleNotFoundException {
         var input = new UserGetUseCaseInputDto(id, username);
         var response = userGetUseCase.execute(input);
         var responsePresenter = new ResponsePresenter(response);
@@ -76,7 +77,7 @@ public class UserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
-    public ResponseEntity getAllUsers() throws AuthenticationException {
+    public ResponseEntity getAllUsers() throws AuthenticationException, RoleNotFoundException {
         var response = userGetAllUseCase.execute();
         var responsePresenter = new ResponsePresenter(response);
 
@@ -91,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity getMe() throws AuthenticationException {
+    public ResponseEntity getMe() throws AuthenticationException, RoleNotFoundException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = userGetMeUseCase.execute(user);
@@ -110,7 +111,7 @@ public class UserController {
     @PatchMapping
     public ResponseEntity updateUser(
         @RequestParam(required = true) Integer id,
-        @RequestBody UserUpdateUseCaseInputDto body) throws AuthenticationException {
+        @RequestBody UserUpdateUseCaseInputDto body) throws AuthenticationException, RoleNotFoundException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = userUpdateUseCase.execute(user, id, body);
@@ -128,7 +129,7 @@ public class UserController {
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity deleteUser(@RequestParam(required = true) Integer id) throws AuthenticationException {
+    public ResponseEntity deleteUser(@RequestParam(required = true) Integer id) throws AuthenticationException, RoleNotFoundException {
         var response = userDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 

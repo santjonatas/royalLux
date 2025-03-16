@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.user;
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -11,16 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RoleNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Service
 public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserUpdateUseCaseImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -29,13 +30,15 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
         var userToBeUpdated = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
-        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
+        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userLogged.getId());
 
         if (usernameExists)
             throw new IllegalArgumentException("Nome de usuário já está em uso");
 
         if(!UserRole.ROLES.contains(userLogged.getRole()))
             throw new RoleNotFoundException("Permissão inexistente");
+
+        ArrayList<String> warningList = new ArrayList<>();
 
         if(userLogged.getRole().equals(UserRole.ADMIN)){
 
@@ -46,11 +49,19 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         }
 
         else if(userLogged.getRole().equals(UserRole.CLIENT)){
+            if (userLogged.getId() != userToBeUpdated.getId())
+                throw new UnauthorizedException("Você não possui autorização para atualizar outro usuário");
 
+            userToBeUpdated.setUsername(input.username());
+            userToBeUpdated.setActive(input.active());
+            userToBeUpdated.setUpdatedAt(LocalDateTime.now());
+
+            if(!userToBeUpdated.getRole().equals(input.role()))
+                warningList.add("Você não possui autorização para atualizar a permissão");
         }
 
         this.userRepository.save(userToBeUpdated);
 
-        return new UserUpdateUseCaseOutputDto(true);
+        return new UserUpdateUseCaseOutputDto(true, warningList);
     }
 }
