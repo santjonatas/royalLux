@@ -42,6 +42,9 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
         if (input.username() != null)
             predicates.add(cb.like(root.get("username"), "%" + input.username() + "%"));
 
+        if (input.role() != null)
+            predicates.add(cb.like(root.get("role"), "%" + input.role() + "%"));
+
         query.where(predicates.toArray(new Predicate[0]));
 
         var users = entityManager.createQuery(query).getResultList();
