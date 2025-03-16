@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.infra.data;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,12 @@ import java.util.List;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
+
+    @Value("${admin.username}")
+    private String adminUsername;
+
+    @Value("${admin.password}")
+    private String adminPassword;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,7 +36,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     public void createAdmin(){
-        User admin = new User("santjonatas_", passwordEncoder.encode("Teste123@"), UserRole.ADMIN, true);
+        User admin = new User(adminUsername, passwordEncoder.encode(adminPassword), UserRole.ADMIN, true);
 
         userRepository.saveAll(List.of(admin));
     }

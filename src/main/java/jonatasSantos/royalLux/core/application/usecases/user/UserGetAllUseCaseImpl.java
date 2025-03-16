@@ -23,7 +23,7 @@ public class UserGetAllUseCaseImpl implements UserGetAllUseCase {
 
         return users.stream()
                 .sorted((u1, u2) -> Long.compare(u2.getId(), u1.getId()))
-                .map(user -> new UserGetAllUseCaseOutputDto(user.getId(), user.getUsername(), user.isActive()))
+                .map(user -> new UserGetAllUseCaseOutputDto(user.getId(), user.getUsername(), user.getRole(), user.isActive()))
                 .collect(Collectors.toList());
     }
 }

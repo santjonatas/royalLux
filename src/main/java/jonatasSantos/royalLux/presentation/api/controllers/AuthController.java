@@ -27,7 +27,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUseCaseInputDto body) throws AuthenticationException {
         var response = loginUseCase.execute(body);
-
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withSelfRel());
@@ -39,7 +38,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterUseCaseInputDto body) throws AuthenticationException {
         var response = registerUseCase.execute(body);
-
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withSelfRel());
