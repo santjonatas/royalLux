@@ -14,7 +14,7 @@ public class User implements UserDetails{
     
     public User(String username, UserRole role, boolean active) {
         this.setUsername(username);
-        this.role = role;
+        this.setRole(role);
         this.active = active;
         this.createdAt = LocalDateTime.now();
     }
@@ -60,18 +60,17 @@ public class User implements UserDetails{
     }
 
     public void setUsername(String username) {
-        if (username.isEmpty()){
+        if (username.isEmpty())
             throw new IllegalArgumentException("Username não pode ser vazio");
-        }
-        if (username.length() < 5){
+
+        if (username.length() < 5)
             throw new IllegalArgumentException("Username deve conter pelo menos 5 caracteres");
-        }
-        if (username.length() > 25){
+
+        if (username.length() > 25)
             throw new IllegalArgumentException("Username não deve conter mais que 25 caracteres");
-        }
-        if (!username.matches("^[a-z0-9_.]+$")) {
+
+        if (!username.matches("^[a-z0-9_.]+$"))
             throw new IllegalArgumentException("O nome de usuário só pode conter letras minúsculas, números, '.' e '_'");
-        }
 
         this.username = username;
     }
@@ -81,47 +80,51 @@ public class User implements UserDetails{
     }
 
     public void setPassword(String password) {
-        if (password.isEmpty()){
+        if (password.isEmpty())
             throw new IllegalArgumentException("Senha não pode ser vazia");
-        }
-        if (password.length() < 8){
+
+        if (password.length() < 8)
             throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
-        }
+
         this.password = password;
     }
 
     public String validatePassword(String password){
-        if (password.isEmpty()){
+        if (password.isEmpty())
             throw new IllegalArgumentException("Senha não pode ser vazia");
-        }
-        if (password.length() < 8){
+
+        if (password.length() < 8)
             throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
-        }
-        if (password.length() > 50){
+
+        if (password.length() > 50)
             throw new IllegalArgumentException("Senha não deve conter mais que 50 caracteres");
-        }
-        if (!password.matches(".*[A-Z].*")) {
+
+        if (!password.matches(".*[A-Z].*"))
             throw new IllegalArgumentException("Senha deve conter pelo menos uma letra maiúscula");
-        }
-        if (!password.matches(".*[a-z].*")) {
+
+        if (!password.matches(".*[a-z].*"))
             throw new IllegalArgumentException("Senha deve conter pelo menos uma letra minúscula");
-        }
-        if (!password.matches(".*\\d.*")) {
+
+        if (!password.matches(".*\\d.*"))
             throw new IllegalArgumentException("Senha deve conter pelo menos um número");
-        }
-        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/].*")) {
+
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/].*"))
             throw new IllegalArgumentException("Senha deve conter pelo menos um caractere especial");
-        }
-        if (!password.matches("^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/]+$")) {
+
+        if (!password.matches("^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/]+$"))
             throw new IllegalArgumentException("Senha contém caracteres inválidos");
-        }
 
         return password;
     }
 
     public UserRole getRole() { return role; }
 
-    public void setRole(UserRole role) { this.role = role; }
+    public void setRole(UserRole role) {
+        if(role.equals(UserRole.ADMIN))
+            throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
+
+        this.role = role;
+    }
 
     public boolean isActive() {
         return this.active;

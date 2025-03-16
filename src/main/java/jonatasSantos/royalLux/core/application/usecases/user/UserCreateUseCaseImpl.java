@@ -30,9 +30,6 @@ public class UserCreateUseCaseImpl implements UserCreateUseCase{
         if(!user.isEmpty())
             throw new EntityExistsException("Usuário já existe");
 
-        if(input.role() == UserRole.ADMIN)
-            throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
-
         User newUser = new User(input.username(), input.role(), input.active());
         newUser.validatePassword(input.password());
         newUser.setPassword(passwordEncoder.encode(input.password()));
