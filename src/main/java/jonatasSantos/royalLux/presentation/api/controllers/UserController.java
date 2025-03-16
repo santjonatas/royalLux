@@ -63,8 +63,10 @@ public class UserController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) UserRole role) throws AuthenticationException, RoleNotFoundException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         var input = new UserGetUseCaseInputDto(id, username, role);
-        var response = userGetUseCase.execute(input);
+        var response = userGetUseCase.execute(user, input);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).createUser(null)).withRel("create"));

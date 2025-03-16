@@ -26,9 +26,11 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
     @Override
     public UserUpdateUseCaseOutputDto execute(User user, Integer id, UserUpdateUseCaseInputDto input) throws RoleNotFoundException {
-        var userLogged = this.userRepository.findById(String.valueOf(user.getId())).orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
+        var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
+                .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
-        var userToBeUpdated = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
+        var userToBeUpdated = this.userRepository.findById(id.toString())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
         boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
 
