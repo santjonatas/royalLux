@@ -30,17 +30,17 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
 
         var userToBeUpdated = this.userRepository.findById(id.toString()).orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
+        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
+
+        if (usernameExists)
+            throw new IllegalArgumentException("Nome de usuário já está em uso");
+
         if(!UserRole.ROLES.contains(userLogged.getRole()))
             throw new RoleNotFoundException("Permissão inexistente");
 
         ArrayList<String> warningList = new ArrayList<>();
 
         if(userLogged.getRole().equals(UserRole.ADMIN)){
-            boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
-
-            if (usernameExists)
-                throw new IllegalArgumentException("Nome de usuário já está em uso");
-
             if(userToBeUpdated.getRole().equals(UserRole.ADMIN) && !input.role().equals(UserRole.ADMIN))
                 throw new IllegalArgumentException("Admin não pode ter Permissão alterada");
 
@@ -60,11 +60,6 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         }
 
         else if(userLogged.getRole().equals(UserRole.CLIENT)){
-            boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userLogged.getId());
-
-            if (usernameExists)
-                throw new IllegalArgumentException("Nome de usuário já está em uso");
-
             if (userLogged.getId() != userToBeUpdated.getId())
                 throw new UnauthorizedException("Você não possui autorização para atualizar outro usuário");
 
