@@ -27,7 +27,9 @@ public class UserGetAllUseCaseImpl implements UserGetAllUseCase {
                         user.getId(),
                         user.getUsername(),
                         user.getRole(),
-                        user.isActive()))
+                        user.isActive(),
+                        user.getCreatedAt(),
+                        user.getUpdatedAt()))
                 .collect(Collectors.toList());
     }
 }

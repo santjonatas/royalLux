@@ -57,7 +57,6 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
                 userToBeUpdated.setRole(input.role());
 
             userToBeUpdated.setActive(input.active());
-            userToBeUpdated.setUpdatedAt(LocalDateTime.now());
         }
 
         else if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
@@ -72,7 +71,6 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
                 throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
 
             userToBeUpdated.setUsername(input.username());
-            userToBeUpdated.setUpdatedAt(LocalDateTime.now());
 
             if(userToBeUpdated.isActive() != input.active())
                 warningList.add("Você não possui autorização para atualizar o status de atividade");
@@ -81,6 +79,7 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
                 warningList.add("Você não possui autorização para atualizar a permissão");
         }
 
+        userToBeUpdated.setUpdatedAt(LocalDateTime.now());
         this.userRepository.save(userToBeUpdated);
 
         return new UserUpdateUseCaseOutputDto(true, warningList);

@@ -69,6 +69,8 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
                         userFound.getId(),
                         userFound.getUsername(),
                         userFound.getRole(),
-                        userFound.isActive())).toList();
+                        userFound.isActive(),
+                        userFound.getCreatedAt(),
+                        userFound.getUpdatedAt())).toList();
     }
 }

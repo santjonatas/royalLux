@@ -26,6 +26,8 @@ public class UserGetMeUseCaseImpl implements UserGetMeUseCase {
                 myUser.getId(),
                 myUser.getUsername(),
                 myUser.getRole(),
-                myUser.isActive());
+                myUser.isActive(),
+                myUser.getCreatedAt(),
+                myUser.getUpdatedAt());
     }
 }

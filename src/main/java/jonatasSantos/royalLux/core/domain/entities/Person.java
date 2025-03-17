@@ -3,15 +3,15 @@ package jonatasSantos.royalLux.core.domain.entities;
 import jakarta.persistence.*;
 import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "persons")
 public class Person extends Base {
 
-    public Person(User user, String name, Date dateBirth, String cpf, String phone, String email) {
+    public Person(User user, String name, LocalDate dateBirth, String cpf, String phone, String email) {
         this.user = user;
         this.setName(name);
         this.dateBirth = dateBirth;
@@ -36,7 +36,7 @@ public class Person extends Base {
     protected String name;
 
     @Column(name = "dateBirth")
-    protected Date dateBirth;
+    protected LocalDate dateBirth;
 
     @Column(name = "cpf", nullable = false, length = 11)
     protected String cpf;
@@ -84,11 +84,11 @@ public class Person extends Base {
         this.name = name;
     }
 
-    public Date getDateBirth() {
+    public LocalDate getDateBirth() {
         return this.dateBirth;
     }
 
-    public void setDateBirth(Date dateBirth) {
+    public void setDateBirth(LocalDate dateBirth) {
         this.dateBirth = dateBirth;
     }
 
