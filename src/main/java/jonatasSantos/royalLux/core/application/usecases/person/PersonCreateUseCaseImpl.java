@@ -4,10 +4,16 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.PersonRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
+import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Person;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import org.springframework.stereotype.Service;
+
+import javax.management.relation.RoleNotFoundException;
 
 @Service
 public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
@@ -21,11 +27,25 @@ public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
     }
 
     @Override
-    public PersonCreateUseCaseOutputDto execute(PersonCreateUseCaseInputDto input) {
-        var user = this.userRepository.findById(String.valueOf(input.userId()))
+    public PersonCreateUseCaseOutputDto execute(User user, PersonCreateUseCaseInputDto input) throws RoleNotFoundException {
+        var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
+                .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
+
+        var existingUser = this.userRepository.findById(String.valueOf(input.userId()))
                 .orElseThrow(() -> new EntityNotFoundException("Usuário é inexistente"));
 
-        Person person = new Person(user,
+        if(!UserRole.ROLES.contains(userLogged.getRole()))
+            throw new RoleNotFoundException("Permissão inexistente");
+
+        if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
+            throw new UnauthorizedException("Você não possui autorização para criar pessoa");
+        }
+
+        if(personRepository.existsByUserId(existingUser.getId()))
+            throw new ConflictException("Pessoa já vinculada a um usuário");
+
+        Person person = new Person(
+                existingUser,
                 input.name(),
                 input.dateBirth(),
                 input.cpf(),
