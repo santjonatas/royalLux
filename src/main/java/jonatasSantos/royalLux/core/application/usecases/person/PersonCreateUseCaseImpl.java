@@ -40,6 +40,9 @@ public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
         if(userLogged.getRole().equals(UserRole.EMPLOYEE))
             throw new UnauthorizedException("Você não possui autorização para criar pessoa");
 
+        if(userLogged.getRole().equals(UserRole.CLIENT) && !existingUser.getRole().equals(UserRole.CLIENT))
+            throw new UnauthorizedException("Você não possui autorização para criar pessoa com outra permissão");
+
         if(personRepository.existsByUserId(existingUser.getId()))
             throw new ConflictException("Pessoa já vinculada a um usuário");
 
