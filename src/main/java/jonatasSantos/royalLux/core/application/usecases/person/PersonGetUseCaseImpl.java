@@ -48,8 +48,10 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
         if (input.id() != null)
             predicates.add(cb.equal(root.get("id"), input.id()));
 
-        if (input.userId() != null)
-            predicates.add(cb.equal(root.get("userId"), input.userId()));
+        if (input.userId() != null) {
+            var userFound = userRepository.findById(input.userId().toString());
+            predicates.add(cb.equal(root.get("user"), userFound.get()));
+        }
 
         if (input.name() != null)
             predicates.add(cb.like(root.get("name"), "%" + input.name() + "%"));
