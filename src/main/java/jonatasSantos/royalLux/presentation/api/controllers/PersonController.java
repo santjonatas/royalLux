@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserCreateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
@@ -27,6 +28,9 @@ public class PersonController {
     @Autowired
     private PersonCreateUseCase personCreateUseCase;
 
+    @Autowired
+    private PersonGetUseCase personGetUseCase;
+
     @PostMapping
     public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body) throws RoleNotFoundException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -40,21 +44,21 @@ public class PersonController {
         return ResponseEntity.ok(responsePresenter);
     }
 
-//    @GetMapping
-//    public ResponseEntity getPersons(
-//            @RequestParam(required = false) Integer id,
-//            @RequestParam(required = false) Integer userId,
-//            @RequestParam(required = false) String name,
-//            @RequestParam(required = false) Date dateBirth,
-//            @RequestParam(required = false) String cpf,
-//            @RequestParam(required = false) String phone,
-//            @RequestParam(required = false) String email){
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);
-//        var response = userGetUseCase.execute(user, input);
-//        var responsePresenter = new ResponsePresenter(response);
-//
-//        return ResponseEntity.ok(responsePresenter);
-//    }
+    @GetMapping
+    public ResponseEntity getPersons(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) Integer userId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Date dateBirth,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String email) throws RoleNotFoundException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);
+        var response = personGetUseCase.execute(user, input);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
