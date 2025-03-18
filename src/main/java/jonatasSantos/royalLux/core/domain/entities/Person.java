@@ -5,6 +5,7 @@ import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.regex.Pattern;
 
 @Entity
@@ -14,7 +15,7 @@ public class Person extends Base {
     public Person(User user, String name, LocalDate dateBirth, String cpf, String phone, String email) {
         this.user = user;
         this.setName(name);
-        this.dateBirth = dateBirth;
+        this.setDateBirth(dateBirth);
         this.setCpf(cpf);
         this.setPhone(phone);
         this.setEmail(email);
@@ -72,14 +73,17 @@ public class Person extends Base {
     }
 
     public void setName(String name) {
-        if (name.isEmpty()){
+        if (name.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser vazio");
         }
-        if (name.length() < 3){
+        if (name.length() < 3) {
             throw new IllegalArgumentException("Nome deve conter pelo menos 3 caracteres");
         }
-        if (name.length() > 255){
+        if (name.length() > 255) {
             throw new IllegalArgumentException("Nome não deve conter mais que 255 caracteres");
+        }
+        if (!name.matches("^[a-zA-ZÀ-ÿ\\s]+$")) {
+            throw new IllegalArgumentException("Nome deve conter apenas letras e espaços");
         }
         this.name = name;
     }
@@ -89,6 +93,13 @@ public class Person extends Base {
     }
 
     public void setDateBirth(LocalDate dateBirth) {
+        if (dateBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Data de nascimento não pode ser no futuro");
+        }
+        if (Period.between(dateBirth, LocalDate.now()).getYears() > 120) {
+            throw new IllegalArgumentException("Data de nascimento inválida. Idade não pode ser superior a 120 anos");
+        }
+
         this.dateBirth = dateBirth;
     }
 
