@@ -2,8 +2,10 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.relation.RoleNotFoundException;
+import javax.naming.AuthenticationException;
 import java.util.Date;
 
 @RestController
@@ -27,8 +30,11 @@ public class PersonController {
     @Autowired
     private PersonGetUseCase personGetUseCase;
 
+    @Autowired
+    private PersonUpdateUseCase personUpdateUseCase;
+
     @PostMapping
-    public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body) throws RoleNotFoundException {
+    public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = personCreateUseCase.execute(user, body);
@@ -48,11 +54,23 @@ public class PersonController {
             @RequestParam(required = false) Date dateBirth,
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String phone,
-            @RequestParam(required = false) String email) throws RoleNotFoundException {
+            @RequestParam(required = false) String email){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);
         var response = personGetUseCase.execute(user, input);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping
+    public ResponseEntity updatePerson(
+            @RequestParam(required = true) Integer id,
+            @RequestBody PersonUpdateUseCaseInputDto body){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = personUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);

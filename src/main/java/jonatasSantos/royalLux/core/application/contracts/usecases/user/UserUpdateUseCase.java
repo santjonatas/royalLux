@@ -7,5 +7,5 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import javax.management.relation.RoleNotFoundException;
 
 public interface UserUpdateUseCase {
-    public UserUpdateUseCaseOutputDto execute (User user, Integer id, UserUpdateUseCaseInputDto input) throws RoleNotFoundException;
+    public UserUpdateUseCaseOutputDto execute (User user, Integer id, UserUpdateUseCaseInputDto input);
 }

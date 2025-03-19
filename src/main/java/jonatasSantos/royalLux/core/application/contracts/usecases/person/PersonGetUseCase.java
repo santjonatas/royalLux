@@ -7,5 +7,5 @@ import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 public interface PersonGetUseCase {
-    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input) throws RoleNotFoundException;
+    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input);
 }
