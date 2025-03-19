@@ -2,12 +2,11 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonGetUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,9 @@ public class PersonController {
 
     @Autowired
     private PersonGetUseCase personGetUseCase;
+
+    @Autowired
+    private PersonUpdateUseCase personUpdateUseCase;
 
     @PostMapping
     public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body) throws RoleNotFoundException {
@@ -57,6 +59,18 @@ public class PersonController {
 
         var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);
         var response = personGetUseCase.execute(user, input);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping
+    public ResponseEntity updatePerson(
+            @RequestParam(required = true) Integer id,
+            @RequestBody PersonUpdateUseCaseInputDto body){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = personUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
