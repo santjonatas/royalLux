@@ -34,7 +34,7 @@ public class PersonController {
     private PersonUpdateUseCase personUpdateUseCase;
 
     @PostMapping
-    public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body) throws RoleNotFoundException {
+    public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = personCreateUseCase.execute(user, body);
@@ -54,7 +54,7 @@ public class PersonController {
             @RequestParam(required = false) Date dateBirth,
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String phone,
-            @RequestParam(required = false) String email) throws RoleNotFoundException {
+            @RequestParam(required = false) String email){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);

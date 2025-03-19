@@ -35,7 +35,7 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
     }
 
     @Override
-    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input) throws RoleNotFoundException {
+    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input){
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 

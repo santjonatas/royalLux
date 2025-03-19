@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jonatasSantos.royalLux.core.application.contracts.services.AuthenticationService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
+import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.management.relation.RoleNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -37,6 +39,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (!user.isEnabled()) {
                 throw new RuntimeException("Usuário está inativo");
             }
+
+            if(!UserRole.ROLES.contains(user.getRole()))
+                throw new RuntimeException("Permissão inexistente");
 
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);

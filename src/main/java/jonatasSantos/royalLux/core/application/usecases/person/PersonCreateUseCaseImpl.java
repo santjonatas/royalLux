@@ -27,15 +27,12 @@ public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
     }
 
     @Override
-    public PersonCreateUseCaseOutputDto execute(User user, PersonCreateUseCaseInputDto input) throws RoleNotFoundException {
+    public PersonCreateUseCaseOutputDto execute(User user, PersonCreateUseCaseInputDto input){
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         var existingUser = this.userRepository.findById(String.valueOf(input.userId()))
                 .orElseThrow(() -> new EntityNotFoundException("Usuário é inexistente"));
-
-        if(!UserRole.ROLES.contains(userLogged.getRole()))
-            throw new RoleNotFoundException("Permissão inexistente");
 
         if(userLogged.getRole().equals(UserRole.EMPLOYEE))
             throw new UnauthorizedException("Você não possui autorização para criar pessoa");
