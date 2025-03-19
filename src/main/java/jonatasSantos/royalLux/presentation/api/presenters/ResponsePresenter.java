@@ -2,15 +2,13 @@ package jonatasSantos.royalLux.presentation.api.presenters;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import java.time.LocalDateTime;
-
 public class ResponsePresenter<T> extends RepresentationModel<ResponsePresenter<T>> {
     private T data;
-    private LocalDateTime timestamp;
+    private Long timestamp;
 
     public ResponsePresenter(T data) {
         this.data = data;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public T getData() {
@@ -21,7 +19,7 @@ public class ResponsePresenter<T> extends RepresentationModel<ResponsePresenter<
         this.data = data;
     }
 
-    public LocalDateTime getTimestamp() { return this.timestamp; }
+    public Long getTimestamp() { return this.timestamp; }
 
-    public void setTimestamp() { this.timestamp = timestamp; }
+    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
 }
