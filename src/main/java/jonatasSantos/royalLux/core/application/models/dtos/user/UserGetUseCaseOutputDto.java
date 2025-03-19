@@ -1,6 +1,6 @@
 package jonatasSantos.royalLux.core.application.models.dtos.user;
 
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 
 import java.time.LocalDateTime;
 

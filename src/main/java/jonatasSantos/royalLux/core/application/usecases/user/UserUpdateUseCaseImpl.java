@@ -7,7 +7,7 @@ import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserCreat
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

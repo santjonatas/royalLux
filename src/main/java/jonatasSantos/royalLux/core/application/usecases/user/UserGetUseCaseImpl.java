@@ -9,14 +9,12 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserGetUseCase;
-import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

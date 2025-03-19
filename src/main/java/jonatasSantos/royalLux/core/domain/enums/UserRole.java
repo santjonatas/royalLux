@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.domain.valueobjects;
+package jonatasSantos.royalLux.core.domain.enums;
 
 import java.util.Arrays;
 import java.util.List;

@@ -4,7 +4,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.PersonRepo
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

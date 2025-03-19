@@ -1,7 +1,7 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;

@@ -10,7 +10,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUs
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RoleNotFoundException;

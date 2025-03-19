@@ -2,12 +2,9 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonGetUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserCreateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.valueobjects.UserRole;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.relation.RoleNotFoundException;
-import javax.naming.AuthenticationException;
 import java.util.Date;
 
 @RestController
