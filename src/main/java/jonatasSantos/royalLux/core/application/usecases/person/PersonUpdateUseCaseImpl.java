@@ -12,6 +12,7 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -33,13 +34,13 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
         var personToBeUpdated = this.personRepository.findById(String.valueOf(personId))
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa é inexistente"));
 
-        if(personRepository.existsByCpf(input.cpf()))
+        if(personRepository.existsByCpfAndIdNot(input.cpf(), personToBeUpdated.getId()))
             throw new ConflictException("CPF já vinculado a um usuário");
 
-        if(personRepository.existsByPhone(input.phone()))
+        if(personRepository.existsByPhoneAndIdNot(input.phone(), personToBeUpdated.getId()))
             throw new ConflictException("Telefone já vinculado a um usuário");
 
-        if(personRepository.existsByEmail(input.email()))
+        if(personRepository.existsByEmailAndIdNot(input.email(), personToBeUpdated.getId()))
             throw new ConflictException("Email já vinculado a um usuário");
 
         ArrayList<String> warningList = new ArrayList<>();
@@ -80,6 +81,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
             personToBeUpdated.setEmail(input.email());
         }
 
+        personToBeUpdated.setUpdatedAt(LocalDateTime.now());
         personRepository.save(personToBeUpdated);
 
         return new PersonUpdateUseCaseOutputDto(true, warningList);

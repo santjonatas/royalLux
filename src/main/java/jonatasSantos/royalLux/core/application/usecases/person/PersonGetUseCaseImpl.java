@@ -48,9 +48,18 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
         if (input.id() != null)
             predicates.add(cb.equal(root.get("id"), input.id()));
 
+//        if (input.userId() != null) {
+//            var userFound = userRepository.findById(input.userId().toString());
+//            predicates.add(cb.equal(root.get("user"), userFound.get()));
+//        }
         if (input.userId() != null) {
-            var userFound = userRepository.findById(input.userId().toString());
-            predicates.add(cb.equal(root.get("user"), userFound.get()));
+            var userFound = userRepository.findById(input.userId().toString()).orElse(null);
+
+            if (userFound != null) {
+                predicates.add(cb.equal(root.get("user"), userFound));
+            } else {
+                predicates.add(cb.isNull(root.get("user"))); // Adiciona o filtro mesmo se não existir usuário
+            }
         }
 
         if (input.name() != null)

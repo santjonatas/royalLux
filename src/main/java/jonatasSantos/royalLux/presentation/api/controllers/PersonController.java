@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.person.PersonUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
@@ -12,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.management.relation.RoleNotFoundException;
 import javax.naming.AuthenticationException;
 import java.util.Date;
 
@@ -32,6 +32,9 @@ public class PersonController {
 
     @Autowired
     private PersonUpdateUseCase personUpdateUseCase;
+
+    @Autowired
+    private PersonDeleteUseCase personDeleteUseCase;
 
     @PostMapping
     public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body){
@@ -71,6 +74,15 @@ public class PersonController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = personUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deletePerson(@RequestParam(required = true) Integer id){
+        var response = personDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
