@@ -5,5 +5,5 @@ import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUs
 import jonatasSantos.royalLux.core.domain.entities.User;
 
 public interface PersonUpdateUseCase {
-    public PersonUpdateUseCaseOutputDto execute(User user, Integer userId, PersonUpdateUseCaseInputDto input);
+    public PersonUpdateUseCaseOutputDto execute(User user, Integer personId, PersonUpdateUseCaseInputDto input);
 }
