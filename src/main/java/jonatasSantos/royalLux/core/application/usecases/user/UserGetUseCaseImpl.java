@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserGetUseCaseImpl implements UserGetUseCase {
@@ -57,8 +59,10 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
         var users = entityManager.createQuery(query).getResultList();
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
-            users = users.stream().filter(userFound -> !userFound.getRole()
-                    .equals(UserRole.CLIENT)).toList();
+            users = Stream.concat(
+                    users.stream().filter(userFound -> !userFound.getRole().equals(UserRole.CLIENT)),
+                    users.stream().filter(userFound -> userFound.getId() == userLogged.getId())
+            ).collect(Collectors.toList());
         }
 
         return users.stream()

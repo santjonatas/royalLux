@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.management.relation.RoleNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class PersonGetUseCaseImpl implements PersonGetUseCase {
@@ -48,17 +50,13 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
         if (input.id() != null)
             predicates.add(cb.equal(root.get("id"), input.id()));
 
-//        if (input.userId() != null) {
-//            var userFound = userRepository.findById(input.userId().toString());
-//            predicates.add(cb.equal(root.get("user"), userFound.get()));
-//        }
         if (input.userId() != null) {
             var userFound = userRepository.findById(input.userId().toString()).orElse(null);
 
             if (userFound != null) {
                 predicates.add(cb.equal(root.get("user"), userFound));
             } else {
-                predicates.add(cb.isNull(root.get("user"))); // Adiciona o filtro mesmo se não existir usuário
+                predicates.add(cb.isNull(root.get("user")));
             }
         }
 
@@ -82,7 +80,10 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
         var persons = entityManager.createQuery(query).getResultList();
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
-            persons = persons.stream().filter(personFound -> !personFound.getUser().getRole().equals(UserRole.CLIENT)).toList();
+            persons = Stream.concat(
+                    persons.stream().filter(personFound -> !personFound.getUser().getRole().equals(UserRole.CLIENT)),
+                    persons.stream().filter(personFound -> personFound.getUser().getId() == userLogged.getId())
+            ).collect(Collectors.toList());
         }
 
         return persons.stream()
