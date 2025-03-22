@@ -16,8 +16,6 @@ import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
-
-import javax.management.relation.RoleNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

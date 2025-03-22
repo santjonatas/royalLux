@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.user;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -32,7 +33,7 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
     }
 
     @Override
-    public List<UserGetUseCaseOutputDto> execute(User user, UserGetUseCaseInputDto input) {
+    public List<UserGetUseCaseOutputDto> execute(User user, UserGetUseCaseInputDto input, Integer page, Integer size) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -56,7 +57,17 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
 
         query.where(predicates.toArray(new Predicate[0]));
 
-        var users = entityManager.createQuery(query).getResultList();
+        query.orderBy(cb.desc(root.get("id")));
+
+        TypedQuery<User> typedQuery = entityManager.createQuery(query);
+
+        int setPage = (page != null && page >= 0) ? page : 0;
+        int setsize = (size != null && size > 0) ? size : 10;
+
+        typedQuery.setFirstResult(setPage * setsize);
+        typedQuery.setMaxResults(setsize);
+
+        var users = typedQuery.getResultList();
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
             users = Stream.concat(
@@ -66,7 +77,6 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
         }
 
         return users.stream()
-                .sorted((u1, u2) -> Long.compare(u2.getId(), u1.getId()))
                 .map(userFound -> new UserGetUseCaseOutputDto(
                         userFound.getId(),
                         userFound.getUsername(),
