@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.person;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -35,7 +36,7 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
     }
 
     @Override
-    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input){
+    public List<PersonGetUseCaseOutputDto> execute(User user, PersonGetUseCaseInputDto input, Integer page, Integer size){
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -74,18 +75,28 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
             predicates.add(cb.like(root.get("phone"), "%" + input.phone() + "%"));
 
         query.where(predicates.toArray(new Predicate[0]));
+        query.orderBy(cb.desc(root.get("id")));
 
-        var persons = entityManager.createQuery(query).getResultList();
+        TypedQuery<Person> typedQuery = entityManager.createQuery(query);
+
+        int setPage = (page != null && page >= 0) ? page : 0;
+        Integer setSize = (size != null && size > 0) ? size : null;
+
+        if (setSize != null) {
+            typedQuery.setFirstResult(setPage * setSize);
+            typedQuery.setMaxResults(setSize);
+        }
+
+        var persons = typedQuery.getResultList();
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
             persons = Stream.concat(
                     persons.stream().filter(personFound -> !personFound.getUser().getRole().equals(UserRole.CLIENT)),
                     persons.stream().filter(personFound -> personFound.getUser().getId() == userLogged.getId())
-            ).collect(Collectors.toList());
+            ).toList();
         }
 
         return persons.stream()
-                .sorted((u1, u2) -> Long.compare(u2.getId(), u1.getId()))
                 .map(personFound -> new PersonGetUseCaseOutputDto(
                         personFound.getId(),
                         personFound.getUser().getId(),

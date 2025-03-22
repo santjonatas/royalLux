@@ -56,16 +56,17 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
             predicates.add(cb.equal(root.get("active"), input.active()));
 
         query.where(predicates.toArray(new Predicate[0]));
-
         query.orderBy(cb.desc(root.get("id")));
 
         TypedQuery<User> typedQuery = entityManager.createQuery(query);
 
         int setPage = (page != null && page >= 0) ? page : 0;
-        int setsize = (size != null && size > 0) ? size : 10;
+        Integer setSize = (size != null && size > 0) ? size : null;
 
-        typedQuery.setFirstResult(setPage * setsize);
-        typedQuery.setMaxResults(setsize);
+        if (setSize != null) {
+            typedQuery.setFirstResult(setPage * setSize);
+            typedQuery.setMaxResults(setSize);
+        }
 
         var users = typedQuery.getResultList();
 
@@ -73,7 +74,7 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
             users = Stream.concat(
                     users.stream().filter(userFound -> !userFound.getRole().equals(UserRole.CLIENT)),
                     users.stream().filter(userFound -> userFound.getId() == userLogged.getId())
-            ).collect(Collectors.toList());
+            ).toList();
         }
 
         return users.stream()
