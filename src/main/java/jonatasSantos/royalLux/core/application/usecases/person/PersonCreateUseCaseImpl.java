@@ -34,9 +34,6 @@ public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
         var existingUser = this.userRepository.findById(String.valueOf(input.userId()))
                 .orElseThrow(() -> new EntityNotFoundException("Usuário é inexistente"));
 
-        if(userLogged.getRole().equals(UserRole.EMPLOYEE))
-            throw new UnauthorizedException("Você não possui autorização para criar pessoa");
-
         if(userLogged.getRole().equals(UserRole.CLIENT)){
             if(!existingUser.getRole().equals(UserRole.CLIENT))
                 throw new UnauthorizedException("Você não possui autorização para criar pessoa com outra permissão");

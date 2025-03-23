@@ -1,15 +1,49 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
+import jakarta.persistence.*;
 
-public class Client extends Base {
-    protected int UserId;
+import java.time.LocalDateTime;
 
-    public int getUserId() {
-        return UserId;
+@Entity
+@Table(name = "clients")
+public class Client{
+    public Client(User user) {
+        this.user = user;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected int id;
+
+    @OneToOne
+    @JoinColumn(name = "userId", nullable = false, updatable = false)
+    protected User user;
+
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Column(name = "updatedAt")
+    protected LocalDateTime updatedAt;
+
+    public int getId() { return this.id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public User getUser() {
+        return this.user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

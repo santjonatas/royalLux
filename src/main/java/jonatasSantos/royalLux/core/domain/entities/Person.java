@@ -1,8 +1,6 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -10,7 +8,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "persons")
-public class Person extends Base {
+public class Person{
 
     public Person(User user, String name, LocalDate dateBirth, String cpf, String phone, String email) {
         this.user = user;
@@ -54,10 +52,8 @@ public class Person extends Base {
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    @Override
     public int getId() { return this.id; }
 
-    @Override
     public void setId(int id) { this.id = id; }
 
     public User getUser() {
@@ -180,15 +176,11 @@ public class Person extends Base {
         this.email = email;
     }
 
-    @Override
     public LocalDateTime getCreatedAt() { return this.createdAt; }
 
-    @Override
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    @Override
     public LocalDateTime getUpdatedAt() { return this.updatedAt; }
 
-    @Override
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

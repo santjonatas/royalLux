@@ -37,6 +37,7 @@ public class PersonController {
     private PersonDeleteUseCase personDeleteUseCase;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity createPerson(@RequestBody PersonCreateUseCaseInputDto body){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
