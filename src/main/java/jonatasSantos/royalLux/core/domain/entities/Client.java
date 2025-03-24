@@ -12,6 +12,9 @@ public class Client{
         this.createdAt = LocalDateTime.now();
     }
 
+    public Client() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
