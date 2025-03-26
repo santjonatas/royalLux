@@ -1,10 +1,10 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,9 @@ public class ClientController {
 
     @Autowired
     private ClientGetUseCase clientGetUseCase;
+
+    @Autowired
+    private ClientDeleteUseCase clientDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
@@ -50,6 +53,15 @@ public class ClientController {
 
         var input = new ClientGetUseCaseInputDto(id, userId);
         var response = clientGetUseCase.execute(user, input, page, size);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteClient(@RequestParam(required = true) Integer id){
+        var response = clientDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
