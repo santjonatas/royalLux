@@ -1,5 +1,6 @@
 package jonatasSantos.royalLux.core.application.usecases.client;
 
+import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.ClientRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientDeleteUseCaseOutputDto;
@@ -16,6 +17,11 @@ public class ClientDeleteUseCaseImpl implements ClientDeleteUseCase {
 
     @Override
     public ClientDeleteUseCaseOutputDto execute(Integer id) {
-        return null;
+        var user = this.clientRepository.findById(id.toString())
+                .orElseThrow(() -> new EntityNotFoundException("Cliente inexistente"));
+
+        this.clientRepository.delete(user);
+
+        return new ClientDeleteUseCaseOutputDto(true);
     }
 }
