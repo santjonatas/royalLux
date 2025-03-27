@@ -1,24 +1,57 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
-
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class Employee extends Base {
-    protected int UserId;
-    protected String Title;
-    protected BigDecimal Salary;
-
-    public int getUserId() {
-        return UserId;
+@Entity
+@Table(name = "employees")
+public class Employee{
+    public Employee(User user, String title, BigDecimal salary) {
+        this.user = user;
+        this.setTitle(title);
+        this.setSalary(salary);
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    public Employee() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected int id;
+
+    @OneToOne
+    @JoinColumn(name = "userId", nullable = false, updatable = false)
+    protected User user;
+
+    @Column(name = "title", nullable = false, length = 50)
+    protected String title;
+
+    @Column(name = "salary", nullable = false)
+    protected BigDecimal salary;
+
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Column(name = "updatedAt")
+    protected LocalDateTime updatedAt;
+
+    public int getId() { return this.id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {
-        return Title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -29,14 +62,28 @@ public class Employee extends Base {
             throw new IllegalArgumentException("Título não deve conter mais que 50 caracteres");
         }
 
-        Title = title;
+        this.title = title;
     }
 
     public BigDecimal getSalary() {
-        return Salary;
+        return this.salary;
     }
 
     public void setSalary(BigDecimal salary) {
-        Salary = salary;
+        if(BigDecimal.ZERO.compareTo(salary) == 0)
+            throw new IllegalArgumentException("Salário não pode ser zero");
+
+        if(salary.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Salário não pode ser menor que zero");
+
+        this.salary = salary;
     }
+
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
