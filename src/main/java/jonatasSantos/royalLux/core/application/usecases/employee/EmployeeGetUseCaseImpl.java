@@ -83,7 +83,14 @@ public class EmployeeGetUseCaseImpl implements EmployeeGetUseCase {
 
         var employees = typedQuery.getResultList();
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)){
+        if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
+            employees.forEach(employeeFound -> {
+                if (employeeFound.getUser().getId() != userLogged.getId()) {
+                    employeeFound.setSalary(null);
+                }
+            });
+        }
+        else if(userLogged.getRole().equals(UserRole.CLIENT)){
             employees.forEach(employeeFound -> employeeFound.setSalary(null));
         }
 
