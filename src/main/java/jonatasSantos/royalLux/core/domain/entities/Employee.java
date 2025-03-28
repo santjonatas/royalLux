@@ -29,7 +29,7 @@ public class Employee{
     @Column(name = "title", nullable = false, length = 50)
     protected String title;
 
-    @Column(name = "salary", nullable = false)
+    @Column(name = "salary")
     protected BigDecimal salary;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
@@ -70,11 +70,13 @@ public class Employee{
     }
 
     public void setSalary(BigDecimal salary) {
-        if(BigDecimal.ZERO.compareTo(salary) == 0)
-            throw new IllegalArgumentException("Salário não pode ser zero");
+        if (salary != null) {
+            if (BigDecimal.ZERO.compareTo(salary) == 0)
+                throw new IllegalArgumentException("Salário não pode ser zero");
 
-        if(salary.compareTo(BigDecimal.ZERO) < 0)
-            throw new IllegalArgumentException("Salário não pode ser menor que zero");
+            if (salary.compareTo(BigDecimal.ZERO) < 0)
+                throw new IllegalArgumentException("Salário não pode ser menor que zero");
+        }
 
         this.salary = salary;
     }
