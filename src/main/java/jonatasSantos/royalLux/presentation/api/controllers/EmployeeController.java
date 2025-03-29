@@ -2,10 +2,13 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeGetUseCase employeeGetUseCase;
+
+    @Autowired
+    private EmployeeUpdateUseCase employeeUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -62,6 +68,24 @@ public class EmployeeController {
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).createClient(null)).withRel("post"));
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null)).withSelfRel());
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).deleteClient(null)).withRel("delete"));
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateEmployee(
+            @RequestParam(required = true) Integer id,
+            @RequestBody EmployeeUpdateUseCaseInputDto body){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = employeeUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withSelfRel());
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
     }

@@ -8,22 +8,17 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jonatasSantos.royalLux.core.application.contracts.repositories.ClientRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeGetUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.client.ClientGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.Employee;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class EmployeeGetUseCaseImpl implements EmployeeGetUseCase {

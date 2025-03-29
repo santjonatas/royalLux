@@ -53,7 +53,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
             personToBeUpdated.setEmail(input.email());
         }
 
-        if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
+        else if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
             if(personToBeUpdated.getUser().getId() != userLogged.getId())
                 throw new UnauthorizedException("Você não possui autorização para atualizar outra pessoa");
 
@@ -70,7 +70,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
                 warningList.add("Você não possui autorização para atualizar o CPF");
         }
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)){
+        else if(userLogged.getRole().equals(UserRole.CLIENT)){
             if(personToBeUpdated.getUser().getId() != userLogged.getId())
                 throw new UnauthorizedException("Você não possui autorização para atualizar outra pessoa");
 
