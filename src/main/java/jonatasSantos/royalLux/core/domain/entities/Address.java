@@ -1,27 +1,62 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
+import jakarta.persistence.*;
 
-public class Address extends Base {
-    protected int UserId;
-    protected String Street;
-    protected String Number;
-    protected String Complement;
-    protected String Neighborhood;
-    protected String City;
-    protected String UF;
-    protected String CEP;
+import java.time.LocalDateTime;
 
-    public int getUserId() {
-        return UserId;
+@Entity
+@Table(name = "addresses")
+public class Address{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected int id;
+
+    @OneToMany
+    @JoinColumn(name = "userId", nullable = false, updatable = false)
+    protected User user;
+
+    @Column(name = "street", length = 255)
+    protected String street;
+
+    @Column(name = "houseNumber", length = 15)
+    protected String houseNumber;
+
+    @Column(name = "complement", length = 50)
+    protected String complement;
+
+    @Column(name = "neighborhood", length = 100)
+    protected String neighborhood;
+
+    @Column(name = "city", length = 100)
+    protected String city;
+
+    @Column(name = "state", length = 2)
+    protected String state;
+
+    @Column(name = "cep", length = 8)
+    protected String cep;
+
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Column(name = "updatedAt")
+    protected LocalDateTime updatedAt;
+
+    public int getId() { return this.id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getStreet() {
-        return Street;
+        return this.street;
     }
 
     public void setStreet(String street) {
@@ -32,26 +67,26 @@ public class Address extends Base {
             throw new IllegalArgumentException("Rua não deve conter mais que 255 caracteres");
         }
 
-        Street = street;
+        this.street = street;
     }
 
-    public String getNumber() {
-        return Number;
+    public String getHouseNumber() {
+        return this.houseNumber;
     }
 
-    public void setNumber(String number) {
-        if (number.length() < 1){
+    public void setHouseNumber(String houseNumber) {
+        if (houseNumber.length() < 1){
             throw new IllegalArgumentException("Número deve conter pelo menos 1 caractere");
         }
-        if (number.length() > 15){
+        if (houseNumber.length() > 15){
             throw new IllegalArgumentException("Número não deve conter mais que 15 caracteres");
         }
 
-        Number = number;
+        this.houseNumber = houseNumber;
     }
 
     public String getComplement() {
-        return Complement;
+        return this.complement;
     }
 
     public void setComplement(String complement) {
@@ -59,11 +94,11 @@ public class Address extends Base {
             throw new IllegalArgumentException("Complemento não deve conter mais que 50 caracteres");
         }
 
-        Complement = complement;
+        this.complement = complement;
     }
 
     public String getNeighborhood() {
-        return Neighborhood;
+        return this.neighborhood;
     }
 
     public void setNeighborhood(String neighborhood) {
@@ -74,11 +109,11 @@ public class Address extends Base {
             throw new IllegalArgumentException("Bairro não deve conter mais que 100 caracteres");
         }
 
-        Neighborhood = neighborhood;
+        this.neighborhood = neighborhood;
     }
 
     public String getCity() {
-        return City;
+        return this.city;
     }
 
     public void setCity(String city) {
@@ -89,30 +124,38 @@ public class Address extends Base {
             throw new IllegalArgumentException("Cidade não deve conter mais que 100 caracteres");
         }
 
-        City = city;
+        this.city = city;
     }
 
-    public String getUF() {
-        return UF;
+    public String getState() {
+        return this.state;
     }
 
-    public void setUF(String UF) {
-        if (UF.length() != 2){
+    public void setState(String state) {
+        if (state.length() != 2){
             throw new IllegalArgumentException("UF deve conter 2 caracteres");
         }
 
-        this.UF = UF;
+        this.state = state;
     }
 
-    public String getCEP() {
-        return CEP;
+    public String getCep() {
+        return this.cep;
     }
 
-    public void setCEP(String CEP) {
-        if (CEP.length() != 8){
+    public void setCep(String cep) {
+        if (cep.length() != 8){
             throw new IllegalArgumentException("CEP deve conter 8 caracteres");
         }
 
-        this.CEP = CEP;
+        this.cep = cep;
     }
+
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
