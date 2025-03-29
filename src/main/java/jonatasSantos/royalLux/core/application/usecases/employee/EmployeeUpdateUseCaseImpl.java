@@ -26,7 +26,7 @@ public class EmployeeUpdateUseCaseImpl implements EmployeeUpdateUseCase {
 
     @Override
     public EmployeeUpdateUseCaseOutputDto execute(User user, Integer employeeId, EmployeeUpdateUseCaseInputDto input) {
-        var userLogged = userRepository.findById(String.valueOf(user.getId()))
+        var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         var employeeToBeUpdated = this.employeeRepository.findById(String.valueOf(employeeId))
@@ -50,7 +50,7 @@ public class EmployeeUpdateUseCaseImpl implements EmployeeUpdateUseCase {
         }
 
         employeeToBeUpdated.setUpdatedAt(LocalDateTime.now());
-        employeeRepository.save(employeeToBeUpdated);
+        this.employeeRepository.save(employeeToBeUpdated);
 
         return new EmployeeUpdateUseCaseOutputDto(true, warningList);
     }

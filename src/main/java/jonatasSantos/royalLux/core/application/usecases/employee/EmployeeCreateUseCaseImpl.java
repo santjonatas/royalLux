@@ -34,12 +34,12 @@ public class EmployeeCreateUseCaseImpl implements EmployeeCreateUseCase {
         if(existingUser.getRole() != UserRole.EMPLOYEE)
             throw new IllegalArgumentException("Usuário deve ser um funcionário");
 
-        if(employeeRepository.existsByUserId(existingUser.getId()))
+        if(this.employeeRepository.existsByUserId(existingUser.getId()))
             throw new ConflictException("Cliente já vinculado a um usuário");
 
         Employee employee = new Employee(existingUser, input.title(), input.salary());
 
-        employeeRepository.save(employee);
+        this.employeeRepository.save(employee);
 
         return new EmployeeCreateUseCaseOutputDto(employee.getId());
     }

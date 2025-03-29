@@ -28,19 +28,19 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
 
     @Override
     public PersonUpdateUseCaseOutputDto execute(User user, Integer personId, PersonUpdateUseCaseInputDto input) {
-        var userLogged = userRepository.findById(String.valueOf(user.getId()))
+        var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         var personToBeUpdated = this.personRepository.findById(String.valueOf(personId))
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa é inexistente"));
 
-        if(personRepository.existsByCpfAndIdNot(input.cpf(), personToBeUpdated.getId()))
+        if(this.personRepository.existsByCpfAndIdNot(input.cpf(), personToBeUpdated.getId()))
             throw new ConflictException("CPF já vinculado a um usuário");
 
-        if(personRepository.existsByPhoneAndIdNot(input.phone(), personToBeUpdated.getId()))
+        if(this.personRepository.existsByPhoneAndIdNot(input.phone(), personToBeUpdated.getId()))
             throw new ConflictException("Telefone já vinculado a um usuário");
 
-        if(personRepository.existsByEmailAndIdNot(input.email(), personToBeUpdated.getId()))
+        if(this.personRepository.existsByEmailAndIdNot(input.email(), personToBeUpdated.getId()))
             throw new ConflictException("Email já vinculado a um usuário");
 
         ArrayList<String> warningList = new ArrayList<>();
@@ -82,7 +82,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
         }
 
         personToBeUpdated.setUpdatedAt(LocalDateTime.now());
-        personRepository.save(personToBeUpdated);
+        this.personRepository.save(personToBeUpdated);
 
         return new PersonUpdateUseCaseOutputDto(true, warningList);
     }

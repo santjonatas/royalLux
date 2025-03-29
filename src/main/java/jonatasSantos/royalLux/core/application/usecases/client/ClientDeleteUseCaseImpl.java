@@ -17,10 +17,10 @@ public class ClientDeleteUseCaseImpl implements ClientDeleteUseCase {
 
     @Override
     public ClientDeleteUseCaseOutputDto execute(Integer id) {
-        var user = this.clientRepository.findById(id.toString())
+        var client = this.clientRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente inexistente"));
 
-        this.clientRepository.delete(user);
+        this.clientRepository.delete(client);
 
         return new ClientDeleteUseCaseOutputDto(true);
     }

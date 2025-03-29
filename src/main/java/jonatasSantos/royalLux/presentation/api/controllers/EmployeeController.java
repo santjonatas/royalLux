@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientCreateUseCaseInputDto;
@@ -35,6 +36,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeUpdateUseCase employeeUpdateUseCase;
+
+    @Autowired
+    private EmployeeDeleteUseCase employeeDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -86,6 +90,20 @@ public class EmployeeController {
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withSelfRel());
 //        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withRel("delete"));
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteEmployee(@RequestParam(required = true) Integer id){
+        var response = employeeDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
+
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withRel("update"));
+//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);
     }

@@ -43,12 +43,12 @@ public class ClientCreateUseCaseImpl implements ClientCreateUseCase {
                 throw new UnauthorizedException("Você não possui autorização para criar outro cliente");
         }
 
-        if(clientRepository.existsByUserId(existingUser.getId()))
+        if(this.clientRepository.existsByUserId(existingUser.getId()))
             throw new ConflictException("Cliente já vinculado a um usuário");
 
         Client client = new Client(existingUser);
 
-        clientRepository.save(client);
+        this.clientRepository.save(client);
 
         return new ClientCreateUseCaseOutputDto(client.getId());
     }

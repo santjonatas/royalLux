@@ -50,7 +50,7 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
             predicates.add(cb.equal(root.get("id"), input.id()));
 
         if (input.userId() != null) {
-            var userFound = userRepository.findById(input.userId().toString()).orElse(null);
+            var userFound = this.userRepository.findById(input.userId().toString()).orElse(null);
 
             if (userFound != null) {
                 predicates.add(cb.equal(root.get("user"), userFound));
