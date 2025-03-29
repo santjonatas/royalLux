@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
+import jonatasSantos.royalLux.core.domain.enums.AddressStates;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +33,7 @@ public class Address{
     protected String city;
 
     @Column(name = "state", length = 2)
-    protected String state;
+    protected AddressStates state;
 
     @Column(name = "cep", length = 8)
     protected String cep;
@@ -127,17 +128,11 @@ public class Address{
         this.city = city;
     }
 
-    public String getState() {
+    public AddressStates getState() {
         return this.state;
     }
 
-    public void setState(String state) {
-        if (state.length() != 2){
-            throw new IllegalArgumentException("UF deve conter 2 caracteres");
-        }
-
-        this.state = state;
-    }
+    public void setState(AddressStates state) { this.state = state; }
 
     public String getCep() {
         return this.cep;
