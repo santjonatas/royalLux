@@ -2,9 +2,10 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.address.AddressUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.AddressStates;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
@@ -29,6 +30,9 @@ public class AddressController {
 
     @Autowired
     private AddressGetUseCase addressGetUseCase;
+
+    @Autowired
+    private AddressUpdateUseCase addressUpdateUseCase;
 
     @PostMapping
     public ResponseEntity createAddress(@RequestBody AddressCreateUseCaseInputDto body){
@@ -77,5 +81,18 @@ public class AddressController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @PatchMapping
+    public ResponseEntity updateAddress(
+            @RequestParam(required = true) Integer id,
+            @RequestBody AddressUpdateUseCaseInputDto body){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = addressUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
 
 }

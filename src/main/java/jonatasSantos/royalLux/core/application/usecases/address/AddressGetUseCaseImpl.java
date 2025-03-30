@@ -13,9 +13,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressGetUseCaseOutputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
-import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;

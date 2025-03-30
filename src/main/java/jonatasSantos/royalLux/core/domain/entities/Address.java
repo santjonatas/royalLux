@@ -2,7 +2,6 @@ package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
 import jonatasSantos.royalLux.core.domain.enums.AddressStates;
-
 import java.time.LocalDateTime;
 
 @Entity
