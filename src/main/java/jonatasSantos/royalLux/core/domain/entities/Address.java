@@ -51,7 +51,7 @@ public class Address{
     @Column(name = "state", length = 2)
     protected AddressStates state;
 
-    @Column(name = "cep", length = 8)
+    @Column(name = "cep", length = 9)
     protected String cep;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
@@ -155,8 +155,12 @@ public class Address{
     }
 
     public void setCep(String cep) {
-        if (cep.length() != 8){
-            throw new IllegalArgumentException("CEP deve conter 8 caracteres");
+        if (cep.length() != 9){
+            throw new IllegalArgumentException("CEP deve conter 9 caracteres");
+        }
+
+        if (!cep.matches("\\d{5}-\\d{3}")) {
+            throw new IllegalArgumentException("CEP com formato inválido.");
         }
 
         this.cep = cep;
