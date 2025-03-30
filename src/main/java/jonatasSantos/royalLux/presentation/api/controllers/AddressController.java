@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseInputDto;
@@ -33,6 +34,9 @@ public class AddressController {
 
     @Autowired
     private AddressUpdateUseCase addressUpdateUseCase;
+
+    @Autowired
+    private AddressDeleteUseCase addressDeleteUseCase;
 
     @PostMapping
     public ResponseEntity createAddress(@RequestBody AddressCreateUseCaseInputDto body){
@@ -94,5 +98,14 @@ public class AddressController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    public ResponseEntity deleteAddress(@RequestParam(required = true) Integer id){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        var response = addressDeleteUseCase.execute(user, id);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
