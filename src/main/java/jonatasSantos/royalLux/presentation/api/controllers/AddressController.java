@@ -41,11 +41,11 @@ public class AddressController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = addressCreateUseCase.execute(user, body);
-        var responsePresenter = new ResponsePresenter(response);
+        var responsePresenter = new ResponsePresenter(addressCreateUseCase.execute(user, body));
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
@@ -76,7 +76,7 @@ public class AddressController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
@@ -109,7 +109,7 @@ public class AddressController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("update"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);
