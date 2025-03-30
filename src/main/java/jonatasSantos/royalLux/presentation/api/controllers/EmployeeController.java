@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 

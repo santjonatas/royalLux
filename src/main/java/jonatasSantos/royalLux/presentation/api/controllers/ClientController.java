@@ -18,7 +18,7 @@ import javax.naming.AuthenticationException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
 

@@ -18,7 +18,7 @@ import javax.naming.AuthenticationException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 

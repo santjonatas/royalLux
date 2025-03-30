@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/api/persons")
 @RequiredArgsConstructor
 public class PersonController {
 

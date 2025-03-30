@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/addresses")
+@RequestMapping("/api/addresses")
 @RequiredArgsConstructor
 public class AddressController {
 
