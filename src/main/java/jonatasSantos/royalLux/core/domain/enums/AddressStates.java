@@ -1,5 +1,8 @@
 package jonatasSantos.royalLux.core.domain.enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum AddressStates {
     AC("Acre"),
     AL("Alagoas"),
@@ -30,6 +33,8 @@ public enum AddressStates {
     TO("Tocantins");
 
     private final String name;
+
+    public static final List<AddressStates> STATES = Arrays.asList(AddressStates.values());
 
     AddressStates(String name) {
         this.name = name;

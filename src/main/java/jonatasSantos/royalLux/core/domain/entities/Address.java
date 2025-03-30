@@ -8,12 +8,28 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "addresses")
 public class Address{
+    public Address(User user, String street, String houseNumber, String complement, String neighborhood, String city, AddressStates state, String cep) {
+        this.user = user;
+        this.setStreet(street);
+        this.setHouseNumber(houseNumber);
+        this.setComplement(complement);
+        this.setNeighborhood(neighborhood);
+        this.setCity(city);
+        this.setState(state);
+        this.setCep(cep);
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Address() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected int id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false, updatable = false)
     protected User user;
 
