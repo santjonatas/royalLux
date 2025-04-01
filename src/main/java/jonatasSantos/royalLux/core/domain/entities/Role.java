@@ -1,15 +1,46 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
+import jakarta.persistence.*;
 import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class Role extends Base {
-    protected String Name;
-    protected String Detail;
+@Entity
+@Table(name = "roles")
+public class Role{
+    public Role(String name, String detail) {
+        this.name = name;
+        this.detail = detail;
+    }
+
+    public Role() {
+
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected int id;
+
+    @Column(name = "name", nullable = false, length = 50)
+    protected String name;
+
+    @Column(name = "detail", length = 3000)
+    protected String detail;
+
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @Column(name = "updatedAt")
+    protected LocalDateTime updatedAt;
+
+    public int getId() { return this.id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
-        return Name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -19,17 +50,25 @@ public class Role extends Base {
         if (name.length() > 50){
             throw new IllegalArgumentException("Nome do cargo não deve conter mais que 50 caracteres");
         }
-        Name = name;
+        this.name = name;
     }
 
     public String getDetail() {
-        return Detail;
+        return this.detail;
     }
 
     public void setDetail(String detail) {
-        if (detail.length() > 255){
-            throw new IllegalArgumentException("Detalhes não deve conter mais que 255 caracteres");
+        if (detail.length() > 3000){
+            throw new IllegalArgumentException("Detalhes não deve conter mais que 3000 caracteres");
         }
-        Detail = detail;
+        this.detail = detail;
     }
+
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
