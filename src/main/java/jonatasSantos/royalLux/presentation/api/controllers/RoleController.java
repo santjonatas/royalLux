@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
@@ -35,6 +36,9 @@ public class RoleController {
 
     @Autowired
     private RoleUpdateUseCase roleUpdateUseCase;
+
+    @Autowired
+    private RoleDeleteUseCase roleDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -79,9 +83,16 @@ public class RoleController {
     public ResponseEntity updateRole(
             @RequestParam(required = true) Integer id,
             @RequestBody RoleUpdateUseCaseInputDto body){
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var response = roleUpdateUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
 
-        var response = roleUpdateUseCase.execute(user, id, body);
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteRole(@RequestParam(required = true) Integer id){
+        var response = roleDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);

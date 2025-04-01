@@ -7,7 +7,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleUpdat
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,10 +23,7 @@ public class RoleUpdateUseCaseImpl implements RoleUpdateUseCase {
     }
 
     @Override
-    public RoleUpdateUseCaseOutputDto execute(User user, Integer roleId, RoleUpdateUseCaseInputDto input) {
-        var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
-                .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
-
+    public RoleUpdateUseCaseOutputDto execute(Integer roleId, RoleUpdateUseCaseInputDto input) {
         var roleToBeUpdated = this.roleRepository.findById(String.valueOf(roleId))
                 .orElseThrow(() -> new EntityNotFoundException("Função é inexistente"));
 
