@@ -2,10 +2,13 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,9 @@ public class RoleController {
 
     @Autowired
     private RoleGetUseCase roleGetUseCase;
+
+    @Autowired
+    private RoleUpdateUseCase roleUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -63,6 +69,19 @@ public class RoleController {
 
         var input = new RoleGetUseCaseInputDto(id, name, detail);
         var response = roleGetUseCase.execute(user, input, page, size);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity updateRole(
+            @RequestParam(required = true) Integer id,
+            @RequestBody RoleUpdateUseCaseInputDto body){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = roleUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);

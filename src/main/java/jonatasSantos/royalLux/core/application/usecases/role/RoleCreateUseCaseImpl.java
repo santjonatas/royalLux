@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Role;
@@ -25,6 +26,9 @@ public class RoleCreateUseCaseImpl implements RoleCreateUseCase {
     public RoleCreateUseCaseOutputDto execute(User user, RoleCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
+
+        if(this.roleRepository.existsByName(input.name()))
+            throw new ConflictException("Função já existente com este nome");
 
         Role role = new Role(input.name(), input.detail());
         this.roleRepository.save(role);
