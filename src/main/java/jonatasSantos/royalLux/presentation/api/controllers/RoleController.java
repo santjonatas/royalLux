@@ -1,8 +1,11 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +14,10 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -25,6 +26,9 @@ public class RoleController {
 
     @Autowired
     private RoleCreateUseCase roleCreateUseCase;
+
+    @Autowired
+    private RoleGetUseCase roleGetUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -48,5 +52,19 @@ public class RoleController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @GetMapping
+    public ResponseEntity getRoles(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String detail,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        var input = new RoleGetUseCaseInputDto(id, name, detail);
+        var response = roleGetUseCase.execute(user, input, page, size);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
