@@ -12,6 +12,7 @@ public class Role{
     public Role(String name, String detail) {
         this.name = name;
         this.detail = detail;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Role() {
