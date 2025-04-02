@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.employeerole.EmployeeRoleCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.employeerole.EmployeeRoleDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employeerole.EmployeeRoleGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.employeerole.EmployeeRoleCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employeerole.EmployeeRoleGetUseCaseInputDto;
@@ -28,6 +29,9 @@ public class EmployeeRoleController {
 
     @Autowired
     private EmployeeRoleGetUseCase employeeRoleGetUseCase;
+
+    @Autowired
+    private EmployeeRoleDeleteUseCase employeeRoleDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -70,7 +74,7 @@ public class EmployeeRoleController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteEmployeeRole(@RequestParam(required = true) Integer id){
-        var response = roleDeleteUseCase.execute(id);
+        var response = employeeRoleDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
