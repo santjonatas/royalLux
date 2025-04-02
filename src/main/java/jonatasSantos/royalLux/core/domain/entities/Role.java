@@ -1,9 +1,6 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity

@@ -4,12 +4,9 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.employee.Emplo
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeUpdateUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.client.ClientCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.client.ClientGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.naming.AuthenticationException;
 import java.math.BigDecimal;
 import java.net.URI;

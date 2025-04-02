@@ -4,9 +4,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreat
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleUpdateUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
@@ -19,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api/roles")
