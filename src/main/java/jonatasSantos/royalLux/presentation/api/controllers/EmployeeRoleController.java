@@ -66,4 +66,13 @@ public class EmployeeRoleController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteEmployeeRole(@RequestParam(required = true) Integer id){
+        var response = roleDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
