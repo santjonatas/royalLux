@@ -4,8 +4,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.customerservic
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +58,7 @@ public class CustomerServiceController {
     public ResponseEntity getEmployees(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer createdByUserId,
-            @RequestParam(required = false) Client client,
+            @RequestParam(required = false) Integer clientId,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) LocalDateTime startTime,
             @RequestParam(required = false) LocalDateTime estimatedFinishingTime,
@@ -71,7 +69,7 @@ public class CustomerServiceController {
             @RequestParam(required = false) Integer size) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        var input = new CustomerServiceGetUseCaseInputDto(id, createdByUserId, client, status, startTime, estimatedFinishingTime, finishingTime, totalValue, details);
+        var input = new CustomerServiceGetUseCaseInputDto(id, createdByUserId, clientId, status, startTime, estimatedFinishingTime, finishingTime, totalValue, details);
         var response = customerServiceGetUseCase.execute(user, input, page, size);
         var responsePresenter = new ResponsePresenter(response);
 
