@@ -1,7 +1,7 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
+import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,23 +9,42 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "customerService")
 public class CustomerService{
+    public CustomerService(User createdByUser, Client client, String status, LocalDateTime startTime, LocalDateTime estimatedFinishingTime, LocalDateTime finishingTime, BigDecimal totalValue, String details) {
+        this.createdByUser = createdByUser;
+        this.client = client;
+        this.status = status;
+        this.startTime = startTime;
+        this.estimatedFinishingTime = estimatedFinishingTime;
+        this.finishingTime = finishingTime;
+        this.totalValue = totalValue;
+        this.details = details;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public CustomerService() {
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected int id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "createdByUserId", nullable = false, updatable = false)
+    protected User createdByUser;
+
+    @ManyToOne
     @JoinColumn(name = "clientId", nullable = false, updatable = false)
     protected Client client;
 
-    @Column(name = "status", nullable = false, length = 25)
+    @Column(name = "status", nullable = false, length = 30)
     protected String status;
 
     @Column(name = "startTime", nullable = false)
     protected LocalDateTime startTime;
 
-    @Column(name = "estimatedFinishingTime", nullable = false)
+    @Column(name = "estimatedFinishingTime")
     protected LocalDateTime estimatedFinishingTime;
 
     @Column(name = "finishingTime")
@@ -37,9 +56,6 @@ public class CustomerService{
     @Column(name = "details", length = 750)
     protected String details;
 
-    @Column(name = "completed")
-    protected boolean completed;
-
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
 
@@ -49,6 +65,14 @@ public class CustomerService{
     public int getId() { return this.id; }
 
     public void setId(int id) { this.id = id; }
+
+    public User getCreatedByUser() {
+        return this.createdByUser;
+    }
+
+    public void setCreatedByUser(User createdByUser) {
+        this.createdByUser = createdByUser;
+    }
 
     public Client getClient() {
         return client;
@@ -66,8 +90,8 @@ public class CustomerService{
         if (status.isEmpty()){
             throw new IllegalArgumentException("Status não pode ser vazio");
         }
-        if (status.length() > 20){
-            throw new IllegalArgumentException("Status não deve conter mais que 20 caracteres");
+        if (status.length() > 30){
+            throw new IllegalArgumentException("Status não deve conter mais que 30 caracteres");
         }
 
         this.status = status;
@@ -115,14 +139,6 @@ public class CustomerService{
         }
 
         this.details = details;
-    }
-
-    public boolean isCompleted() {
-        return this.completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 
     public LocalDateTime getCreatedAt() { return this.createdAt; }
