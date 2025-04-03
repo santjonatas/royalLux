@@ -1,7 +1,9 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceCreateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -19,6 +21,8 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
 
+//import static jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle.title;
+
 @RestController
 @RequestMapping("/api/customerService")
 @RequiredArgsConstructor
@@ -26,6 +30,9 @@ public class CustomerServiceController {
 
     @Autowired
     private CustomerServiceCreateUseCase customerServiceCreateUseCase;
+
+    @Autowired
+    private CustomerServiceGetUseCase customerServiceGetUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -49,26 +56,26 @@ public class CustomerServiceController {
         return ResponseEntity.ok(responsePresenter);
     }
 
-//    @GetMapping
-//    public ResponseEntity getEmployees(
-//            @RequestParam(required = false) Integer id,
-//            @RequestParam(required = false) Integer createdByUserId,
-//            @RequestParam(required = false) Client client,
-//            @RequestParam(required = false) String status,
-//            @RequestParam(required = false) LocalDateTime startTime,
-//            @RequestParam(required = false) LocalDateTime estimatedFinishingTime,
-//            @RequestParam(required = false) LocalDateTime finishingTime,
-//            @RequestParam(required = false) BigDecimal totalValue,
-//            @RequestParam(required = false) String details,
-//            @RequestParam(required = false) Integer page,
-//            @RequestParam(required = false) Integer size) throws AuthenticationException {
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        var input = new EmployeeGetUseCaseInputDto(id, userId, title, salary);
-//        var response = employeeGetUseCase.execute(user, input, page, size);
-//        var responsePresenter = new ResponsePresenter(response);
-//
-//        return ResponseEntity.ok(responsePresenter);
-//    }
+    @GetMapping
+    public ResponseEntity getEmployees(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) Integer createdByUserId,
+            @RequestParam(required = false) Client client,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) LocalDateTime startTime,
+            @RequestParam(required = false) LocalDateTime estimatedFinishingTime,
+            @RequestParam(required = false) LocalDateTime finishingTime,
+            @RequestParam(required = false) BigDecimal totalValue,
+            @RequestParam(required = false) String details,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) throws AuthenticationException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var input = new CustomerServiceGetUseCaseInputDto(id, createdByUserId, client, status, startTime, estimatedFinishingTime, finishingTime, totalValue, details);
+        var response = customerServiceGetUseCase.execute(user, input, page, size);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 
 }
