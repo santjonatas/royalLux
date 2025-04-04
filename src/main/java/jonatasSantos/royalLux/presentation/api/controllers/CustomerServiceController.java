@@ -2,8 +2,11 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,9 @@ public class CustomerServiceController {
     @Autowired
     private CustomerServiceGetUseCase customerServiceGetUseCase;
 
+    @Autowired
+    private CustomerServiceUpdateUseCase customerServiceUpdateUseCase;
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public ResponseEntity createCustomerService(@RequestBody CustomerServiceCreateUseCaseInputDto body) throws AuthenticationException {
@@ -55,7 +61,7 @@ public class CustomerServiceController {
     }
 
     @GetMapping
-    public ResponseEntity getEmployees(
+    public ResponseEntity getCustomerService(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer createdByUserId,
             @RequestParam(required = false) Integer clientId,
@@ -107,5 +113,20 @@ public class CustomerServiceController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateCustomerService(
+            @RequestParam(required = true) Integer id,
+            @RequestBody CustomerServiceUpdateUseCaseInputDto body) throws AuthenticationException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = customerServiceUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+
 
 }
