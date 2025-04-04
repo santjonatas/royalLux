@@ -5,5 +5,5 @@ import jonatasSantos.royalLux.core.application.models.dtos.customerservice.Custo
 import jonatasSantos.royalLux.core.domain.entities.User;
 
 public interface CustomerServiceUpdateUseCase {
-    public CustomerServiceUpdateUseCaseOutputDto execute(User user, CustomerServiceUpdateUseCaseInputDto input);
+    public CustomerServiceUpdateUseCaseOutputDto execute(User user, Integer customerServiceId, CustomerServiceUpdateUseCaseInputDto input);
 }
