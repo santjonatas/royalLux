@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceCreateUseCaseInputDto;
@@ -37,6 +38,9 @@ public class CustomerServiceController {
 
     @Autowired
     private CustomerServiceUpdateUseCase customerServiceUpdateUseCase;
+
+    @Autowired
+    private CustomerServiceDeleteUseCase customerServiceDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -129,5 +133,12 @@ public class CustomerServiceController {
     }
 
 
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteCustomerService(@RequestParam(required = true) Integer id) throws AuthenticationException {
+        var response = customerServiceDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
 
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
