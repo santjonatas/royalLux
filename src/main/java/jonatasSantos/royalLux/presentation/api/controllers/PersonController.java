@@ -45,12 +45,12 @@ public class PersonController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(response.personId(), null, null, null, null, null, null, null, null)
+                WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(response.personId(), null, null, null, null, null, null, null, null, null)
         ).toUri();
 
         return ResponseEntity.created(location).body(responsePresenter);
@@ -66,15 +66,16 @@ public class PersonController {
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size){
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new PersonGetUseCaseInputDto(id, userId, name, dateBirth, cpf, phone, email);
-        var response = personGetUseCase.execute(user, input, page, size);
+        var response = personGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withRel("delete"));
 
@@ -91,7 +92,7 @@ public class PersonController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withRel("delete"));
 
@@ -105,7 +106,7 @@ public class PersonController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).getPersons(null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).updatePerson(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).deletePerson(null)).withSelfRel());
 

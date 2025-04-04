@@ -33,7 +33,7 @@ public class RoleGetUseCaseImpl implements RoleGetUseCase {
     }
 
     @Override
-    public List<RoleGetUseCaseOutputDto> execute(User user, RoleGetUseCaseInputDto input, Integer page, Integer size) {
+    public List<RoleGetUseCaseOutputDto> execute(User user, RoleGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -53,7 +53,12 @@ public class RoleGetUseCaseImpl implements RoleGetUseCase {
             predicates.add(cb.like(root.get("detail"), "%" + input.detail() + "%"));
 
         query.where(predicates.toArray(new Predicate[0]));
-        query.orderBy(cb.desc(root.get("id")));
+
+        if (Boolean.TRUE.equals(ascending)) {
+            query.orderBy(cb.asc(root.get("id")));
+        } else {
+            query.orderBy(cb.desc(root.get("id")));
+        }
 
         TypedQuery<Role> typedQuery = entityManager.createQuery(query);
 

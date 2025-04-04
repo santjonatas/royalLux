@@ -36,7 +36,7 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
     }
 
     @Override
-    public List<CustomerServiceGetUseCaseOutputDto> execute(User user, CustomerServiceGetUseCaseInputDto input, Integer page, Integer size) {
+    public List<CustomerServiceGetUseCaseOutputDto> execute(User user, CustomerServiceGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -178,7 +178,12 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
             predicates.add(cb.like(root.get("details"), "%" + input.details() + "%"));
 
         query.where(predicates.toArray(new Predicate[0]));
-        query.orderBy(cb.desc(root.get("id")));
+
+        if (Boolean.TRUE.equals(ascending)) {
+            query.orderBy(cb.asc(root.get("id")));
+        } else {
+            query.orderBy(cb.desc(root.get("id")));
+        }
 
         TypedQuery<CustomerService> typedQuery = entityManager.createQuery(query);
 

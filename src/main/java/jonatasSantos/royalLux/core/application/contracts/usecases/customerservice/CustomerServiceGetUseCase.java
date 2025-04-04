@@ -6,5 +6,5 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import java.util.List;
 
 public interface CustomerServiceGetUseCase {
-    public List<CustomerServiceGetUseCaseOutputDto> execute(User user, CustomerServiceGetUseCaseInputDto input, Integer page, Integer size);
+    public List<CustomerServiceGetUseCaseOutputDto> execute(User user, CustomerServiceGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending);
 }

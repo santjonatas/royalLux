@@ -44,12 +44,12 @@ public class AddressController {
         var responsePresenter = new ResponsePresenter(addressCreateUseCase.execute(user, body));
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(response.addressId(), null, null, null, null, null, null, null, null, null, null)
+                WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(response.addressId(), null, null, null, null, null, null, null, null, null, null, null)
         ).toUri();
 
         return ResponseEntity.created(location).body(responsePresenter);
@@ -67,15 +67,16 @@ public class AddressController {
             @RequestParam(required = false) AddressStates state,
             @RequestParam(required = false) String cep,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size){
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new AddressGetUseCaseInputDto(id, userId, street, houseNumber, complement, neighborhood, city, state, cep);
-        var response = addressGetUseCase.execute(user, input, page, size);
+        var response = addressGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withRel("delete"));
 
@@ -92,7 +93,7 @@ public class AddressController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withRel("delete"));
 
@@ -108,7 +109,7 @@ public class AddressController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).createAddress(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).getAddresses(null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).updateAddress(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AddressController.class).deleteAddress(null)).withSelfRel());
 

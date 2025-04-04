@@ -36,7 +36,7 @@ public class AddressGetUseCaseImpl implements AddressGetUseCase {
     }
 
     @Override
-    public List<AddressGetUseCaseOutputDto> execute(User user, AddressGetUseCaseInputDto input, Integer page, Integer size) {
+    public List<AddressGetUseCaseOutputDto> execute(User user, AddressGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -81,7 +81,12 @@ public class AddressGetUseCaseImpl implements AddressGetUseCase {
             predicates.add(cb.like(root.get("cep"), "%" + input.cep() + "%"));
 
         query.where(predicates.toArray(new Predicate[0]));
-        query.orderBy(cb.desc(root.get("id")));
+
+        if (Boolean.TRUE.equals(ascending)) {
+            query.orderBy(cb.asc(root.get("id")));
+        } else {
+            query.orderBy(cb.desc(root.get("id")));
+        }
 
         TypedQuery<Address> typedQuery = entityManager.createQuery(query);
 

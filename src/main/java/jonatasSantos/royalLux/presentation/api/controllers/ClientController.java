@@ -40,11 +40,11 @@ public class ClientController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).createClient(null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).deleteClient(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(ClientController.class).getClients(response.clientId(), null, null, null)
+                WebMvcLinkBuilder.methodOn(ClientController.class).getClients(response.clientId(), null, null, null, null)
         ).toUri();
 
         return ResponseEntity.created(location).body(responsePresenter);
@@ -55,15 +55,16 @@ public class ClientController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) throws AuthenticationException {
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean ascending) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new ClientGetUseCaseInputDto(id, userId);
-        var response = clientGetUseCase.execute(user, input, page, size);
+        var response = clientGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).createClient(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).deleteClient(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
@@ -76,7 +77,7 @@ public class ClientController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).createClient(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).getClients(null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).deleteClient(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);

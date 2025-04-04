@@ -6,5 +6,5 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import java.util.List;
 
 public interface EmployeeRoleGetUseCase {
-    public List<EmployeeRoleGetUseCaseOutputDto> execute(User user, EmployeeRoleGetUseCaseInputDto input, Integer page, Integer size);
+    public List<EmployeeRoleGetUseCaseOutputDto> execute(User user, EmployeeRoleGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending);
 }

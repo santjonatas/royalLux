@@ -39,11 +39,11 @@ public class EmployeeRoleController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).createEmployeeRole(null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).deleteEmployeeRole(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(response.employeeRoleId(), null, null, null, null)
+                WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(response.employeeRoleId(), null, null, null, null, null)
         ).toUri();
 
         return ResponseEntity.created(location).body(responsePresenter);
@@ -55,15 +55,16 @@ public class EmployeeRoleController {
             @RequestParam(required = false) Integer employeeId,
             @RequestParam(required = false) Integer roleId,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size){
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new EmployeeRoleGetUseCaseInputDto(id, employeeId, roleId);
-        var response = employeeRoleGetUseCase.execute(user, input, page, size);
+        var response = employeeRoleGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).createEmployeeRole(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).deleteEmployeeRole(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
@@ -76,7 +77,7 @@ public class EmployeeRoleController {
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).createEmployeeRole(null)).withRel("post"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).getEmployeesRoles(null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).deleteEmployeeRole(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);

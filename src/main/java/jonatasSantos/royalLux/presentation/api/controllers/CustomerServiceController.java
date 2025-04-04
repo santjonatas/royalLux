@@ -84,7 +84,8 @@ public class CustomerServiceController {
             @RequestParam(required = false) BigDecimal totalValue,
             @RequestParam(required = false) String details,
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) throws AuthenticationException {
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean ascending) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var input = new CustomerServiceGetUseCaseInputDto(id,
@@ -108,7 +109,7 @@ public class CustomerServiceController {
                 finishingTimeMinute,
                 totalValue,
                 details);
-        var response = customerServiceGetUseCase.execute(user, input, page, size);
+        var response = customerServiceGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
