@@ -36,11 +36,11 @@ public class CustomerServiceUpdateUseCaseImpl implements CustomerServiceUpdateUs
         ArrayList<String> warningList = new ArrayList<>();
 
         if(userLogged.getRole().equals(UserRole.EMPLOYEE)
-                && customerServiceToBeUpdated.getStatus().equals(CustomerServiceStatus.FINALIZADO)){
+                && customerServiceToBeUpdated.getStatus().equals(CustomerServiceStatus.FINALIZADO.getDescricao())){
             throw new UnauthorizedException("Você não possui autorização para atualizar um atendimento que já foi finalizado");
         }
 
-        customerServiceToBeUpdated.setStatus(input.status());
+        customerServiceToBeUpdated.setStatus(input.status().getDescricao());
         customerServiceToBeUpdated.setFinishingTime(input.finishingTime());
         customerServiceToBeUpdated.setDetails(input.details());
         customerServiceToBeUpdated.setUpdatedAt(LocalDateTime.now());
