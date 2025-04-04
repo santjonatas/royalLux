@@ -53,9 +53,9 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
             var userFound = userRepository.findById(input.createdByUserId().toString()).orElse(null);
 
             if (userFound != null) {
-                predicates.add(cb.equal(root.get("user"), userFound));
+                predicates.add(cb.equal(root.get("createdByUser"), userFound));
             } else {
-                predicates.add(cb.isNull(root.get("user")));
+                predicates.add(cb.isNull(root.get("createdByUser")));
             }
         }
 
@@ -72,14 +72,104 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
         if (input.status() != null)
             predicates.add(cb.like(root.get("status"), "%" + input.status() + "%"));
 
-        if (input.startTime() != null)
-            predicates.add(cb.like(root.get("startTime"), "%" + input.startTime() + "%"));
+        // startTime
 
-        if (input.estimatedFinishingTime() != null)
-            predicates.add(cb.like(root.get("estimatedFinishingTime"), "%" + input.estimatedFinishingTime() + "%"));
+        if (input.startTimeYear() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("startTime"), cb.literal("YYYY")),
+                    input.startTimeYear().toString()
+            ));
+        }
+        if (input.startTimeMonth() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("startTime"), cb.literal("MM")),
+                    String.format("%02d", input.startTimeMonth())
+            ));
+        }
+        if (input.startTimeDay() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("startTime"), cb.literal("DD")),
+                    String.format("%02d", input.startTimeDay())
+            ));
+        }
+        if (input.startTimeHour() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("startTime"), cb.literal("HH24")),
+                    String.format("%02d", input.startTimeHour())
+            ));
+        }
+        if (input.startTimeMinute() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("startTime"), cb.literal("MI")),
+                    String.format("%02d", input.startTimeMinute())
+            ));
+        }
 
-        if (input.finishingTime() != null)
-            predicates.add(cb.like(root.get("finishingTime"), "%" + input.finishingTime() + "%"));
+        // estimatedFinishingTime
+
+        if (input.estimatedFinishingTimeYear() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("estimatedFinishingTime"), cb.literal("YYYY")),
+                    input.estimatedFinishingTimeYear().toString()
+            ));
+        }
+        if (input.startTimeMonth() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("estimatedFinishingTime"), cb.literal("MM")),
+                    String.format("%02d", input.estimatedFinishingTimeMonth())
+            ));
+        }
+        if (input.estimatedFinishingTimeDay() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("estimatedFinishingTime"), cb.literal("DD")),
+                    String.format("%02d", input.estimatedFinishingTimeDay())
+            ));
+        }
+        if (input.estimatedFinishingTimeHour() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("estimatedFinishingTime"), cb.literal("HH24")),
+                    String.format("%02d", input.estimatedFinishingTimeHour())
+            ));
+        }
+        if (input.estimatedFinishingTimeMinute() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("estimatedFinishingTime"), cb.literal("MI")),
+                    String.format("%02d", input.estimatedFinishingTimeMinute())
+            ));
+        }
+
+        // finishingTime
+
+        if (input.finishingTimeYear() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("finishingTime"), cb.literal("YYYY")),
+                    input.finishingTimeYear().toString()
+            ));
+        }
+        if (input.startTimeMonth() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("finishingTime"), cb.literal("MM")),
+                    String.format("%02d", input.finishingTimeMonth())
+            ));
+        }
+        if (input.finishingTimeDay() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("finishingTime"), cb.literal("DD")),
+                    String.format("%02d", input.finishingTimeDay())
+            ));
+        }
+        if (input.finishingTimeHour() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("finishingTime"), cb.literal("HH24")),
+                    String.format("%02d", input.finishingTimeHour())
+            ));
+        }
+        if (input.finishingTimeMinute() != null) {
+            predicates.add(cb.equal(
+                    cb.function("TO_CHAR", String.class, root.get("finishingTime"), cb.literal("MI")),
+                    String.format("%02d", input.finishingTimeMinute())
+            ));
+        }
 
         if (input.totalValue() != null)
             predicates.add(cb.equal(root.get("totalValue"), input.totalValue()));
