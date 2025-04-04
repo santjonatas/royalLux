@@ -31,7 +31,7 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
     }
 
     @Override
-    public List<UserGetUseCaseOutputDto> execute(User user, UserGetUseCaseInputDto input, Integer page, Integer size) {
+    public List<UserGetUseCaseOutputDto> execute(User user, UserGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
@@ -54,7 +54,12 @@ public class UserGetUseCaseImpl implements UserGetUseCase {
             predicates.add(cb.equal(root.get("active"), input.active()));
 
         query.where(predicates.toArray(new Predicate[0]));
-        query.orderBy(cb.desc(root.get("id")));
+
+        if (Boolean.TRUE.equals(ascending)) {
+            query.orderBy(cb.asc(root.get("id")));
+        } else {
+            query.orderBy(cb.desc(root.get("id")));
+        }
 
         TypedQuery<User> typedQuery = entityManager.createQuery(query);
 
