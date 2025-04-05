@@ -10,7 +10,6 @@ import jonatasSantos.royalLux.core.application.models.dtos.customerservice.Custo
 import jonatasSantos.royalLux.core.domain.entities.CustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 
 @Service

@@ -7,7 +7,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.customerservic
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.naming.AuthenticationException;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDateTime;
-
-//import static jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle.title;
 
 @RestController
 @RequestMapping("/api/customerService")
@@ -139,7 +134,6 @@ public class CustomerServiceController {
 
         return ResponseEntity.ok(responsePresenter);
     }
-
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
