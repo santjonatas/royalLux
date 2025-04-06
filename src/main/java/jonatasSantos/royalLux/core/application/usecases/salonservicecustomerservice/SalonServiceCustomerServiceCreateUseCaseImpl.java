@@ -44,6 +44,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
 
         customerService.incrementTotalValue(salonService.getValue());
 
+        customerService.incrementEstimatedFinishingTime(salonService.getEstimatedTime());
 
         SalonServiceCustomerService salonServiceCustomerService = new SalonServiceCustomerService(
                 customerService,

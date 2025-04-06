@@ -5,6 +5,7 @@ import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "customerService")
@@ -111,6 +112,15 @@ public class CustomerService{
 
     public void setEstimatedFinishingTime(LocalDateTime estimatedFinishingTime) {
         this.estimatedFinishingTime = estimatedFinishingTime;
+    }
+
+    public void incrementEstimatedFinishingTime(LocalTime estimatedTime){
+        if(this.estimatedFinishingTime == null)
+            this.estimatedFinishingTime = this.startTime;
+
+        this.estimatedFinishingTime = this.estimatedFinishingTime
+                .plusHours(estimatedTime.getHour())
+                .plusMinutes(estimatedTime.getMinute());
     }
 
     public LocalDateTime getFinishingTime() {
