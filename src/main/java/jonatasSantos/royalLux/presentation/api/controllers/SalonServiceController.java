@@ -4,13 +4,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +32,9 @@ public class SalonServiceController {
 
     @Autowired
     private SalonServiceGetUseCase salonServiceGetUseCase;
+
+    @Autowired
+    private SalonServiceUpdateUseCase salonServiceUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -75,5 +81,17 @@ public class SalonServiceController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity updateSalonService(
+            @RequestParam(required = true) Integer id,
+            @RequestBody SalonServiceUpdateUseCaseInputDto body){
+        var response = salonServiceUpdateUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
 
 }
