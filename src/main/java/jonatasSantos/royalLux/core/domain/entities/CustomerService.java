@@ -129,6 +129,10 @@ public class CustomerService{
         this.totalValue = totalValue;
     }
 
+    public void incrementTotalValue(BigDecimal value){
+        this.totalValue = this.totalValue.add(value);
+    }
+
     public String getDetails() {
         return this.details;
     }
