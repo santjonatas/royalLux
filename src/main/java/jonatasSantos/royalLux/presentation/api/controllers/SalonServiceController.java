@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceCreateUseCaseInputDto;
@@ -35,6 +36,9 @@ public class SalonServiceController {
 
     @Autowired
     private SalonServiceUpdateUseCase salonServiceUpdateUseCase;
+
+    @Autowired
+    private SalonServiceDeleteUseCase salonServiceDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -93,5 +97,12 @@ public class SalonServiceController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteSalonService(@RequestParam(required = true) Integer id){
+        var response = salonServiceDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
 
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
