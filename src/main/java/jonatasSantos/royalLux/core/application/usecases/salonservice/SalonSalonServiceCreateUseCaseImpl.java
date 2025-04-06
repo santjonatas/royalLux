@@ -1,12 +1,12 @@
-package jonatasSantos.royalLux.core.application.usecases.service;
+package jonatasSantos.royalLux.core.application.usecases.salonservice;
 
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
-import jonatasSantos.royalLux.core.application.contracts.usecases.service.SalonServiceCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceCreateUseCase;
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
-import jonatasSantos.royalLux.core.application.models.dtos.service.SalonServiceCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.service.SalonServiceCreateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceCreateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;

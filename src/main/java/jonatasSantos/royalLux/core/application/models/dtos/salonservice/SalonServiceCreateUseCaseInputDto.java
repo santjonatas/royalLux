@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.application.models.dtos.service;
+package jonatasSantos.royalLux.core.application.models.dtos.salonservice;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
