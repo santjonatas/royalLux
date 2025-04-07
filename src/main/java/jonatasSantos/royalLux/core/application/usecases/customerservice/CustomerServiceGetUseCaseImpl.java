@@ -16,6 +16,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.customerservice.Custo
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.CustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -196,6 +197,10 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
         }
 
         var customerService = typedQuery.getResultList();
+
+        if(userLogged.getRole().equals(UserRole.CLIENT)){
+            customerService = customerService.stream().filter(customerServiceFound -> customerServiceFound.getClient().getUser().getId() == userLogged.getId()).toList();
+        }
 
         return customerService.stream()
                 .map(customerServiceFound -> new CustomerServiceGetUseCaseOutputDto(
