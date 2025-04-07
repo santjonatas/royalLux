@@ -108,20 +108,18 @@ public class SalonServiceCustomerServiceGetUseCaseImpl implements SalonServiceCu
 
         var salonServicesCustomerService = typedQuery.getResultList();
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)){
-            if (userLogged.getRole().equals(UserRole.CLIENT)) {
-                salonServicesCustomerService = salonServicesCustomerService.stream()
-                        .filter(salonServicesCustomerServiceFound -> {
-                            var customerServiceOptional = this.customerServiceRepository
-                                    .findById(String.valueOf(salonServicesCustomerServiceFound.getCustomerService().getId()));
+        if (userLogged.getRole().equals(UserRole.CLIENT)) {
+            salonServicesCustomerService = salonServicesCustomerService.stream()
+                    .filter(salonServicesCustomerServiceFound -> {
+                        var customerServiceOptional = this.customerServiceRepository
+                                .findById(String.valueOf(salonServicesCustomerServiceFound.getCustomerService().getId()));
 
-                            return customerServiceOptional
-                                    .map(customerService ->
-                                            customerService.getClient().getUser().getId() == userLogged.getId()
-                                    ).orElse(false);
-                        })
-                        .toList();
-            }
+                        return customerServiceOptional
+                                .map(customerService ->
+                                        customerService.getClient().getUser().getId() == userLogged.getId()
+                                ).orElse(false);
+                    })
+                    .toList();
         }
 
         return salonServicesCustomerService.stream()
