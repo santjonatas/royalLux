@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCase;
+import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,9 @@ public class SalonServiceCustomerServiceController {
 
     @Autowired
     private SalonServiceCustomerServiceGetUseCase salonServiceCustomerServiceGetUseCase;
+
+    @Autowired
+    private SalonServiceCustomerServiceUpdateUseCase salonServiceCustomerServiceUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -75,5 +81,16 @@ public class SalonServiceCustomerServiceController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateSalonServiceCustomerService(
+            @RequestParam(required = true) Integer id,
+            @RequestBody SalonServiceCustomerServiceUpdateUseCaseInputDto body) throws AuthenticationException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        var response = salonServiceCustomerServiceUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
