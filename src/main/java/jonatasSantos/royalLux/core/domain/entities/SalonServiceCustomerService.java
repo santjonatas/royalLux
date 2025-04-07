@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "salonServicesCustomerService")
 public class SalonServiceCustomerService {
 
-    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDateTime startTime, LocalDateTime finishingTime, boolean completed) {
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDateTime startTime, LocalDateTime finishingTime, Boolean completed) {
         this.customerService = customerService;
         this.salonService = salonService;
         this.employee = employee;
@@ -47,7 +47,7 @@ public class SalonServiceCustomerService {
     protected LocalDateTime finishingTime;
 
     @Column(name = "completed", nullable = false)
-    protected boolean completed;
+    protected Boolean completed;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
@@ -99,11 +99,11 @@ public class SalonServiceCustomerService {
         this.finishingTime = finishingTime;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return this.completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 

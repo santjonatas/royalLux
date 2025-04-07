@@ -52,9 +52,6 @@ public class SalonServiceGetUseCaseImpl implements SalonServiceGetUseCase {
         if (input.description() != null)
             predicates.add(cb.like(root.get("description"), "%" + input.description() + "%"));
 
-//        if (input.estimatedTime() != null)
-//            predicates.add(cb.like(root.get("estimatedTime"), "%" + input.estimatedTime() + "%"));
-
         if (input.estimatedTime() != null)
             predicates.add(cb.equal(root.get("estimatedTime"), input.estimatedTime()));
 
