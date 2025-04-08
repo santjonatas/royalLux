@@ -5,17 +5,17 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "materialsServices")
-public class MaterialService {
+@Table(name = "materialsSalonServices")
+public class MaterialSalonService {
 
-    public MaterialService(SalonService salonService, Material material, Integer quantityMaterial) {
+    public MaterialSalonService(SalonService salonService, Material material, Integer quantityMaterial) {
         this.setSalonService(salonService);
         this.setMaterial(material);
         this.setQuantityMaterial(quantityMaterial);
         this.createdAt = LocalDateTime.now();
     }
 
-    public MaterialService() {
+    public MaterialSalonService() {
 
     }
 
