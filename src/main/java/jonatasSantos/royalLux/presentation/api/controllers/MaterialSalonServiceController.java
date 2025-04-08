@@ -90,9 +90,11 @@ public class MaterialSalonServiceController {
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public ResponseEntity deleteMaterialSalonService(@RequestParam(required = true) Integer id){
-        var response = materialSalonServiceDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialSalonServiceDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
