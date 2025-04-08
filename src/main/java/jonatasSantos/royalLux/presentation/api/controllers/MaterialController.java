@@ -97,7 +97,7 @@ public class MaterialController {
         return ResponseEntity.ok(responsePresenter);
     }
 
-    @PatchMapping
+    @PatchMapping("/incrementQuantity")
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public ResponseEntity incrementQuantityMaterial(
             @RequestParam(required = true) Integer id,

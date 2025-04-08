@@ -14,7 +14,7 @@ public class Material {
         this.setName(name);
         this.setDescription(description);
         this.value = value;
-        this.quantity = quantity;
+        this.setQuantity(quantity);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -58,12 +58,11 @@ public class Material {
     }
 
     public void setName(String name) {
-        if (name.isEmpty()){
+        if (name.isEmpty())
             throw new IllegalArgumentException("Nome do material não pode ser vazio");
-        }
-        if (name.length() > 50){
+
+        if (name.length() > 50)
             throw new IllegalArgumentException("Nome do material não deve conter mais que 50 caracteres");
-        }
 
         this.name = name;
     }
@@ -73,9 +72,8 @@ public class Material {
     }
 
     public void setDescription(String description) {
-        if (description.length() > 3000){
+        if (description.length() > 3000)
             throw new IllegalArgumentException("Descrição não deve conter mais que 3000 caracteres");
-        }
 
         this.description = description;
     }
@@ -93,6 +91,9 @@ public class Material {
     }
 
     public void setQuantity(Integer quantity) {
+        if(quantity == null)
+            throw new IllegalArgumentException("Quantidade não pode ser nula");
+
         this.quantity = quantity;
     }
 
