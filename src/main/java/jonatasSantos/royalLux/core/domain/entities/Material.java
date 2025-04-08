@@ -36,7 +36,7 @@ public class Material {
     @Column(name = "value")
     protected BigDecimal value;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     protected Integer quantity;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
@@ -94,6 +94,10 @@ public class Material {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public void incrementQuantity(Integer quantity){
+        this.quantity += quantity;
     }
 
     public LocalDateTime getCreatedAt() {
