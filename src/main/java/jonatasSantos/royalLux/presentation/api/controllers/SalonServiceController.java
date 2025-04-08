@@ -51,7 +51,7 @@ public class SalonServiceController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).createSalonService(null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).getSalonService(null, null, null, null, null, null, null, null)).withRel("get"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("put"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).deleteSalonService(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
@@ -84,13 +84,13 @@ public class SalonServiceController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).createSalonService(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).getSalonService(null, null, null, null, null, null, null, null)).withSelfRel());
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("put"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).deleteSalonService(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
     }
 
-    @PatchMapping
+    @PutMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity updateSalonService(
             @RequestParam(required = true) Integer id,
@@ -114,7 +114,7 @@ public class SalonServiceController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).createSalonService(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).getSalonService(null, null, null, null, null, null, null, null)).withRel("get"));
-        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).updateSalonService(null, null)).withRel("put"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).deleteSalonService(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);

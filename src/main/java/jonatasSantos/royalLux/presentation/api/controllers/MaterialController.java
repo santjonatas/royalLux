@@ -7,7 +7,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.material.Mater
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
