@@ -15,7 +15,7 @@ public class User implements UserDetails{
 
     public User(String username, UserRole role, boolean active) {
         this.setUsername(username);
-        this.role = role;
+        this.setRole(role);
         this.active = active;
         this.createdAt = LocalDateTime.now();
     }
@@ -59,6 +59,9 @@ public class User implements UserDetails{
     }
 
     public void setUsername(String username) {
+        if(username == null)
+            throw new IllegalArgumentException("Username não pode ser nulo");
+
         if (username.isEmpty())
             throw new IllegalArgumentException("Username não pode ser vazio");
 
@@ -79,6 +82,9 @@ public class User implements UserDetails{
     }
 
     public void setPassword(String password) {
+        if(password == null)
+            throw new IllegalArgumentException("Senha não pode ser nula");
+
         if (password.isEmpty())
             throw new IllegalArgumentException("Senha não pode ser vazia");
 
@@ -118,7 +124,12 @@ public class User implements UserDetails{
 
     public UserRole getRole() { return this.role; }
 
-    public void setRole(UserRole role) { this.role = role; }
+    public void setRole(UserRole role) {
+        if(role == null)
+            throw new IllegalArgumentException("Permissão não pode ser nula");
+
+        this.role = role;
+    }
 
     public boolean isActive() { return this.active; }
 

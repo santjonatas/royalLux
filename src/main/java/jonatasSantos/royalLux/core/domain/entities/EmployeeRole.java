@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class EmployeeRole{
 
     public EmployeeRole(Employee employee, Role role) {
-        this.employee = employee;
-        this.role = role;
+        this.setEmployee(employee);
+        this.setRole(role);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -45,6 +45,9 @@ public class EmployeeRole{
     }
 
     public void setEmployee(Employee employee) {
+        if(employee == null)
+            throw new IllegalArgumentException("Funcionário não pode ser nulo");
+
         this.employee = employee;
     }
 
@@ -53,6 +56,9 @@ public class EmployeeRole{
     }
 
     public void setRole(Role role) {
+        if(role == null)
+            throw new IllegalArgumentException("Função não pode ser nula");
+
         this.role = role;
     }
 

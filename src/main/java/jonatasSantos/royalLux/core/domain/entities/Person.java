@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Person{
 
     public Person(User user, String name, LocalDate dateBirth, String cpf, String phone, String email) {
-        this.user = user;
+        this.setUser(user);
         this.setName(name);
         this.setDateBirth(dateBirth);
         this.setCpf(cpf);
@@ -61,6 +61,9 @@ public class Person{
     }
 
     public void setUser(User user) {
+        if(user == null)
+            throw new IllegalArgumentException("Usuário não pode ser nulo");
+
         this.user = user;
     }
 
@@ -69,6 +72,9 @@ public class Person{
     }
 
     public void setName(String name) {
+        if(name == null)
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser vazio");
         }
@@ -104,9 +110,12 @@ public class Person{
     }
 
     public void setCpf(String cpf) {
-        if (!this.isValidCpf(cpf)) {
+        if(cpf == null)
+            throw new IllegalArgumentException("CPF não pode ser nulo");
+
+        if (!this.isValidCpf(cpf))
             throw new IllegalArgumentException("CPF inválido");
-        }
+
         this.cpf = cpf;
     }
 
@@ -162,6 +171,9 @@ public class Person{
     }
 
     public void setEmail(String email) {
+        if(email == null)
+            throw new IllegalArgumentException("Email não pode ser nulo");
+
         if (email.length() > 255){
             throw new IllegalArgumentException("Email não deve conter mais que 255 caracteres");
         }

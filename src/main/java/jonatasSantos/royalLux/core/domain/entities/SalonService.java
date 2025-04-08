@@ -13,8 +13,8 @@ public class SalonService {
     public SalonService(String name, String description, LocalTime estimatedTime, BigDecimal value) {
         this.setName(name);
         this.setDescription(description);
-        this.estimatedTime = estimatedTime;
-        this.value = value;
+        this.setEstimatedTime(estimatedTime);
+        this.setValue(value);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -58,6 +58,9 @@ public class SalonService {
     }
 
     public void setName(String name) {
+        if(name == null)
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+
         if (name.isEmpty()){
             throw new IllegalArgumentException("Nome do serviço não pode ser vazio");
         }
@@ -85,6 +88,9 @@ public class SalonService {
     }
 
     public void setEstimatedTime(LocalTime estimatedTime) {
+        if(estimatedTime == null)
+            throw new IllegalArgumentException("Tempo estimado não pode ser nulo");
+
         this.estimatedTime = estimatedTime;
     }
 
@@ -93,6 +99,9 @@ public class SalonService {
     }
 
     public void setValue(BigDecimal value) {
+        if(value == null)
+            throw new IllegalArgumentException("Valor não pode ser nulo");
+
         this.value = value;
     }
 

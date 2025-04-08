@@ -11,13 +11,13 @@ import java.time.LocalTime;
 @Table(name = "customerService")
 public class CustomerService{
     public CustomerService(User createdByUser, Client client, String status, LocalDateTime startTime, LocalDateTime estimatedFinishingTime, LocalDateTime finishingTime, BigDecimal totalValue, String details) {
-        this.createdByUser = createdByUser;
-        this.client = client;
+        this.setCreatedByUser(createdByUser);
+        this.setClient(client);
         this.setStatus(status);
-        this.startTime = startTime;
+        this.setStartTime(startTime);
         this.estimatedFinishingTime = estimatedFinishingTime;
         this.finishingTime = finishingTime;
-        this.totalValue = totalValue;
+        this.setTotalValue(totalValue);
         this.setDetails(details);
         this.createdAt = LocalDateTime.now();
     }
@@ -72,6 +72,9 @@ public class CustomerService{
     }
 
     public void setCreatedByUser(User createdByUser) {
+        if(createdByUser == null)
+            throw new IllegalArgumentException("Usuário criador de atendimento não pode ser nulo");
+
         this.createdByUser = createdByUser;
     }
 
@@ -80,6 +83,9 @@ public class CustomerService{
     }
 
     public void setClient(Client client) {
+        if(client == null)
+            throw new IllegalArgumentException("Cliente não pode ser nulo");
+
         this.client = client;
     }
 
@@ -88,12 +94,14 @@ public class CustomerService{
     }
 
     public void setStatus(String status) {
-        if (status.isEmpty()){
+        if(status == null)
+            throw new IllegalArgumentException("Status não pode ser nulo");
+
+        if (status.isEmpty())
             throw new IllegalArgumentException("Status não pode ser vazio");
-        }
-        if (status.length() > 30){
+
+        if (status.length() > 30)
             throw new IllegalArgumentException("Status não deve conter mais que 30 caracteres");
-        }
 
         this.status = status;
     }
@@ -103,6 +111,9 @@ public class CustomerService{
     }
 
     public void setStartTime(LocalDateTime startTime) {
+        if(startTime == null)
+            throw new IllegalArgumentException("Horário de início não pode ser nulo");
+
         this.startTime = startTime;
     }
 
@@ -136,6 +147,9 @@ public class CustomerService{
     }
 
     public void setTotalValue(BigDecimal totalValue) {
+        if(totalValue == null)
+            throw new IllegalArgumentException("Valor total não pode ser nulo");
+
         this.totalValue = totalValue;
     }
 

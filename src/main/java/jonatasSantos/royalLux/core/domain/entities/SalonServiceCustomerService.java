@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 public class SalonServiceCustomerService {
 
     public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDateTime startTime, LocalDateTime finishingTime, Boolean completed) {
-        this.customerService = customerService;
-        this.salonService = salonService;
-        this.employee = employee;
+        this.setCustomerService(customerService);
+        this.setSalonService(salonService);
+        this.setEmployee(employee);
         this.startTime = startTime;
         this.finishingTime = finishingTime;
-        this.completed = completed;
+        this.setCompleted(completed);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -64,6 +64,9 @@ public class SalonServiceCustomerService {
     }
 
     public void setCustomerService(CustomerService customerService) {
+        if(customerService == null)
+            throw new IllegalArgumentException("Atendimento não pode ser nulo");
+
         this.customerService = customerService;
     }
 
@@ -72,6 +75,9 @@ public class SalonServiceCustomerService {
     }
 
     public void setSalonService(SalonService salonService) {
+        if(salonService == null)
+            throw new IllegalArgumentException("Serviço não pode ser nulo");
+
         this.salonService = salonService;
     }
 
@@ -80,6 +86,9 @@ public class SalonServiceCustomerService {
     }
 
     public void setEmployee(Employee employee) {
+        if(employee == null)
+            throw new IllegalArgumentException("Funcionário não pode ser nulo");
+
         this.employee = employee;
     }
 
@@ -104,6 +113,9 @@ public class SalonServiceCustomerService {
     }
 
     public void setCompleted(Boolean completed) {
+        if(completed == null)
+            throw new IllegalArgumentException("Completo não pode ser nulo");
+
         this.completed = completed;
     }
 

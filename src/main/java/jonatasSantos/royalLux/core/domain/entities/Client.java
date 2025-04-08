@@ -39,6 +39,9 @@ public class Client{
     }
 
     public void setUser(User user) {
+        if(user == null)
+            throw new IllegalArgumentException("Usuário não pode ser nulo");
+
         this.user = user;
     }
 

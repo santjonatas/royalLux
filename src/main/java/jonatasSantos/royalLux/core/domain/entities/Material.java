@@ -58,6 +58,9 @@ public class Material {
     }
 
     public void setName(String name) {
+        if(name == null)
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+
         if (name.isEmpty())
             throw new IllegalArgumentException("Nome do material não pode ser vazio");
 

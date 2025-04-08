@@ -42,6 +42,9 @@ public class Role{
     }
 
     public void setName(String name) {
+        if(name == null)
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+
         if (name.isEmpty()){
             throw new IllegalArgumentException("Nome do cargo não pode ser vazio");
         }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "employees")
 public class Employee{
     public Employee(User user, String title, BigDecimal salary) {
-        this.user = user;
+        this.setUser(user);
         this.setTitle(title);
         this.setSalary(salary);
         this.createdAt = LocalDateTime.now();
@@ -47,6 +47,9 @@ public class Employee{
     }
 
     public void setUser(User user) {
+        if(user == null)
+            throw new IllegalArgumentException("Usuário não pode ser nulo");
+
         this.user = user;
     }
 
@@ -55,12 +58,14 @@ public class Employee{
     }
 
     public void setTitle(String title) {
-        if (title.length() < 5){
+        if(title == null)
+            throw new IllegalArgumentException("Título não pode ser nulo");
+
+        if (title.length() < 5)
             throw new IllegalArgumentException("Título deve conter pelo menos 5 caracteres");
-        }
-        if (title.length() > 50){
+
+        if (title.length() > 50)
             throw new IllegalArgumentException("Título não deve conter mais que 50 caracteres");
-        }
 
         this.title = title;
     }
