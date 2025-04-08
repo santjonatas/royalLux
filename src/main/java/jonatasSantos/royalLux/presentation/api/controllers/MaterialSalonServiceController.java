@@ -2,9 +2,12 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,9 @@ public class MaterialSalonServiceController {
 
     @Autowired
     private MaterialSalonServiceGetUseCase materialSalonServiceGetUseCase;
+
+    @Autowired
+    private MaterialSalonServiceUpdateUseCase materialSalonServiceUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -51,7 +57,7 @@ public class MaterialSalonServiceController {
     }
 
     @GetMapping
-    public ResponseEntity getMaterialSalonService(
+    public ResponseEntity getMaterialsSalonServices(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer salonServiceId,
             @RequestParam(required = false) Integer materialId,
@@ -67,4 +73,17 @@ public class MaterialSalonServiceController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateMaterialSalonService(
+            @RequestParam(required = true) Integer id,
+            @RequestBody MaterialSalonServiceUpdateUseCaseInputDto body){
+        var response = materialSalonServiceUpdateUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+
 }

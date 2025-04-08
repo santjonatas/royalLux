@@ -1,0 +1,8 @@
+package jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice;
+
+import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseOutputDto;
+
+public interface MaterialSalonServiceUpdateUseCase {
+    public MaterialSalonServiceUpdateUseCaseOutputDto execute(Integer materialSalonServiceId, MaterialSalonServiceUpdateUseCaseInputDto input);
+}
