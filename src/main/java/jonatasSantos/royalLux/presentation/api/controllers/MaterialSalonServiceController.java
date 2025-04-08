@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
@@ -31,6 +32,9 @@ public class MaterialSalonServiceController {
 
     @Autowired
     private MaterialSalonServiceUpdateUseCase materialSalonServiceUpdateUseCase;
+
+    @Autowired
+    private MaterialSalonServiceDeleteUseCase materialSalonServiceDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -85,5 +89,12 @@ public class MaterialSalonServiceController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deleteMaterialSalonService(@RequestParam(required = true) Integer id){
+        var response = materialSalonServiceDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
 
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
