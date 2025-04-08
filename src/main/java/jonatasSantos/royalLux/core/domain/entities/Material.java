@@ -102,6 +102,9 @@ public class Material {
     }
 
     public void decrementQuantity(Integer quantity){
+        if(quantity > this.quantity)
+            throw new IllegalArgumentException("Quantidade a ser removida não pode ser maior que a atual");
+
         this.quantity -= quantity;
     }
 
