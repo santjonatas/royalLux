@@ -13,12 +13,12 @@ public class CustomerService{
     public CustomerService(User createdByUser, Client client, String status, LocalDateTime startTime, LocalDateTime estimatedFinishingTime, LocalDateTime finishingTime, BigDecimal totalValue, String details) {
         this.createdByUser = createdByUser;
         this.client = client;
-        this.status = status;
+        this.setStatus(status);
         this.startTime = startTime;
         this.estimatedFinishingTime = estimatedFinishingTime;
         this.finishingTime = finishingTime;
         this.totalValue = totalValue;
-        this.details = details;
+        this.setDetails(details);
         this.createdAt = LocalDateTime.now();
     }
 

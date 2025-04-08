@@ -11,8 +11,8 @@ import java.time.LocalTime;
 public class SalonService {
 
     public SalonService(String name, String description, LocalTime estimatedTime, BigDecimal value) {
-        this.name = name;
-        this.description = description;
+        this.setName(name);
+        this.setDescription(description);
         this.estimatedTime = estimatedTime;
         this.value = value;
         this.createdAt = LocalDateTime.now();
@@ -54,6 +54,10 @@ public class SalonService {
     }
 
     public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
         if (name.isEmpty()){
             throw new IllegalArgumentException("Nome do serviço não pode ser vazio");
         }
@@ -61,10 +65,6 @@ public class SalonService {
             throw new IllegalArgumentException("Nome do serviço não deve conter mais que 50 caracteres");
         }
 
-        return this.name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 

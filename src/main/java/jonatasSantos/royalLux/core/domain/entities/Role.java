@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Table(name = "roles")
 public class Role{
     public Role(String name, String detail) {
-        this.name = name;
-        this.detail = detail;
+        this.setName(name);
+        this.setDetail(detail);
         this.createdAt = LocalDateTime.now();
     }
 
