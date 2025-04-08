@@ -1,11 +1,9 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
-import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialCreateUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialDeleteUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialGetUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialUpdateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.material.*;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialIncrementQuantityUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
@@ -35,6 +33,9 @@ public class MaterialController {
 
     @Autowired
     private MaterialDeleteUseCase materialDeleteUseCase;
+
+    @Autowired
+    private MaterialIncrementQuantityUseCase materialIncrementQuantityUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -92,6 +93,17 @@ public class MaterialController {
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).getMaterials(null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).updateMaterial(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).deleteMaterial(null)).withRel("delete"));
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity incrementQuantityMaterial(
+            @RequestParam(required = true) Integer id,
+            @RequestBody MaterialIncrementQuantityUseCaseInputDto body){
+        var response = materialIncrementQuantityUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
     }

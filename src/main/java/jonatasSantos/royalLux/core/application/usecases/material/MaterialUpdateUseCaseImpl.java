@@ -35,7 +35,6 @@ public class MaterialUpdateUseCaseImpl implements MaterialUpdateUseCase {
         materialToBeUpdated.setName(input.name());
         materialToBeUpdated.setDescription(input.description());
         materialToBeUpdated.setValue(input.value());
-        materialToBeUpdated.setQuantity(input.quantity());
         materialToBeUpdated.setUpdatedAt(LocalDateTime.now());
 
         this.materialRepository.save(materialToBeUpdated);
