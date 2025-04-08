@@ -4,8 +4,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalons
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceUpdateUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseInputDto;
@@ -18,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/materialsSalonServices")
@@ -44,20 +43,16 @@ public class MaterialSalonServiceController {
         var response = materialSalonServiceCreateUseCase.execute(user, body);
         var responsePresenter = new ResponsePresenter(response);
 
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).createMaterial(null)).withSelfRel());
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).getMaterials(null, null, null, null, null, null, null, null)).withRel("get"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).updateMaterial(null, null)).withRel("patch"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).incrementQuantityMaterial(null, null)).withRel("patch"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).decrementQuantityMaterial(null, null)).withRel("patch"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).deleteMaterial(null)).withRel("delete"));
-//
-//        URI location = WebMvcLinkBuilder.linkTo(
-//                WebMvcLinkBuilder.methodOn(MaterialController.class).getMaterials(response.materialId(), null, null, null, null, null, null, null)
-//        ).toUri();
-//
-//        return ResponseEntity.created(location).body(responsePresenter);
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).createMaterialSalonService(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).getMaterialsSalonServices(null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).updateMaterialSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).deleteMaterialSalonService(null)).withRel("delete"));
 
-        return ResponseEntity.ok(responsePresenter);
+        URI location = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).getMaterialsSalonServices(response.materialServiceId(), null, null, null, null, null, null)
+        ).toUri();
+
+        return ResponseEntity.created(location).body(responsePresenter);
     }
 
     @GetMapping
@@ -75,6 +70,11 @@ public class MaterialSalonServiceController {
         var response = materialSalonServiceGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).createMaterialSalonService(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).getMaterialsSalonServices(null, null, null, null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).updateMaterialSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).deleteMaterialSalonService(null)).withRel("delete"));
+
         return ResponseEntity.ok(responsePresenter);
     }
 
@@ -86,6 +86,11 @@ public class MaterialSalonServiceController {
         var response = materialSalonServiceUpdateUseCase.execute(id, body);
         var responsePresenter = new ResponsePresenter(response);
 
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).createMaterialSalonService(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).getMaterialsSalonServices(null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).updateMaterialSalonService(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).deleteMaterialSalonService(null)).withRel("delete"));
+
         return ResponseEntity.ok(responsePresenter);
     }
 
@@ -96,6 +101,11 @@ public class MaterialSalonServiceController {
 
         var response = materialSalonServiceDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).createMaterialSalonService(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).getMaterialsSalonServices(null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).updateMaterialSalonService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).deleteMaterialSalonService(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);
     }
