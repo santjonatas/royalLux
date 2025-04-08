@@ -2,9 +2,11 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialCreateUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialGetUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -28,6 +29,9 @@ public class MaterialController {
 
     @Autowired
     private MaterialGetUseCase materialGetUseCase;
+
+    @Autowired
+    private MaterialUpdateUseCase materialUpdateUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -69,4 +73,17 @@ public class MaterialController {
 
         return ResponseEntity.ok(responsePresenter);
     }
+
+    @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateMaterial(
+            @RequestParam(required = true) Integer id,
+            @RequestBody MaterialUpdateUseCaseInputDto body){
+        var response = materialUpdateUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+
 }

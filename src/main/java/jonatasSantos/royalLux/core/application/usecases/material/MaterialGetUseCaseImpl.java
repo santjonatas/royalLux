@@ -13,12 +13,10 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialGetUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseOutputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
