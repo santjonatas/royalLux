@@ -101,6 +101,10 @@ public class Material {
         this.quantity += quantity;
     }
 
+    public void decrementQuantity(Integer quantity){
+        this.quantity -= quantity;
+    }
+
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }

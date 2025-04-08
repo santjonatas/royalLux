@@ -1,10 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.material.*;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialIncrementQuantityUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.material.*;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +33,9 @@ public class MaterialController {
 
     @Autowired
     private MaterialIncrementQuantityUseCase materialIncrementQuantityUseCase;
+
+    @Autowired
+    private MaterialDecrementQuantityUseCase materialDecrementQuantityUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -103,6 +103,17 @@ public class MaterialController {
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialIncrementQuantityUseCaseInputDto body){
         var response = materialIncrementQuantityUseCase.execute(id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping("/decrementQuantity")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity decrementQuantityMaterial(
+            @RequestParam(required = true) Integer id,
+            @RequestBody MaterialDecrementQuantityUseCaseInputDto body){
+        var response = materialDecrementQuantityUseCase.execute(id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
