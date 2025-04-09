@@ -1,56 +1,37 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-public class Payment extends Base {
-    protected int CustomerServiceId;
-    protected String Status;
-    protected LocalDateTime Time;
-    protected String Method;
+@Entity
+@Table(name = "payments")
+public class Payment {
 
-    public int getCustomerServiceId() {
-        return CustomerServiceId;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected int id;
 
-    public void setCustomerServiceId(int customerServiceId) {
-        CustomerServiceId = customerServiceId;
-    }
+    @OneToOne
+    @JoinColumn(name = "customerServiceId", nullable = false)
+    protected CustomerService customerService;
 
-    public String getStatus() {
-        return Status;
-    }
+    @Column(name = "status", nullable = false, length = 50)
+    protected String status;
 
-    public void setStatus(String status) {
-        if (status.isEmpty()){
-            throw new IllegalArgumentException("Status não pode ser vazio");
-        }
-        if (status.length() > 20){
-            throw new IllegalArgumentException("Status não deve conter mais que 20 caracteres");
-        }
-        Status = status;
-    }
+    @Column(name = "time", nullable = false)
+    protected LocalDateTime time;
 
-    public LocalDateTime getTime() {
-        return Time;
-    }
+    @Column(name = "method", nullable = false)
+    protected String method;
 
-    public void setTime(LocalDateTime time) {
-        Time = time;
-    }
+    @Column(name = "description", length = 500)
+    protected String description;
 
-    public String getMethod() {
-        return Method;
-    }
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
 
-    public void setMethod(String method) {
-        if (method.isEmpty()){
-            throw new IllegalArgumentException("Método de pagamento não pode ser vazio");
-        }
-        if (method.length() > 50){
-            throw new IllegalArgumentException("Método de pagamento não deve conter mais que 50 caracteres");
-        }
-        Method = method;
-    }
+    @Column(name = "updatedAt")
+    protected LocalDateTime updatedAt;
 }
