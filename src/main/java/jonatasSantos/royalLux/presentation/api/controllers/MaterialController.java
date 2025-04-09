@@ -66,8 +66,8 @@ public class MaterialController {
             @RequestParam(required = false) String description,
             @RequestParam(required = false) BigDecimal value,
             @RequestParam(required = false) Integer quantity,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -63,8 +63,8 @@ public class UserController {
             @RequestParam(required = false) String username,
             @RequestParam(required = false) UserRole role,
             @RequestParam(required = false) Boolean active,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending) throws AuthenticationException{
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

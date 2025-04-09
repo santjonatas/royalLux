@@ -65,8 +65,8 @@ public class PersonController {
             @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

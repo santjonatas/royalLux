@@ -73,8 +73,8 @@ public class SalonServiceController {
             @DateTimeFormat(pattern = "HH:mm")
             @RequestParam(required = false) LocalTime estimatedTime,
             @RequestParam(required = false) BigDecimal value,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

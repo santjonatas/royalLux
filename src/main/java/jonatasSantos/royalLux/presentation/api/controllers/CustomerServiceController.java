@@ -80,8 +80,8 @@ public class CustomerServiceController {
             @RequestParam(required = false) Integer finishingTimeMinute,
             @RequestParam(required = false) BigDecimal totalValue,
             @RequestParam(required = false) String details,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

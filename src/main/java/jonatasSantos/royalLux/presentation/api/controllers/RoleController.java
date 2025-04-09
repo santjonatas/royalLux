@@ -60,8 +60,8 @@ public class RoleController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String detail,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

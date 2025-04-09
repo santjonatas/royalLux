@@ -54,8 +54,8 @@ public class EmployeeRoleController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer employeeId,
             @RequestParam(required = false) Integer roleId,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

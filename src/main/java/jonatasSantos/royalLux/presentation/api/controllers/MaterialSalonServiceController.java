@@ -61,8 +61,8 @@ public class MaterialSalonServiceController {
             @RequestParam(required = false) Integer salonServiceId,
             @RequestParam(required = false) Integer materialId,
             @RequestParam(required = false) Integer quantityMaterial,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -66,8 +66,8 @@ public class AddressController {
             @RequestParam(required = false) String city,
             @RequestParam(required = false) AddressStates state,
             @RequestParam(required = false) String cep,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
