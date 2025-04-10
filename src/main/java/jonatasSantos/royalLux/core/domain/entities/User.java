@@ -81,20 +81,12 @@ public class User implements UserDetails{
         return this.password;
     }
 
-    public void setPassword(String password) {
-        if(password == null)
-            throw new IllegalArgumentException("Senha não pode ser nula");
-
-        if (password.isEmpty())
-            throw new IllegalArgumentException("Senha não pode ser vazia");
-
-        if (password.length() < 8)
-            throw new IllegalArgumentException("Senha deve conter pelo menos 8 caracteres");
-
-        this.password = password;
-    }
+    public void setPassword(String password) { this.password = password; }
 
     public String validatePassword(String password){
+        if (password == null)
+            throw new IllegalArgumentException("Senha não pode ser nula");
+
         if (password.isEmpty())
             throw new IllegalArgumentException("Senha não pode ser vazia");
 
