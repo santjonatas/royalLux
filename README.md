@@ -79,9 +79,3 @@ npm run dev
 
 ### Banco de Dados
 Certifique-se de ter uma instância PostgreSQL rodando e atualize as credenciais no `application.yml`.
-
-## Autor
-
-**Jônatas Santos**  
-Desenvolvedor Fullstack  
-[GitHub](https://github.com/santjonatas) | [LinkedIn](https://linkedin.com/in/santjonatas) | [Portfólio](https://santjonatas.github.io/jonatassantosdev)
