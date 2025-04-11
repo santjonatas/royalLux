@@ -19,7 +19,7 @@ Royal Lux é um sistema web completo voltado para a administração de salões d
 ## Tecnologias Utilizadas
 
 ### Backend
-- **Java 17**
+- **Java 23**
 - **Spring Boot**
 - **Spring Security**
 - **PostgreSQL**
