@@ -58,10 +58,9 @@ royal-lux/
 
 ## Requisitos
 
-- Java 17+
+- Java 23+
 - Node.js 18+
 - PostgreSQL
-- Docker (opcional para deploy)
 
 ## Como Rodar o Projeto Localmente
 
