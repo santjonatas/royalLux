@@ -83,7 +83,7 @@ public class User implements UserDetails{
 
     public void setPassword(String password) { this.password = password; }
 
-    public String validatePassword(String password){
+    public Boolean validatePassword(String password){
         if (password == null)
             throw new IllegalArgumentException("Senha não pode ser nula");
 
@@ -111,7 +111,7 @@ public class User implements UserDetails{
         if (!password.matches("^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?/]+$"))
             throw new IllegalArgumentException("Senha contém caracteres inválidos");
 
-        return password;
+        return true;
     }
 
     public UserRole getRole() { return this.role; }
