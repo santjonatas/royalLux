@@ -45,15 +45,9 @@ A arquitetura do sistema é baseada em camadas bem definidas, promovendo manuten
 ```
 royal-lux/
 ├── backend/
-│   ├── domain/
-│   ├── application/
-│   ├── infrastructure/
-│   └── api/
-├── frontend/
-│   ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
+│   ├── core/
+│   ├── infra/
+│   └── presentation/
 ```
 
 ## Requisitos
