@@ -43,11 +43,17 @@ Royal Lux é um sistema web completo voltado para a administração de salões d
 A arquitetura do sistema é baseada em camadas bem definidas, promovendo manutenibilidade, testabilidade e escalabilidade:
 
 ```
-royal-lux/
-├── backend/
-│   ├── core/
-│   ├── infra/
-│   └── presentation/
+royal.lux/
+└── src/
+    ├── main/
+    │   ├── java/
+    │   │   └── jonatasSantos.royalLux/
+    │   │       ├── core/
+    │   │       ├── infra/
+    │   │       ├── presentation.api/
+    │   │       │   └── Application.java
+    │   └── resources/
+    └── test/
 ```
 
 ## Requisitos
