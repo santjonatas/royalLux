@@ -33,7 +33,7 @@ class UserGetMeUseCaseImplTest {
 
     @Test
     @DisplayName("Quando não existir usuário com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Usuário inexistente'")
-    void execute() {
+    void deveLancarExcecaoQuandoUsuarioNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.CLIENT, true);
 
