@@ -2,7 +2,6 @@ package jonatasSantos.royalLux.core.application.usecases.user;
 
 import jakarta.persistence.EntityExistsException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
-import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseOutputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -63,12 +62,11 @@ class UserCreateUseCaseImplTest {
 
         when(userRepository.findByUsername(input.username())).thenReturn(Optional.empty());
 
-        // Act
+        // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userCreateUseCase.execute(input);
         });
 
-        // Assert
         assertEquals("Apenas um usuário pode ser Admin", exception.getMessage());
     }
 
