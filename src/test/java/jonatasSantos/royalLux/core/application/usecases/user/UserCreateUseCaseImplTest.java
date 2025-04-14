@@ -1,9 +1,10 @@
-package jonatasSantos.royalLux.core.application.usecases.auth;
+package jonatasSantos.royalLux.core.application.usecases.user;
 
 import jakarta.persistence.EntityExistsException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
-import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseOutputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class RegisterUseCaseImplTest {
+class UserCreateUseCaseImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -29,7 +30,7 @@ class RegisterUseCaseImplTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private RegisterUseCaseImpl registerUseCase;
+    private UserCreateUseCaseImpl userCreateUseCase;
 
     @BeforeEach
     void setup() {
@@ -40,7 +41,7 @@ class RegisterUseCaseImplTest {
     @DisplayName("Quando já existir usuário com o mesmo username, estourar exceção EntityExistsException com mensagem 'Usuário já existe'")
     void deveLancarExcecaoQuandoUsernameJaExistir() {
         // Arrange
-        var input = new RegisterUseCaseInputDto("joao_1", "Teste123@");
+        var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.ADMIN, true);
         User existingUser = new User("joao_1", UserRole.CLIENT, true);
 
         when(userRepository.findByUsername(input.username()))
@@ -48,24 +49,36 @@ class RegisterUseCaseImplTest {
 
         // Act + Assert
         EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
-            registerUseCase.execute(input);
+            userCreateUseCase.execute(input);
         });
 
         assertEquals("Usuário já existe", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Deve criar usuário com sucesso e retornar id de usuário cadastrado")
-    void deveCriarUsuarioComSucesso() {
+    @DisplayName("Quando role passada como input pelo usuário for ADMIN, estourar exceção IllegalArgumentException com mensagem 'Apenas um usuário pode ser Admin'")
+    void deveLancarExcecaoQuandoRoleForAdmin(){
         // Arrange
-        var input = new RegisterUseCaseInputDto("joao_1", "Teste123@");
+        var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.ADMIN, true);
 
-        when(userRepository.findByUsername(input.username()))
-                .thenReturn(Optional.empty());
+        when(userRepository.findByUsername(input.username())).thenReturn(Optional.empty());
 
-        User user = new User(input.username(), UserRole.CLIENT, true);
-        user.validatePassword(input.password());
-        user.setPassword(passwordEncoder.encode(input.password()));
+        // Act
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userCreateUseCase.execute(input);
+        });
+
+        // Assert
+        assertEquals("Apenas um usuário pode ser Admin", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve criar usuário com sucesso e retornar id de usuário cadastrado")
+    void deveCriarUsuarioComSucesso(){
+        // Arrange
+        var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.EMPLOYEE, true);
+
+        when(userRepository.findByUsername(input.username())).thenReturn(Optional.empty());
 
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User userCreated = invocation.getArgument(0);
@@ -74,7 +87,7 @@ class RegisterUseCaseImplTest {
         });
 
         // Act
-        RegisterUseCaseOutputDto output = registerUseCase.execute(input);
+        UserCreateUseCaseOutputDto output = userCreateUseCase.execute(input);
 
         // Assert
         assertNotNull(output);
