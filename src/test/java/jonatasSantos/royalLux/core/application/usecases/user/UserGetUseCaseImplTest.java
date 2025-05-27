@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,7 +47,12 @@ class UserGetUseCaseImplTest {
     private UserGetUseCaseImpl userGetUseCase;
 
     @BeforeEach
-    void setup() { MockitoAnnotations.openMocks(this); }
+    void setup() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        var entityManagerField = UserGetUseCaseImpl.class.getDeclaredField("entityManager");
+        entityManagerField.setAccessible(true);
+        entityManagerField.set(userGetUseCase, entityManager);
+    }
 
     @Test
     @DisplayName("Quando não existir usuário com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Seu usuário é inexistente'")
@@ -71,6 +77,92 @@ class UserGetUseCaseImplTest {
         assertEquals("Seu usuário é inexistente", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Quando usuário for CLIENT, deve retornar apenas ele mesmo e excluir outros CLIENTS")
+    void naoDeveRetornarOutrosUsuariosClientQuandoForClient() {
+        // Arrange
+        User userLogged = new User("joao_1", UserRole.CLIENT, true);
+        userLogged.setId(1);
 
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
 
+        User client2 = new User("maria_client", UserRole.CLIENT, true);
+        client2.setId(2);
+
+        User employee = new User("carlos_employee", UserRole.EMPLOYEE, true);
+        employee.setId(3);
+
+        User admin = new User("ana_admin", UserRole.ADMIN, true);
+        admin.setId(4);
+
+        var usersFromDb = List.of(userLogged, client2, employee, admin);
+
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(User.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(User.class)).thenReturn(root);
+        when(entityManager.createQuery(criteriaQuery)).thenReturn(typedQuery);
+
+        when(typedQuery.getResultList()).thenReturn(usersFromDb);
+
+        // Act
+        var result = userGetUseCase.execute(
+                userLogged,
+                new UserGetUseCaseInputDto(null, null, null, null),
+                0,
+                10,
+                true
+        );
+
+        // Assert
+        assertEquals(3, result.size());
+
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(1))); // O próprio Client
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(3))); // Employee
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(4))); // Admin
+
+        assertFalse(result.stream().anyMatch(user -> user.id().equals(2))); // Outro Client não deve aparecer
+    }
+
+    @Test
+    @DisplayName("Quando usuário for ADMIN, deve retornar todos os usuários com sucesso")
+    void deveRetornarTodosUsuariosQuandoForAdmin() {
+        // Arrange
+        User userLogged = new User("ana_admin", UserRole.ADMIN, true);
+        userLogged.setId(1);
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        User client = new User("joao_client", UserRole.CLIENT, true);
+        client.setId(2);
+
+        User employee = new User("carlos_employee", UserRole.EMPLOYEE, true);
+        employee.setId(3);
+
+        var usersFromDb = List.of(userLogged, client, employee);
+
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(User.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(User.class)).thenReturn(root);
+        when(entityManager.createQuery(criteriaQuery)).thenReturn(typedQuery);
+
+        when(typedQuery.getResultList()).thenReturn(usersFromDb);
+
+        // Act
+        var result = userGetUseCase.execute(
+                userLogged,
+                new UserGetUseCaseInputDto(null, null, null, null),
+                0,
+                10,
+                true
+        );
+
+        // Assert
+        assertEquals(3, result.size());
+
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(1))); // Admin logado
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(2))); // Client
+        assertTrue(result.stream().anyMatch(user -> user.id().equals(3))); // Employee
+    }
 }
