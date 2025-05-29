@@ -37,8 +37,6 @@ class UserUpdateUseCaseImplTest {
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
         UserUpdateUseCaseInputDto input = new UserUpdateUseCaseInputDto("mateus_2", UserRole.CLIENT, true);
 
-
-
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
 
@@ -113,5 +111,37 @@ class UserUpdateUseCaseImplTest {
         });
 
         assertEquals("Nome de usuário já está em uso", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando usuário admin tentar atualizar a si mesmo com role diferente de ADMIN, estourar exceção IllegalArgumentException com mensagem 'Admin não pode ter Permissão alterada'")
+    void deveLancarExcecaoQuandoUsuarioAdminAtualizarASiMesmoComRoleDiferenteDeAdmin(){
+        // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+        userLogged.setId(1);
+
+        UserUpdateUseCaseInputDto input = new UserUpdateUseCaseInputDto("joao_1", UserRole.CLIENT, true);
+        User userToBeUpdated = userLogged;
+        userToBeUpdated.setId(1);
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(userToBeUpdated.getId())))
+                .thenReturn(Optional.of(userToBeUpdated));
+
+        when(userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId()))
+                .thenReturn(false);
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userUpdateUseCase.execute(
+                    userLogged,
+                    1,
+                    input
+            );
+        });
+
+        assertEquals("Admin não pode ter Permissão alterada", exception.getMessage());
     }
 }
