@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.user;
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserUpdateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
@@ -32,10 +33,8 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
         var userToBeUpdated = this.userRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
-        boolean usernameExists = this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
-
-        if (usernameExists)
-            throw new IllegalArgumentException("Nome de usuário já está em uso");
+        if (this.userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId()))
+            throw new ConflictException("Nome de usuário já está em uso");
 
         ArrayList<String> warningList = new ArrayList<>();
 
