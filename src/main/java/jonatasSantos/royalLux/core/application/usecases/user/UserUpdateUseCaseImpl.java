@@ -42,11 +42,11 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
             if(userToBeUpdated.getRole().equals(UserRole.ADMIN) && !input.role().equals(UserRole.ADMIN))
                 throw new IllegalArgumentException("Admin não pode ter Permissão alterada");
 
-            if(userToBeUpdated.getRole().equals(UserRole.ADMIN) && input.active() == false)
+            if(userToBeUpdated.getRole().equals(UserRole.ADMIN) && !input.active())
                 throw new IllegalArgumentException("Admin não pode ter usuário inativo");
 
             if(!userToBeUpdated.getRole().equals(UserRole.ADMIN) && input.role().equals(UserRole.ADMIN))
-                throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
+                throw new ConflictException("Apenas um usuário pode ser Admin");
 
             userToBeUpdated.setUsername(input.username());
             if(!userToBeUpdated.getRole().equals(UserRole.ADMIN))
