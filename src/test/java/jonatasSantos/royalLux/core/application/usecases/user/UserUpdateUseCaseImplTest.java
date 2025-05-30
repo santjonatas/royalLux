@@ -241,4 +241,68 @@ class UserUpdateUseCaseImplTest {
 
         assertEquals("Você não possui autorização para atualizar usuário", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Quando usuário cliente tentar atualizar outro usuário, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para atualizar outro usuário'")
+    void deveLancarExcecaoQuandoUsuarioClientTentarAtualizarOutroUsuario(){
+        // Arrange
+        User userLogged = new User("joao_1", UserRole.CLIENT, true);
+        userLogged.setId(1);
+
+        UserUpdateUseCaseInputDto input = new UserUpdateUseCaseInputDto("mateus_2", UserRole.ADMIN, true);
+        User userToBeUpdated = new User(input.username(), UserRole.CLIENT, input.active());
+        userToBeUpdated.setId(2);
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(userToBeUpdated.getId())))
+                .thenReturn(Optional.of(userToBeUpdated));
+
+        when(userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId()))
+                .thenReturn(false);
+
+        // Act + Assert
+        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+            userUpdateUseCase.execute(
+                    userLogged,
+                    2,
+                    input
+            );
+        });
+
+        assertEquals("Você não possui autorização para atualizar outro usuário", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando usuário cliente tentar atualizar a própria role para ADMIN, estourar exceção ConflictException com mensagem 'Apenas um usuário pode ser Admin'")
+    void deveLancarExcecaoQuandoUsuarioClientTentarAtualizarPropriaRoleParaAdmin(){
+        // Arrange
+        User userLogged = new User("joao_1", UserRole.CLIENT, true);
+        userLogged.setId(1);
+
+        UserUpdateUseCaseInputDto input = new UserUpdateUseCaseInputDto("joao_1", UserRole.ADMIN, true);
+        User userToBeUpdated = userLogged;
+        userToBeUpdated.setId(1);
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(userToBeUpdated.getId())))
+                .thenReturn(Optional.of(userToBeUpdated));
+
+        when(userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId()))
+                .thenReturn(false);
+
+        // Act + Assert
+        ConflictException exception = assertThrows(ConflictException.class, () -> {
+            userUpdateUseCase.execute(
+                    userLogged,
+                    1,
+                    input
+            );
+        });
+
+        assertEquals("Apenas um usuário pode ser Admin", exception.getMessage());
+    }
 }

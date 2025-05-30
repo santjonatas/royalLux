@@ -64,7 +64,7 @@ public class UserUpdateUseCaseImpl implements UserUpdateUseCase {
                 throw new UnauthorizedException("Você não possui autorização para atualizar outro usuário");
 
             if(input.role().equals(UserRole.ADMIN))
-                throw new IllegalArgumentException("Apenas um usuário pode ser Admin");
+                throw new ConflictException("Apenas um usuário pode ser Admin");
 
             userToBeUpdated.setUsername(input.username());
 
