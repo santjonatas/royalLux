@@ -4,7 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class UserUpdateUseCaseImplTest {
     @Mock
@@ -304,5 +307,37 @@ class UserUpdateUseCaseImplTest {
         });
 
         assertEquals("Apenas um usuário pode ser Admin", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve atualizar usuário com sucesso e retornar true em propriedade success do output")
+    void deveAtualizarUsuarioComSucesso(){
+        // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+        userLogged.setId(1);
+
+        UserUpdateUseCaseInputDto input = new UserUpdateUseCaseInputDto("joao_2", UserRole.ADMIN, true);
+        User userToBeUpdated = userLogged;
+        userToBeUpdated.setId(1);
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(userToBeUpdated.getId())))
+                .thenReturn(Optional.of(userToBeUpdated));
+
+        when(userRepository.existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId()))
+                .thenReturn(false);
+
+        // Act
+        UserUpdateUseCaseOutputDto output = userUpdateUseCase.execute(userLogged, 1, input);
+
+        // Assert
+        assertNotNull(output);
+        assertEquals(true, output.success());
+        verify(userRepository).save(any(User.class));
+        verify(userRepository, times(2)).findById(String.valueOf(1));
+        verify(userRepository, times(1)).existsByUsernameAndIdNot(input.username(), userToBeUpdated.getId());
+        verify(userRepository, times(1)).save(any(User.class));
     }
 }
