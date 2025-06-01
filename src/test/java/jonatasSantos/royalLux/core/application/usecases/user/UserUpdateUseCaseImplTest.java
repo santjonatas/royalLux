@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserUpdateUseCaseImplTest {
+
     @Mock
     private UserRepository userRepository;
 
