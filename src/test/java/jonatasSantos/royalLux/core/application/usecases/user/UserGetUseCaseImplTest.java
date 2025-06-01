@@ -60,6 +60,8 @@ class UserGetUseCaseImplTest {
         // Arrange
         User userLogged = new User("joao_1", UserRole.CLIENT, true);
 
+        UserGetUseCaseInputDto input = new UserGetUseCaseInputDto(null, null, null, null);
+
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
 
@@ -67,7 +69,7 @@ class UserGetUseCaseImplTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             userGetUseCase.execute(
                     userLogged,
-                    new UserGetUseCaseInputDto(null, null, null, null),
+                    input,
                     0,
                     10,
                     true
@@ -83,6 +85,8 @@ class UserGetUseCaseImplTest {
         // Arrange
         User userLogged = new User("joao_1", UserRole.CLIENT, true);
         userLogged.setId(1);
+
+        UserGetUseCaseInputDto input = new UserGetUseCaseInputDto(null, null, null, null);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -108,7 +112,7 @@ class UserGetUseCaseImplTest {
         // Act
         var result = userGetUseCase.execute(
                 userLogged,
-                new UserGetUseCaseInputDto(null, null, null, null),
+                input,
                 0,
                 10,
                 true
@@ -131,6 +135,8 @@ class UserGetUseCaseImplTest {
         User userLogged = new User("ana_admin", UserRole.ADMIN, true);
         userLogged.setId(1);
 
+        UserGetUseCaseInputDto input = new UserGetUseCaseInputDto(null, null, null, null);
+
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
 
@@ -152,7 +158,7 @@ class UserGetUseCaseImplTest {
         // Act
         var result = userGetUseCase.execute(
                 userLogged,
-                new UserGetUseCaseInputDto(null, null, null, null),
+                input,
                 0,
                 10,
                 true
