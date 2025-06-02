@@ -90,4 +90,158 @@ class UserTest {
 
         assertEquals("O nome de usuário só pode conter letras minúsculas, números, '.' e '_'", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Quando atribuir valor nulo a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha não pode ser nula'")
+    void deveLancarExcecaoQuandoAtribuirValorNuloAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword(null);
+        });
+
+        assertEquals("Senha não pode ser nula", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor vazio a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha não pode ser vazia'")
+    void deveLancarExcecaoQuandoAtribuirValorVazioAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("");
+        });
+
+        assertEquals("Senha não pode ser vazia", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor com menos de 8 caracteres a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos 8 caracteres'")
+    void deveLancarExcecaoQuandoAtribuirValorMenorDeOitoCaracteresAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("test123");
+        });
+
+        assertEquals("Senha deve conter pelo menos 8 caracteres", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor com mais de 50 caracteres a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha não deve conter mais que 50 caracteres'")
+    void deveLancarExcecaoQuandoAtribuirValorMaiorDeCinquentaCaracteresAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("Senha segura protege seus dados contra roubos e invasões");
+        });
+
+        assertEquals("Senha não deve conter mais que 50 caracteres", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor sem letra maiúscula a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos uma letra maiúscula'")
+    void deveLancarExcecaoQuandoAtribuirValorSemLetraMaiusculaAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("test123@");
+        });
+
+        assertEquals("Senha deve conter pelo menos uma letra maiúscula", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor sem letra minúscula a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos uma letra minúscula'")
+    void deveLancarExcecaoQuandoAtribuirValorSemLetraMinusculaAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("TEST123@");
+        });
+
+        assertEquals("Senha deve conter pelo menos uma letra minúscula", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor sem número a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos um número'")
+    void deveLancarExcecaoQuandoAtribuirValorSemNumeroAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("TestAbc@");
+        });
+
+        assertEquals("Senha deve conter pelo menos um número", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor sem caractere especial a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos um caractere especial'")
+    void deveLancarExcecaoQuandoAtribuirValorSemCaractereEspecialAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("Test1234");
+        });
+
+        assertEquals("Senha deve conter pelo menos um caractere especial", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor com caractere especial inválido a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha contém caracteres inválidos'")
+    void deveLancarExcecaoQuandoAtribuirValorComCaractereEspecialInvalidoAValidacaoDeSenha(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.validatePassword("Test123@ ");
+        });
+
+        assertEquals("Senha contém caracteres inválidos", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Atribuir valor com sucesso a validação de senha e retornar true")
+    void deveAtribuirValorAValidacaoDeSenhaComSucesso(){
+        // Arrange
+        User user = new User();
+
+        // Act
+        Boolean validatePassword = user.validatePassword("Test123@");
+
+        // Assert
+        assertNotNull(validatePassword);
+        assertEquals(true, validatePassword);
+    }
+
+    @Test
+    @DisplayName("Quando atribuir valor nulo a role, estourar exceção IllegalArgumentException com mensagem 'Permissão não pode ser nula'")
+    void deveLancarExcecaoQuandoAtribuirValorNuloARole(){
+        // Arrange
+        User user = new User();
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            user.setRole(null);
+        });
+
+        assertEquals("Permissão não pode ser nula", exception.getMessage());
+    }
 }
