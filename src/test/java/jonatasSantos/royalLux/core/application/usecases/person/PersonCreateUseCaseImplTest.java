@@ -1,15 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.person;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.PersonRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +21,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class PersonCreateUseCaseImplTest {
 
@@ -149,5 +148,148 @@ class PersonCreateUseCaseImplTest {
         });
 
         assertEquals("Pessoa já vinculada a um usuário", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando já existir pessoa com cpf passado no input, estourar exceção ConflictException com mensagem 'CPF já vinculado a um usuário'")
+    void deveLancarExcecaoQuandoCpfJaEstiverVinculadoAOutraPessoa() {
+        // Arrange
+        User userLogged = new User("mateus_2", UserRole.CLIENT, true);
+        userLogged.setId(2);
+        PersonCreateUseCaseInputDto input = new PersonCreateUseCaseInputDto(2, "Mateus Souza", LocalDate.of(2000, 7, 3), "07966562077", "11950264148", "mateus.souza@gmail.com");
+        User existingUser = userLogged;
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(input.userId())))
+                .thenReturn(Optional.of(existingUser));
+
+        when(personRepository.existsByUserId(existingUser.getId()))
+                .thenReturn(false);
+
+        when(personRepository.existsByCpf(input.cpf()))
+                .thenReturn(true);
+
+        // Act + Assert
+        ConflictException exception = assertThrows(ConflictException.class, () -> {
+            personCreateUseCase.execute(userLogged, input);
+        });
+
+        assertEquals("CPF já vinculado a um usuário", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando já existir pessoa com telefone passado no input, estourar exceção ConflictException com mensagem 'Telefone já vinculado a um usuário'")
+    void deveLancarExcecaoQuandoTelefoneJaEstiverVinculadoAOutraPessoa() {
+        // Arrange
+        User userLogged = new User("mateus_2", UserRole.CLIENT, true);
+        userLogged.setId(2);
+        PersonCreateUseCaseInputDto input = new PersonCreateUseCaseInputDto(2, "Mateus Souza", LocalDate.of(2000, 7, 3), "07966562077", "11950264148", "mateus.souza@gmail.com");
+        User existingUser = userLogged;
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(input.userId())))
+                .thenReturn(Optional.of(existingUser));
+
+        when(personRepository.existsByUserId(existingUser.getId()))
+                .thenReturn(false);
+
+        when(personRepository.existsByCpf(input.cpf()))
+                .thenReturn(false);
+
+        when(personRepository.existsByPhone(input.phone()))
+                .thenReturn(true);
+
+        // Act + Assert
+        ConflictException exception = assertThrows(ConflictException.class, () -> {
+            personCreateUseCase.execute(userLogged, input);
+        });
+
+        assertEquals("Telefone já vinculado a um usuário", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando já existir pessoa com email passado no input, estourar exceção ConflictException com mensagem 'Email já vinculado a um usuário'")
+    void deveLancarExcecaoQuandoEmailJaEstiverVinculadoAOutraPessoa() {
+        // Arrange
+        User userLogged = new User("mateus_2", UserRole.CLIENT, true);
+        userLogged.setId(2);
+        PersonCreateUseCaseInputDto input = new PersonCreateUseCaseInputDto(2, "Mateus Souza", LocalDate.of(2000, 7, 3), "07966562077", "11950264148", "mateus.souza@gmail.com");
+        User existingUser = userLogged;
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(input.userId())))
+                .thenReturn(Optional.of(existingUser));
+
+        when(personRepository.existsByUserId(existingUser.getId()))
+                .thenReturn(false);
+
+        when(personRepository.existsByCpf(input.cpf()))
+                .thenReturn(false);
+
+        when(personRepository.existsByPhone(input.phone()))
+                .thenReturn(false);
+
+        when(personRepository.existsByEmail(input.email()))
+                .thenReturn(true);
+
+        // Act + Assert
+        ConflictException exception = assertThrows(ConflictException.class, () -> {
+            personCreateUseCase.execute(userLogged, input);
+        });
+
+        assertEquals("Email já vinculado a um usuário", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve criar pessoa com sucesso e retornar id de pessoa cadastrada")
+    void deveCriarPessoaComSucesso() {
+        // Arrange
+        User userLogged = new User("mateus_2", UserRole.CLIENT, true);
+        userLogged.setId(2);
+        PersonCreateUseCaseInputDto input = new PersonCreateUseCaseInputDto(2, "Mateus Souza", LocalDate.of(2000, 7, 3), "07966562077", "11950264148", "mateus.souza@gmail.com");
+        User existingUser = userLogged;
+
+        when(userRepository.findById(String.valueOf(userLogged.getId())))
+                .thenReturn(Optional.of(userLogged));
+
+        when(userRepository.findById(String.valueOf(input.userId())))
+                .thenReturn(Optional.of(existingUser));
+
+        when(personRepository.existsByUserId(existingUser.getId()))
+                .thenReturn(false);
+
+        when(personRepository.existsByCpf(input.cpf()))
+                .thenReturn(false);
+
+        when(personRepository.existsByPhone(input.phone()))
+                .thenReturn(false);
+
+        when(personRepository.existsByEmail(input.email()))
+                .thenReturn(false);
+
+        when(personRepository.save(any(Person.class))).thenAnswer(invocation -> {
+            Person personCreated = invocation.getArgument(0);
+            personCreated.setId(2);
+            return personCreated;
+        });
+
+        // Act
+        PersonCreateUseCaseOutputDto output = personCreateUseCase.execute(userLogged, input);
+
+        // Assert
+        assertNotNull(output);
+        assertEquals(2, output.personId());
+        verify(personRepository).save(any(Person.class));
+        verify(userRepository, times(2)).findById(any(String.class));
+        verify(personRepository, times(1)).existsByUserId(any(Integer.class));
+        verify(personRepository, times(1)).existsByCpf(any(String.class));
+        verify(personRepository, times(1)).existsByPhone(any(String.class));
+        verify(personRepository, times(1)).existsByEmail(any(String.class));
     }
 }
