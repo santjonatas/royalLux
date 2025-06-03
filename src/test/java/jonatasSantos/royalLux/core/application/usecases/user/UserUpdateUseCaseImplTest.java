@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
