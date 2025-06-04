@@ -25,7 +25,7 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @Column(name = "username", nullable = false, length = 25)
     protected String username;
@@ -46,11 +46,11 @@ public class User implements UserDetails{
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

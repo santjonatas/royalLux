@@ -97,7 +97,7 @@ public class PersonGetUseCaseImpl implements PersonGetUseCase {
         if(userLogged.getRole().equals(UserRole.CLIENT)){
             persons = Stream.concat(
                     persons.stream().filter(personFound -> !personFound.getUser().getRole().equals(UserRole.CLIENT)),
-                    persons.stream().filter(personFound -> personFound.getUser().getId() == userLogged.getId())
+                    persons.stream().filter(personFound -> personFound.getUser().getId().equals(userLogged.getId()))
             ).toList();
         }
 
