@@ -13,6 +13,8 @@ import jonatasSantos.royalLux.core.domain.enums.AddressStates;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class AddressCreateUseCaseImpl implements AddressCreateUseCase {
 
@@ -33,12 +35,12 @@ public class AddressCreateUseCaseImpl implements AddressCreateUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Usuário é inexistente"));
 
         if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
-            if(existingUser.getId() != userLogged.getId())
+            if(!Objects.equals(existingUser.getId(), userLogged.getId()))
                 throw new UnauthorizedException("Você não possui autorização para criar endereço de outro usuário");
         }
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
-            if(existingUser.getId() != userLogged.getId())
+            if(!Objects.equals(existingUser.getId(), userLogged.getId()))
                 throw new UnauthorizedException("Você não possui autorização para criar endereço de outro usuário");
         }
 
