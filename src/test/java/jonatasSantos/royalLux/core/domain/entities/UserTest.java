@@ -37,7 +37,7 @@ class UserTest {
 
     @Test
     @DisplayName("Quando atribuir valor com menos de 5 caracteres ao username, estourar exceção IllegalArgumentException com mensagem 'Username deve conter pelo menos 5 caracteres'")
-    void deveLancarExcecaoQuandoAtribuirValorMenorDeCincoCaracteresAoUsername(){
+    void deveLancarExcecaoQuandoAtribuirValorMenorDe5CaracteresAoUsername(){
         // Arrange
         User user = new User();
 
@@ -51,7 +51,7 @@ class UserTest {
 
     @Test
     @DisplayName("Quando atribuir valor com mais de 25 caracteres ao username, estourar exceção IllegalArgumentException com mensagem 'Username não deve conter mais que 25 caracteres'")
-    void deveLancarExcecaoQuandoAtribuirValorMaiorDeVinteECincoCaracteresAoUsername(){
+    void deveLancarExcecaoQuandoAtribuirValorMaiorDe25CaracteresAoUsername(){
         // Arrange
         User user = new User();
 
@@ -121,7 +121,7 @@ class UserTest {
 
     @Test
     @DisplayName("Quando atribuir valor com menos de 8 caracteres a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha deve conter pelo menos 8 caracteres'")
-    void deveLancarExcecaoQuandoAtribuirValorMenorDeOitoCaracteresAValidacaoDeSenha(){
+    void deveLancarExcecaoQuandoAtribuirValorMenorDe8CaracteresAValidacaoDeSenha(){
         // Arrange
         User user = new User();
 
@@ -135,7 +135,7 @@ class UserTest {
 
     @Test
     @DisplayName("Quando atribuir valor com mais de 50 caracteres a validação de senha, estourar exceção IllegalArgumentException com mensagem 'Senha não deve conter mais que 50 caracteres'")
-    void deveLancarExcecaoQuandoAtribuirValorMaiorDeCinquentaCaracteresAValidacaoDeSenha(){
+    void deveLancarExcecaoQuandoAtribuirValorMaiorDe50CaracteresAValidacaoDeSenha(){
         // Arrange
         User user = new User();
 
