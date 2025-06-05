@@ -6,7 +6,6 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.AddressStates;

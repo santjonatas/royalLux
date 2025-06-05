@@ -29,10 +29,8 @@ public class AddressDeleteUseCaseImpl implements AddressDeleteUseCase {
         var address = this.addressRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Endereço inexistente"));
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)
-                && address.getUser().getId() != userLogged.getId()){
+        if(userLogged.getRole().equals(UserRole.CLIENT) && address.getUser().getId() != userLogged.getId())
             throw new UnauthorizedException("Você não possui autorização para deletar endereço de outro usuário");
-        }
 
         this.addressRepository.delete(address);
 
