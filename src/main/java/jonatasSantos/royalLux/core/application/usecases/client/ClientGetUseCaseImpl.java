@@ -78,11 +78,10 @@ public class ClientGetUseCaseImpl implements ClientGetUseCase {
 
         var clients = typedQuery.getResultList();
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)){
-            clients = Stream.concat(
-                    clients.stream().filter(clientFound -> !clientFound.getUser().getRole().equals(UserRole.CLIENT)),
-                    clients.stream().filter(clientFound -> clientFound.getUser().getId() == userLogged.getId())
-            ).toList();
+        if (userLogged.getRole().equals(UserRole.CLIENT)) {
+            clients = clients.stream()
+                    .filter(clientFound -> clientFound.getUser().getId().equals(userLogged.getId()))
+                    .toList();
         }
 
         return clients.stream()
