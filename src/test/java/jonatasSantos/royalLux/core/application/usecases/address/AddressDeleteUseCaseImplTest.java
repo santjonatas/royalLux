@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.AddressRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
-import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
 import jonatasSantos.royalLux.core.domain.entities.User;

@@ -35,13 +35,8 @@ public class ClientCreateUseCaseImpl implements ClientCreateUseCase {
         if(existingUser.getRole() != UserRole.CLIENT)
             throw new IllegalArgumentException("Usuário deve ser um cliente");
 
-        if(userLogged.getRole().equals(UserRole.CLIENT)){
-            if(!existingUser.getRole().equals(UserRole.CLIENT))
-                throw new UnauthorizedException("Você não possui autorização para criar cliente com outra permissão");
-
-            if(existingUser.getId() != userLogged.getId())
-                throw new UnauthorizedException("Você não possui autorização para criar outro cliente");
-        }
+        if(userLogged.getRole().equals(UserRole.CLIENT) && existingUser.getId() != userLogged.getId())
+            throw new UnauthorizedException("Você não possui autorização para criar outro cliente");
 
         if(this.clientRepository.existsByUserId(existingUser.getId()))
             throw new ConflictException("Cliente já vinculado a um usuário");

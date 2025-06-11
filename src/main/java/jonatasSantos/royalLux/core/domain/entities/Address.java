@@ -162,7 +162,7 @@ public class Address{
         }
 
         if (!cep.matches("\\d{5}-\\d{3}")) {
-            throw new IllegalArgumentException("CEP com formato inválido.");
+            throw new IllegalArgumentException("CEP com formato inválido");
         }
 
         this.cep = cep;
