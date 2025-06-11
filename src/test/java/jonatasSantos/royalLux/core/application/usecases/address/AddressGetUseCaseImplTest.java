@@ -1,10 +1,5 @@
 package jonatasSantos.royalLux.core.application.usecases.address;
 
-<<<<<<< HEAD
-import static org.junit.jupiter.api.Assertions.*;
-class AddressGetUseCaseImplTest {
-
-=======
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
@@ -157,11 +152,11 @@ class AddressGetUseCaseImplTest {
 
         // Act
         var result = addressGetUseCase.execute(
-                    userLogged,
-                    input,
-                    0,
-                    10,
-                    true
+                userLogged,
+                input,
+                0,
+                10,
+                true
         );
 
         // Assert
@@ -322,5 +317,4 @@ class AddressGetUseCaseImplTest {
         assertTrue(result.stream().anyMatch(address -> address.id().equals(2))); // Client
         assertTrue(result.stream().anyMatch(address -> address.id().equals(3))); // Employee
     }
->>>>>>> b70a56c7ae309a45d354bc6e6bd6017005f78e3f
 }
