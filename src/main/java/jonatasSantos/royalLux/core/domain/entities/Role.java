@@ -19,7 +19,7 @@ public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @Column(name = "name", nullable = false, length = 50)
     protected String name;
@@ -33,9 +33,9 @@ public class Role{
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() { return this.id; }
+    public Integer getId() { return this.id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() {
         return this.name;
