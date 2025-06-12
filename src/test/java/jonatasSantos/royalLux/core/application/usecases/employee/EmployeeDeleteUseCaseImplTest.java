@@ -52,7 +52,7 @@ class EmployeeDeleteUseCaseImplTest {
     @DisplayName("Deve deletar funcionário com sucesso e retornar true em propriedade success do output")
     void deveDeletarFuncionarioComSucesso() {
         // Arrange
-        User user = new User("mateus_2", UserRole.CLIENT, true);
+        User user = new User("mateus_2", UserRole.EMPLOYEE, true);
         Employee employee = new Employee(user, "Barbeiro", BigDecimal.valueOf(2000));
 
         when(employeeRepository.findById(String.valueOf(3)))
