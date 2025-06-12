@@ -33,7 +33,7 @@ class RoleDeleteUseCaseImplTest {
 
     @Test
     @DisplayName("Quando não existir função a ser deletada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Função inexistente'")
-    void deveLancarExcecaoQuandoNaoExistirClienteASerDeletado() {
+    void deveLancarExcecaoQuandoNaoExistirFuncaoASerDeletada() {
         // Arrange
         when(roleRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
