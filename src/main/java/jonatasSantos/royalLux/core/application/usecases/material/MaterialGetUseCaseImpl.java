@@ -82,7 +82,6 @@ public class MaterialGetUseCaseImpl implements MaterialGetUseCase {
         if(userLogged.getRole().equals(UserRole.CLIENT)) {
             materials.forEach(materialFound -> {
                 materialFound.setValue(null);
-                materialFound.setQuantity(null);
             });
         }
 
