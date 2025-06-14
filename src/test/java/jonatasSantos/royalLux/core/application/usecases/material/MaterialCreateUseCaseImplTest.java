@@ -6,7 +6,6 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialCreateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
