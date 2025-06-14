@@ -12,12 +12,12 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SalonSalonServiceCreateUseCaseImpl implements SalonServiceCreateUseCase {
+public class SalonServiceCreateUseCaseImpl implements SalonServiceCreateUseCase {
 
     private final SalonServiceRepository salonServiceRepository;
     private final UserRepository userRepository;
 
-    public SalonSalonServiceCreateUseCaseImpl(SalonServiceRepository salonServiceRepository, UserRepository userRepository) {
+    public SalonServiceCreateUseCaseImpl(SalonServiceRepository salonServiceRepository, UserRepository userRepository) {
         this.salonServiceRepository = salonServiceRepository;
         this.userRepository = userRepository;
     }
