@@ -25,7 +25,7 @@ public class Material {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @Column(name = "name", nullable = false, length = 50)
     protected String name;
@@ -45,11 +45,11 @@ public class Material {
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
