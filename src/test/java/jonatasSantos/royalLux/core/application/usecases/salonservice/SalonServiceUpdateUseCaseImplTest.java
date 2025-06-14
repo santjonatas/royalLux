@@ -5,7 +5,6 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServi
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
