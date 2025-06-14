@@ -36,8 +36,8 @@ class MaterialUpdateUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Quando não existir material a ser atualizada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Material é inexistente'")
-    void deveLancarExcecaoQuandoNaoExistirClienteASerDeletado() {
+    @DisplayName("Quando não existir material a ser atualizado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Material é inexistente'")
+    void deveLancarExcecaoQuandoNaoExistirMaterialASerAtualizado() {
         // Arrange
         MaterialUpdateUseCaseInputDto input = new MaterialUpdateUseCaseInputDto("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40));
 
