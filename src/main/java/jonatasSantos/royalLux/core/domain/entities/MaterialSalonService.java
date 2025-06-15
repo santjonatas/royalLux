@@ -22,7 +22,7 @@ public class MaterialSalonService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @ManyToOne
     @JoinColumn(name = "salonServiceId", nullable = false)
@@ -41,9 +41,9 @@ public class MaterialSalonService {
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() { return this.id; }
+    public Integer getId() { return this.id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public SalonService getSalonService() {
         return this.salonService;
@@ -51,7 +51,7 @@ public class MaterialSalonService {
 
     public void setSalonService(SalonService salonService) {
         if(salonService == null)
-            throw new IllegalArgumentException("Salão não pode ser nulo");
+            throw new IllegalArgumentException("Serviço não pode ser nulo");
 
         this.salonService = salonService;
     }
