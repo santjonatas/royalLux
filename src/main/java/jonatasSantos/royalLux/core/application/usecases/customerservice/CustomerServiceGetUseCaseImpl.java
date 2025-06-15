@@ -207,7 +207,7 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
                         customerServiceFound.getId(),
                         customerServiceFound.getCreatedByUser().getId(),
                         customerServiceFound.getClient().getId(),
-                        customerServiceFound.getStatus(),
+                        customerServiceFound.getStatus().getDescricao(),
                         customerServiceFound.getStartTime(),
                         customerServiceFound.getEstimatedFinishingTime(),
                         customerServiceFound.getFinishingTime(),

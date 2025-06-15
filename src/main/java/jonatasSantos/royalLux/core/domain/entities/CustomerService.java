@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "customerService")
 public class CustomerService{
-    public CustomerService(User createdByUser, Client client, String status, LocalDateTime startTime, LocalDateTime estimatedFinishingTime, LocalDateTime finishingTime, BigDecimal totalValue, String details) {
+    public CustomerService(User createdByUser, Client client, CustomerServiceStatus status, LocalDateTime startTime, LocalDateTime estimatedFinishingTime, LocalDateTime finishingTime, BigDecimal totalValue, String details) {
         this.setCreatedByUser(createdByUser);
         this.setClient(client);
         this.setStatus(status);
@@ -40,7 +40,7 @@ public class CustomerService{
     protected Client client;
 
     @Column(name = "status", nullable = false, length = 30)
-    protected String status;
+    protected CustomerServiceStatus status;
 
     @Column(name = "startTime", nullable = false)
     protected LocalDateTime startTime;
@@ -89,22 +89,11 @@ public class CustomerService{
         this.client = client;
     }
 
-    public String getStatus() {
+    public CustomerServiceStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(String status) {
-        if(status == null)
-            throw new IllegalArgumentException("Status não pode ser nulo");
-
-        if (status.isEmpty())
-            throw new IllegalArgumentException("Status não pode ser vazio");
-
-        if (status.length() > 30)
-            throw new IllegalArgumentException("Status não deve conter mais que 30 caracteres");
-
-        this.status = status;
-    }
+    public void setStatus(CustomerServiceStatus status) { this.status = status; }
 
     public LocalDateTime getStartTime() {
         return this.startTime;

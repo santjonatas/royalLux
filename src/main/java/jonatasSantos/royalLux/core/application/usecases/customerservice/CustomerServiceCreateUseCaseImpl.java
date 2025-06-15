@@ -36,7 +36,7 @@ public class CustomerServiceCreateUseCaseImpl implements CustomerServiceCreateUs
         CustomerService customerService = new CustomerService(
                 userLogged,
                 client,
-                input.status().getDescricao(),
+                input.status(),
                 input.startTime(),
                 null,
                 null,
