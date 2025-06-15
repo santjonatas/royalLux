@@ -34,7 +34,7 @@ class EmployeeRoleDeleteUseCaseImplTest {
 
     @Test
     @DisplayName("Quando não existir vínculo entre funcionário e função a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Vínculo entre funcionário e função inexistente'")
-    void deveLancarExcecaoQuandoNaoExistirClienteASerDeletado() {
+    void deveLancarExcecaoQuandoNaoExistirVinculoEntreFuncionarioEFuncaoASerDeletado() {
         // Arrange
         when(employeeRoleRepository.findById(String.valueOf(1)))
                 .thenReturn(Optional.empty());
