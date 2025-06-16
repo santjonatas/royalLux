@@ -29,7 +29,7 @@ public class CustomerService{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @ManyToOne
     @JoinColumn(name = "createdByUserId", nullable = false, updatable = false)
@@ -63,9 +63,9 @@ public class CustomerService{
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() { return this.id; }
+    public Integer getId() { return this.id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public User getCreatedByUser() {
         return this.createdByUser;
