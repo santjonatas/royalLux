@@ -2,17 +2,12 @@ package jonatasSantos.royalLux.core.application.usecases.customerservice;
 
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
-import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.person.PersonUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.usecases.role.RoleUpdateUseCaseImpl;
 import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.CustomerService;
-import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
