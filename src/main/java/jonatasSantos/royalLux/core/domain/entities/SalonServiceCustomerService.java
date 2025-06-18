@@ -26,7 +26,7 @@ public class SalonServiceCustomerService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @ManyToOne
     @JoinColumn(name = "customerServiceId", nullable = false, updatable = false)
@@ -55,9 +55,9 @@ public class SalonServiceCustomerService {
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() { return this.id; }
+    public Integer getId() { return this.id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public CustomerService getCustomerService() {
         return this.customerService;
