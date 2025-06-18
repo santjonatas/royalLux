@@ -31,7 +31,7 @@ public class SalonServiceCustomerServiceUpdateUseCaseImpl implements SalonServic
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         var salonServiceCustomerServiceToBeUpdated = this.salonServiceCustomerServiceRepository.findById(String.valueOf(salonServiceCustomerServiceId))
-                .orElseThrow(() -> new EntityNotFoundException("Vínculo entre serviço, atendimento e funcionário é inexistente"));
+                .orElseThrow(() -> new EntityNotFoundException("Vínculo entre serviço e atendimento é inexistente"));
 
         var employee = this.employeeRepository.findById(input.employeeId().toString())
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário é inexistente"));
