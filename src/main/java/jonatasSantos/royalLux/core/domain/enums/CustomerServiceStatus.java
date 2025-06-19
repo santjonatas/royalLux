@@ -1,5 +1,8 @@
 package jonatasSantos.royalLux.core.domain.enums;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public enum CustomerServiceStatus {
     AGENDADO("AGENDADO"),
     AGUARDANDO_CONFIRMACAO("AGUARDANDO CONFIRMAÇÃO"),
@@ -19,5 +22,11 @@ public enum CustomerServiceStatus {
     public String getDescricao() {
         return descricao;
     }
-}
 
+    public static final Set<CustomerServiceStatus> FINISHED_STATUSES = EnumSet.of(
+            NAO_COMPARECEU,
+            FINALIZADO,
+            CANCELADO_PELO_CLIENTE,
+            CANCELADO_PELO_SALAO
+    );
+}

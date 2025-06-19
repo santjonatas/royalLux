@@ -7,6 +7,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomers
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,6 +43,9 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
         var employee = this.employeeRepository.findById(String.valueOf(input.employeeId()))
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário é inexistente"));
 
+        if(!CustomerServiceStatus.FINISHED_STATUSES.contains(customerService.getStatus()) && input.finishingTime() != null)
+            throw new IllegalArgumentException("Não é possível atualizar o horário de finalização desse serviço com o status de atendimento " + customerService.getStatus().getDescricao());
+
         customerService.incrementTotalValue(salonService.getValue());
 
         customerService.incrementEstimatedFinishingTime(salonService.getEstimatedTime());
@@ -56,6 +60,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
         );
 
         this.salonServiceCustomerServiceRepository.save(salonServiceCustomerService);
+        this.customerServiceRepository.save(customerService);
 
         return new SalonServiceCustomerServiceCreateUseCaseOutputDto(salonServiceCustomerService.getId());
     }
