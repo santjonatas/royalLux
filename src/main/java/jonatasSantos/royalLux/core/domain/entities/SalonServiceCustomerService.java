@@ -3,18 +3,31 @@ package jonatasSantos.royalLux.core.domain.entities;
 import jakarta.persistence.*;
 import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "salonServicesCustomerService")
 public class SalonServiceCustomerService {
 
-    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDateTime startTime, LocalDateTime finishingTime, Boolean completed) {
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, LocalTime estimatedFinishingTime, Boolean completed) {
         this.setCustomerService(customerService);
         this.setSalonService(salonService);
         this.setEmployee(employee);
+        this.setDate(date);
         this.startTime = startTime;
-        this.finishingTime = finishingTime;
+        this.estimatedFinishingTime = estimatedFinishingTime;
+        this.setCompleted(completed);
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, Boolean completed) {
+        this.setCustomerService(customerService);
+        this.setSalonService(salonService);
+        this.setEmployee(employee);
+        this.setDate(date);
+        this.startTime = startTime;
         this.setCompleted(completed);
         this.createdAt = LocalDateTime.now();
     }
@@ -40,11 +53,14 @@ public class SalonServiceCustomerService {
     @JoinColumn(name = "employeeId", nullable = false, updatable = false)
     protected Employee employee;
 
-    @Column(name = "startTime")
-    protected LocalDateTime startTime;
+    @Column(name = "date")
+    protected LocalDate date;
 
-    @Column(name = "finishingTime")
-    protected LocalDateTime finishingTime;
+    @Column(name = "startTime")
+    protected LocalTime startTime;
+
+    @Column(name = "estimatedFinishingTime")
+    protected LocalTime estimatedFinishingTime;
 
     @Column(name = "completed", nullable = false)
     protected Boolean completed;
@@ -92,20 +108,39 @@ public class SalonServiceCustomerService {
         this.employee = employee;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getDate() { return date; }
+
+    public void setDate(LocalDate date) {
+
+        if(date == null)
+            throw new IllegalArgumentException("Data não pode ser nula");
+
+        this.date = date;
+    }
+
+    public LocalTime getStartTime() {
         return this.startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getFinishingTime() {
-        return this.finishingTime;
+    public LocalTime getEstimatedFinishingTime() {
+        return this.estimatedFinishingTime;
     }
 
-    public void setFinishingTime(LocalDateTime finishingTime) {
-        this.finishingTime = finishingTime;
+    public void setEstimatedFinishingTime(LocalTime finishingTime) {
+        this.estimatedFinishingTime = finishingTime;
+    }
+
+    public void incrementEstimatedFinishingTime(LocalTime estimatedTime){
+        if(this.estimatedFinishingTime == null)
+            this.estimatedFinishingTime = this.startTime;
+
+        this.estimatedFinishingTime = this.estimatedFinishingTime
+                .plusHours(estimatedTime.getHour())
+                .plusMinutes(estimatedTime.getMinute());
     }
 
     public Boolean isCompleted() {

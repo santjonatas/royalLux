@@ -91,7 +91,7 @@ public class MaterialGetUseCaseImpl implements MaterialGetUseCase {
                         materialFound.getName(),
                         materialFound.getDescription(),
                         materialFound.getValue(),
-                        materialFound.getQuantity(),
+                        materialFound.getAvailableQuantity(),
                         materialFound.getCreatedAt(),
                         materialFound.getUpdatedAt()
                 )).toList();

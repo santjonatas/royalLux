@@ -14,7 +14,7 @@ public class Material {
         this.setName(name);
         this.setDescription(description);
         this.value = value;
-        this.setQuantity(quantity);
+        this.setAvailableQuantity(quantity);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -36,8 +36,8 @@ public class Material {
     @Column(name = "value")
     protected BigDecimal value;
 
-    @Column(name = "quantity", nullable = false)
-    protected Integer quantity;
+    @Column(name = "availableQuantity", nullable = false)
+    protected Integer availableQuantity;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
@@ -89,26 +89,26 @@ public class Material {
         this.value = value;
     }
 
-    public Integer getQuantity() {
-        return this.quantity;
+    public Integer getAvailableQuantity() {
+        return this.availableQuantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        if(quantity == null)
-            throw new IllegalArgumentException("Quantidade não pode ser nula");
+    public void setAvailableQuantity(Integer availableQuantity) {
+        if(availableQuantity == null)
+            throw new IllegalArgumentException("Quantidade disponível não pode ser nula");
 
-        this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
     }
 
     public void incrementQuantity(Integer quantity){
-        this.quantity += quantity;
+        this.availableQuantity += quantity;
     }
 
     public void decrementQuantity(Integer quantity){
-        if(quantity > this.quantity)
+        if(quantity > this.availableQuantity)
             throw new IllegalArgumentException("Quantidade a ser removida não pode ser maior que a atual");
 
-        this.quantity -= quantity;
+        this.availableQuantity -= quantity;
     }
 
     public LocalDateTime getCreatedAt() {

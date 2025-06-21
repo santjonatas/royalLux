@@ -17,4 +17,7 @@ public interface SalonServiceCustomerServiceRepository extends JpaRepository<Sal
 
     List<SalonServiceCustomerService> deleteByCustomerServiceId(Integer customerServiceId);
 
+    List<SalonServiceCustomerService> findByEmployeeIdAndDate(Integer employeeId, LocalDate date);
+
+    List<SalonServiceCustomerService> findByCustomerServiceId(Integer customerServiceId);
 }

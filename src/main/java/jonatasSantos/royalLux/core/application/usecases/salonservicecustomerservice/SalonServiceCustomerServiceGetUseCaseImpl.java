@@ -128,8 +128,9 @@ public class SalonServiceCustomerServiceGetUseCaseImpl implements SalonServiceCu
                         salonServiceCustomerServiceFound.getCustomerService().getId(),
                         salonServiceCustomerServiceFound.getSalonService().getId(),
                         salonServiceCustomerServiceFound.getEmployee().getId(),
+                        salonServiceCustomerServiceFound.getDate(),
                         salonServiceCustomerServiceFound.getStartTime(),
-                        salonServiceCustomerServiceFound.getFinishingTime(),
+                        salonServiceCustomerServiceFound.getEstimatedFinishingTime(),
                         salonServiceCustomerServiceFound.isCompleted(),
                         salonServiceCustomerServiceFound.getCreatedAt(),
                         salonServiceCustomerServiceFound.getUpdatedAt()

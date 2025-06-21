@@ -78,7 +78,7 @@ class MaterialTest {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            material.setQuantity(null);
+            material.setAvailableQuantity(null);
         });
 
         assertEquals("Quantidade não pode ser nula", exception.getMessage());
@@ -89,7 +89,7 @@ class MaterialTest {
     void deveLancarExcecaoQuandoDecrementarUmValorMaiorQueQuantidade(){
         // Arrange
         Material material = new Material();
-        material.setQuantity(5);
+        material.setAvailableQuantity(5);
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {

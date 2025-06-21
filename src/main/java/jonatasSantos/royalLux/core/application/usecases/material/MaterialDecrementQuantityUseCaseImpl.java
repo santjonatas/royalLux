@@ -31,6 +31,6 @@ public class MaterialDecrementQuantityUseCaseImpl implements MaterialDecrementQu
 
         this.materialRepository.save(materialToBeUpdated);
 
-        return new MaterialDecrementQuantityUseCaseOutputDto(materialToBeUpdated.getQuantity());
+        return new MaterialDecrementQuantityUseCaseOutputDto(materialToBeUpdated.getAvailableQuantity());
     }
 }

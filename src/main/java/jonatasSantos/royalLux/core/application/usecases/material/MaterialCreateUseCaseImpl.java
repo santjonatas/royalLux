@@ -34,7 +34,7 @@ public class MaterialCreateUseCaseImpl implements MaterialCreateUseCase {
                 input.name(),
                 input.description(),
                 input.value(),
-                input.quantity()
+                input.availableQuantity()
         );
 
         this.materialRepository.save(material);

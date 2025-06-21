@@ -31,6 +31,6 @@ public class MaterialIncrementQuantityUseCaseImpl implements MaterialIncrementQu
 
         this.materialRepository.save(materialToBeUpdated);
 
-        return new MaterialIncrementQuantityUseCaseOutputDto(materialToBeUpdated.getQuantity());
+        return new MaterialIncrementQuantityUseCaseOutputDto(materialToBeUpdated.getAvailableQuantity());
     }
 }
