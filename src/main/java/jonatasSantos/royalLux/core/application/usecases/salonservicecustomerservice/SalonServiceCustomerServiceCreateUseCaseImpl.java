@@ -72,9 +72,9 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
 
         if(!salonServicesCustomerServicesByEmployeeIdAndDate.isEmpty())
             salonServicesCustomerServicesByEmployeeIdAndDate.forEach(service -> {
-                if(input.startTime().equals(service.getStartTime()) || input.startTime().isAfter(service.getStartTime()) && input.startTime().isBefore(service.getEstimatedFinishingTime()))
+                if((input.startTime().equals(service.getStartTime()) || input.startTime().isAfter(service.getStartTime())) && input.startTime().isBefore(service.getEstimatedFinishingTime()))
                     throw new ConflictException("O funcionário " + employee.getUser().getUsername() +
-                            " já está vinculado a um serviço do atendimento " + service.getSalonService().getId() + " neste horário");
+                            " já está vinculado a um serviço do atendimento " + service.getCustomerService().getId() + " neste horário");
             });
 
         customerService.incrementTotalValue(salonService.getValue());
@@ -92,9 +92,9 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
 
         if(!salonServicesCustomerServicesByEmployeeIdAndDate.isEmpty())
             salonServicesCustomerServicesByEmployeeIdAndDate.forEach(service -> {
-                if(salonServiceCustomerService.getEstimatedFinishingTime().isAfter(service.getStartTime()))
+                if(salonServiceCustomerService.getEstimatedFinishingTime().isAfter(service.getStartTime()) && !input.startTime().isAfter(service.getEstimatedFinishingTime()))
                     throw new ConflictException("O funcionário " + employee.getUser().getUsername() +
-                            " já está vinculado a um serviço do atendimento " + service.getSalonService().getId() + " neste horário");
+                            " já está vinculado a um serviço do atendimento " + service.getCustomerService().getId() + " neste horário");
             });
 
         this.salonServiceCustomerServiceRepository.save(salonServiceCustomerService);

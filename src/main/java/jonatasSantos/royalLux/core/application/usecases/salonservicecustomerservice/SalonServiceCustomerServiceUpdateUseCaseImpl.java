@@ -5,6 +5,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRe
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCase;
+import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -35,6 +36,24 @@ public class SalonServiceCustomerServiceUpdateUseCaseImpl implements SalonServic
 
         var employee = this.employeeRepository.findById(input.employeeId().toString())
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário é inexistente"));
+
+        var salonServicesCustomerServicesByEmployeeIdAndDate = this.salonServiceCustomerServiceRepository.findByEmployeeIdAndDate(employee.getId(), salonServiceCustomerServiceToBeUpdated.getCustomerService().getStartTime().toLocalDate());
+
+        if(!salonServicesCustomerServicesByEmployeeIdAndDate.isEmpty())
+            salonServicesCustomerServicesByEmployeeIdAndDate.forEach(service -> {
+                if(salonServiceCustomerServiceId != service.getId())
+                    if((salonServiceCustomerServiceToBeUpdated.getStartTime().equals(service.getStartTime()) || salonServiceCustomerServiceToBeUpdated.getStartTime().isAfter(service.getStartTime())) && salonServiceCustomerServiceToBeUpdated.getStartTime().isBefore(service.getEstimatedFinishingTime()))
+                        throw new ConflictException("O funcionário " + employee.getUser().getUsername() +
+                                " já está vinculado a um serviço do atendimento " + service.getCustomerService().getId() + " neste horário");
+            });
+
+        if(!salonServicesCustomerServicesByEmployeeIdAndDate.isEmpty())
+            salonServicesCustomerServicesByEmployeeIdAndDate.forEach(service -> {
+                if(salonServiceCustomerServiceId != service.getId())
+                    if(salonServiceCustomerServiceToBeUpdated.getEstimatedFinishingTime().isAfter(service.getStartTime()) && !salonServiceCustomerServiceToBeUpdated.getStartTime().isAfter(service.getEstimatedFinishingTime()))
+                        throw new ConflictException("O funcionário " + employee.getUser().getUsername() +
+                                " já está vinculado a um serviço do atendimento " + service.getCustomerService().getId() + " neste horário");
+            });
 
         ArrayList<String> warningList = new ArrayList<>();
 
