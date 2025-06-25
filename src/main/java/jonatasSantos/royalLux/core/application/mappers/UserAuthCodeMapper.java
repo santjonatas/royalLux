@@ -6,6 +6,10 @@ public class UserAuthCodeMapper {
     public String code;
     public String token;
 
+    public UserAuthCodeMapper() {
+
+    }
+
     public UserAuthCodeMapper(String username, String code, String token) {
         this.username = username;
         this.code = code;

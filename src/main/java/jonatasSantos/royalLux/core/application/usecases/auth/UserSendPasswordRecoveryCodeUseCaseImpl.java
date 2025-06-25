@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.application.usecases.user;
+package jonatasSantos.royalLux.core.application.usecases.auth;
 
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;

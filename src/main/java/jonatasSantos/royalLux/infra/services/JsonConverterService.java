@@ -16,4 +16,12 @@ public class JsonConverterService implements SerializerService {
             throw new RuntimeException("Erro ao converter para JSON", e);
         }
     }
+
+    public <T> T fromJson(String json, Class<T> clazz) {
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Erro ao converter JSON para objeto", e);
+        }
+    }
 }
