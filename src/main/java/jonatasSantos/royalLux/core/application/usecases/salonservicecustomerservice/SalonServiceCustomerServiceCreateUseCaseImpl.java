@@ -6,7 +6,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecu
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
