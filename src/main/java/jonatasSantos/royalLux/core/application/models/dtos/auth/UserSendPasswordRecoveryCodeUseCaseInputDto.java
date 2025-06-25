@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.application.models.dtos.user;
+package jonatasSantos.royalLux.core.application.models.dtos.auth;
 
 import jonatasSantos.royalLux.core.domain.enums.CodeDeliveryChannel;
 

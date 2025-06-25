@@ -5,7 +5,7 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterU
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserSendPasswordRecoveryCodeUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserSendPasswordRecoveryCodeUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseInputDto;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

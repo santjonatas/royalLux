@@ -6,8 +6,9 @@ import jonatasSantos.royalLux.core.application.contracts.services.AuthCodeServic
 import jonatasSantos.royalLux.core.application.contracts.services.MessagePublisher;
 import jonatasSantos.royalLux.core.application.contracts.services.SerializerService;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserSendPasswordRecoveryCodeUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserSendPasswordRecoveryCodeUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.user.UserSendPasswordRecoveryCodeUseCaseOutputDto;
+import jonatasSantos.royalLux.core.application.mappers.UserAuthCodeMapper;
+import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.enums.CodeDeliveryChannel;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,8 @@ public class UserSendPasswordRecoveryCodeUseCaseImpl implements UserSendPassword
         var user = this.userRepository.findByUsername(input.username())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
-        String code = this.serializerService.toJson(this.authCodeService.generateCode(300));
+        var authCode = this.authCodeService.generateCode(300);
+        String code = this.serializerService.toJson(new UserAuthCodeMapper(user.getUsername(), authCode.code(), authCode.token()));
 
         if(input.deliveryChannel().equals(CodeDeliveryChannel.EMAIL)){
             this.notificationPublisher.sendToEmailQueue(code);
