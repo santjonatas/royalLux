@@ -1,6 +1,6 @@
-package jonatasSantos.royalLux.core.application.contracts.services;
+package jonatasSantos.royalLux.core.application.contracts.gateways;
 
-public interface EmailService {
+public interface EmailGateway {
 
     public void sendEmail(String to, String subject, String body);
 

@@ -1,16 +1,16 @@
-package jonatasSantos.royalLux.infra.services;
+package jonatasSantos.royalLux.infra.services.messagebroker.publishers;
 
-import jonatasSantos.royalLux.core.application.contracts.services.MessagePublisher;
+import jonatasSantos.royalLux.core.application.contracts.services.messagebroker.publishers.MessagePublisher;
 import jonatasSantos.royalLux.infra.config.RabbitMQConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RabbitMqService implements MessagePublisher {
+public class RabbitMqPublisher implements MessagePublisher {
 
     private final AmqpTemplate amqpTemplate;
 
-    public RabbitMqService(AmqpTemplate amqpTemplate) {
+    public RabbitMqPublisher(AmqpTemplate amqpTemplate) {
         this.amqpTemplate = amqpTemplate;
     }
 

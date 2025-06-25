@@ -3,7 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.auth;
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.services.AuthCodeService;
-import jonatasSantos.royalLux.core.application.contracts.services.MessagePublisher;
+import jonatasSantos.royalLux.core.application.contracts.services.messagebroker.publishers.MessagePublisher;
 import jonatasSantos.royalLux.core.application.contracts.services.SerializerService;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserSendPasswordRecoveryCodeUseCase;
 import jonatasSantos.royalLux.core.application.mappers.UserAuthCodeMapper;

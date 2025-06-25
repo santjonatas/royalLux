@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.application.contracts.services;
+package jonatasSantos.royalLux.core.application.contracts.services.messagebroker.publishers;
 
 public interface MessagePublisher {
 

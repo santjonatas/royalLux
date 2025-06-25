@@ -1,8 +1,8 @@
-package jonatasSantos.royalLux.presentation.api.messagebroker;
+package jonatasSantos.royalLux.infra.services.messagebroker.consumers;
 
 import jonatasSantos.royalLux.core.application.contracts.repositories.PersonRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
-import jonatasSantos.royalLux.core.application.contracts.services.EmailService;
+import jonatasSantos.royalLux.core.application.contracts.gateways.EmailGateway;
 import jonatasSantos.royalLux.core.application.contracts.services.SerializerService;
 import jonatasSantos.royalLux.core.application.mappers.UserAuthCodeMapper;
 import jonatasSantos.royalLux.core.domain.entities.User;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailQueueConsumer {
 
-    private final EmailService emailService;
+    private final EmailGateway emailGateway;
     private final UserRepository userRepository;
     private final PersonRepository personRepository;
     private final SerializerService serializerService;
 
-    public EmailQueueConsumer(EmailService emailService, UserRepository userRepository, PersonRepository personRepository, SerializerService serializerService) {
-        this.emailService = emailService;
+    public EmailQueueConsumer(EmailGateway emailGateway, UserRepository userRepository, PersonRepository personRepository, SerializerService serializerService) {
+        this.emailGateway = emailGateway;
         this.userRepository = userRepository;
         this.personRepository = personRepository;
         this.serializerService = serializerService;
@@ -38,7 +38,7 @@ public class EmailQueueConsumer {
             var person = this.personRepository.findByUserId(user.getId());
 
             if(!person.getEmail().isEmpty())
-                this.emailService.sendEmail(person.getEmail(), "teste", "");
+                this.emailGateway.sendEmail(person.getEmail(), "teste", "");
         }
     }
 }
