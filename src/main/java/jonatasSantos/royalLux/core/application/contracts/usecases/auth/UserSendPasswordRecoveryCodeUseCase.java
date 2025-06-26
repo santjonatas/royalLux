@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.core.application.contracts.usecases.user;
+package jonatasSantos.royalLux.core.application.contracts.usecases.auth;
 
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseOutputDto;

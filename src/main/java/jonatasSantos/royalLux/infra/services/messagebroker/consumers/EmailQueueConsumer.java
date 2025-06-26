@@ -8,7 +8,9 @@ import jonatasSantos.royalLux.core.application.mappers.UserAuthCodeMapper;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.infra.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import java.time.Duration;
 
 @Component
 public class EmailQueueConsumer {
@@ -17,12 +19,14 @@ public class EmailQueueConsumer {
     private final UserRepository userRepository;
     private final PersonRepository personRepository;
     private final SerializerService serializerService;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public EmailQueueConsumer(EmailGateway emailGateway, UserRepository userRepository, PersonRepository personRepository, SerializerService serializerService) {
+    public EmailQueueConsumer(EmailGateway emailGateway, UserRepository userRepository, PersonRepository personRepository, SerializerService serializerService, RedisTemplate<String, String> redisTemplate) {
         this.emailGateway = emailGateway;
         this.userRepository = userRepository;
         this.personRepository = personRepository;
         this.serializerService = serializerService;
+        this.redisTemplate = redisTemplate;
     }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_EMAIL)
@@ -30,15 +34,18 @@ public class EmailQueueConsumer {
 
         var userAuthCode = serializerService.fromJson(message, UserAuthCodeMapper.class);
 
-        var optionalUser = this.userRepository.findByUsername(userAuthCode.username);
+        var optionalUser = this.userRepository.findByUsername(userAuthCode.getUsername());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-
             var person = this.personRepository.findByUserId(user.getId());
 
-            if(!person.getEmail().isEmpty())
-                this.emailGateway.sendEmail(person.getEmail(), "teste", "");
+            if(!person.getEmail().isEmpty()){
+                String redisKey = "tokenResetPassword:" + userAuthCode.getUsername();
+                redisTemplate.opsForValue().set(redisKey, userAuthCode.getToken(), Duration.ofMinutes(5));
+
+                this.emailGateway.sendEmail(person.getEmail(), "Código de Recuperação de Senha", userAuthCode.getCode());
+            }
         }
     }
 }

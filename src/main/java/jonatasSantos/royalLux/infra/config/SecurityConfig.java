@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "api/auth/login", "api/auth/register", "api/auth/sendPasswordRecoveryCode").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/auth/login", "api/auth/register", "api/auth/sendPasswordRecoveryCode", "api/auth/resetPassword").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )

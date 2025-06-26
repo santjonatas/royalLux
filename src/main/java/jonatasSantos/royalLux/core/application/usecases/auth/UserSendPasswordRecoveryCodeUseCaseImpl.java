@@ -5,7 +5,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.contracts.services.AuthCodeService;
 import jonatasSantos.royalLux.core.application.contracts.services.messagebroker.publishers.MessagePublisher;
 import jonatasSantos.royalLux.core.application.contracts.services.SerializerService;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserSendPasswordRecoveryCodeUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.auth.UserSendPasswordRecoveryCodeUseCase;
 import jonatasSantos.royalLux.core.application.mappers.UserAuthCodeMapper;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseOutputDto;

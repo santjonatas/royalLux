@@ -2,9 +2,11 @@ package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.LoginUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserSendPasswordRecoveryCodeUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.auth.UserResetPasswordUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.auth.UserSendPasswordRecoveryCodeUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.LoginUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.auth.UserResetPasswordUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserSendPasswordRecoveryCodeUseCaseInputDto;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,10 @@ public class AuthController {
     private RegisterUseCase registerUseCase;
 
     @Autowired
-    UserSendPasswordRecoveryCodeUseCase userSendPasswordRecoveryCodeUseCase;
+    private UserSendPasswordRecoveryCodeUseCase userSendPasswordRecoveryCodeUseCase;
+
+    @Autowired
+    private UserResetPasswordUseCase userResetPasswordUseCase;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginUseCaseInputDto body) throws AuthenticationException {
@@ -53,6 +58,14 @@ public class AuthController {
     @PostMapping("/sendPasswordRecoveryCode")
     public ResponseEntity sendPasswordRecoveryCode(@RequestBody UserSendPasswordRecoveryCodeUseCaseInputDto body){
         var response = userSendPasswordRecoveryCodeUseCase.execute(body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity resetPassword(@RequestBody UserResetPasswordUseCaseInputDto body){
+        var response = userResetPasswordUseCase.execute(body);
         var responsePresenter = new ResponsePresenter(response);
 
         return ResponseEntity.ok(responsePresenter);
