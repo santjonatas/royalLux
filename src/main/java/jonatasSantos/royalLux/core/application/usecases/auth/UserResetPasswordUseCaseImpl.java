@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.contracts.services.AuthCodeServic
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.UserResetPasswordUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserResetPasswordUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.UserResetPasswordUseCaseOutputDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserResetPasswordUseCaseImpl implements UserResetPasswordUseCase {
+
+    @Value("${redis.db.key.token.reset.password}")
+    private String tokenResetPasswordKey;
 
     private final RedisTemplate<String, String> redisTemplate;
     private final AuthCodeService authCodeService;
@@ -29,10 +33,10 @@ public class UserResetPasswordUseCaseImpl implements UserResetPasswordUseCase {
     @Override
     public UserResetPasswordUseCaseOutputDto execute(UserResetPasswordUseCaseInputDto input) {
 
-        String redisKey = "tokenResetPassword:" + input.username();
+        String redisKey = tokenResetPasswordKey + "-" + input.username() + ":" + input.code();
         String token = redisTemplate.opsForValue().get(redisKey);
 
-        if (token == null || !authCodeService.validate(token, input.code())) {
+        if (token == null || !authCodeService.validate(input.code())) {
             throw new CredentialsExpiredException("Código inválido ou expirado");
         }
 

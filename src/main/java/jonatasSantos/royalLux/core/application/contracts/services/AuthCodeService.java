@@ -7,5 +7,5 @@ public interface AuthCodeService {
 
     public OtpTokenService.OtpPayload generateCode(int expirationSeconds);
 
-    public boolean validate(String token, String code);
+    public boolean validate(String code);
 }

@@ -4,15 +4,13 @@ public class UserAuthCodeMapper {
 
     private String username;
     private String code;
-    private String token;
 
     public UserAuthCodeMapper() {
     }
 
-    public UserAuthCodeMapper(String username, String code, String token) {
+    public UserAuthCodeMapper(String username, String code) {
         this.username = username;
         this.code = code;
-        this.token = token;
     }
 
     public String getUsername() {
@@ -29,13 +27,5 @@ public class UserAuthCodeMapper {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

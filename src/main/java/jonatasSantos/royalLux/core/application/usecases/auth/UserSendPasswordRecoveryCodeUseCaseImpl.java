@@ -34,7 +34,7 @@ public class UserSendPasswordRecoveryCodeUseCaseImpl implements UserSendPassword
                 .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
         var authCode = this.authCodeService.generateCode(300);
-        String code = this.serializerService.toJson(new UserAuthCodeMapper(user.getUsername(), authCode.code(), authCode.token()));
+        String code = this.serializerService.toJson(new UserAuthCodeMapper(user.getUsername(), authCode.code()));
 
         if(input.deliveryChannel().equals(CodeDeliveryChannel.EMAIL)){
             this.notificationPublisher.sendToEmailQueue(code);

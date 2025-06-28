@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,7 +35,7 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class, AccessDeniedException.class, DisabledException.class})
+    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class, AccessDeniedException.class, DisabledException.class, CredentialsExpiredException.class})
     public ResponseEntity<ErrorResponsePresenter> handleUnauthorized(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.UNAUTHORIZED);
     }
