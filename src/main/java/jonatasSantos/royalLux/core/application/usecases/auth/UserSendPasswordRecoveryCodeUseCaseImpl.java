@@ -39,9 +39,6 @@ public class UserSendPasswordRecoveryCodeUseCaseImpl implements UserSendPassword
         if(input.deliveryChannel().equals(CodeDeliveryChannel.EMAIL)){
             this.notificationPublisher.sendToEmailQueue(code);
         }
-        else if (input.deliveryChannel().equals(CodeDeliveryChannel.WHATSAPP)) {
-            this.notificationPublisher.sendToWhatsappQueue(code);
-        }
 
         return new UserSendPasswordRecoveryCodeUseCaseOutputDto(true);
     }

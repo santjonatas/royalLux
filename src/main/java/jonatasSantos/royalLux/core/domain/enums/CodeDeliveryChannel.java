@@ -1,8 +1,7 @@
 package jonatasSantos.royalLux.core.domain.enums;
 
 public enum CodeDeliveryChannel {
-    EMAIL("E-mail"),
-    WHATSAPP("WhatsApp");
+    EMAIL("E-mail");
 
     private final String displayName;
 
