@@ -40,17 +40,25 @@ public class EmailQueueConsumer {
 
         var optionalUser = this.userRepository.findByUsername(userAuthCode.getUsername());
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            var person = this.personRepository.findByUserId(user.getId());
+        try {
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                var person = this.personRepository.findByUserId(user.getId());
 
-            if(!person.getEmail().isEmpty()){
-                String redisKey = tokenResetPasswordKey + "-" + userAuthCode.getUsername() + ":" + userAuthCode.getCode();
+                if(!person.getEmail().isEmpty()){
+                    String redisKey = tokenResetPasswordKey + "-" + userAuthCode.getUsername() + ":" + userAuthCode.getCode();
 
-                redisTemplate.opsForValue().set(redisKey, userAuthCode.getCode(), Duration.ofMinutes(5));
+                    redisTemplate.opsForValue().set(redisKey, userAuthCode.getCode(), Duration.ofMinutes(5));
 
-                this.emailGateway.sendEmail(person.getEmail(), "Código de Recuperação de Senha", userAuthCode.getCode());
+                    this.emailGateway.sendEmail(person.getEmail(), "Código de Recuperação de Senha", userAuthCode.getCode());
+                }
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+
         }
     }
 }
