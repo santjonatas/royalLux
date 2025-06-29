@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "payments")
 public class Payment {
 
-    public Payment(Integer id, CustomerService customerService, PaymentStatus status, LocalDateTime time, PaymentMethod method, String description, String transactionId, String paymentToken, String paymentUrl, String payerName) {
-        this.id = id;
+    public Payment(CustomerService customerService, PaymentStatus status, LocalDateTime time, PaymentMethod method, String description, String transactionId, String paymentToken, String paymentUrl, String payerName) {
         this.customerService = customerService;
         this.status = status;
         this.time = time;
