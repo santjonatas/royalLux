@@ -8,7 +8,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreate
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.enums.AddressStates;
+import jonatasSantos.royalLux.core.domain.enums.AddressState;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class AddressController {
             @RequestParam(required = false) String complement,
             @RequestParam(required = false) String neighborhood,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) AddressStates state,
+            @RequestParam(required = false) AddressState state,
             @RequestParam(required = false) String cep,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,

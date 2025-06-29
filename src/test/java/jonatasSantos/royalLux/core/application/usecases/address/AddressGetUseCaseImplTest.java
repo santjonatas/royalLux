@@ -10,7 +10,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.enums.AddressStates;
+import jonatasSantos.royalLux.core.domain.enums.AddressState;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,7 +93,7 @@ class AddressGetUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
         address1.setId(1);
 
@@ -108,7 +108,7 @@ class AddressGetUseCaseImplTest {
                 "Apartamento 302",
                 "Jardim Primavera",
                 "Campinas",
-                AddressStates.SP,
+                AddressState.SP,
                 "13076-100");
         address2.setId(2);
 
@@ -121,7 +121,7 @@ class AddressGetUseCaseImplTest {
                 "Casa",
                 "Centro",
                 "Salvador",
-                AddressStates.BA,
+                AddressState.BA,
                 "40020-030");
         address3.setId(3);
 
@@ -134,7 +134,7 @@ class AddressGetUseCaseImplTest {
                 "Bloco C, Sala 45",
                 "Parque Industrial",
                 "Curitiba",
-                AddressStates.PR,
+                AddressState.PR,
                 "81200-200");
         address4.setId(4);
 
@@ -182,7 +182,7 @@ class AddressGetUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
         address1.setId(1);
 
@@ -197,7 +197,7 @@ class AddressGetUseCaseImplTest {
                 "Bloco C, Sala 45",
                 "Parque Industrial",
                 "Curitiba",
-                AddressStates.PR,
+                AddressState.PR,
                 "81200-200");
         address2.setId(2);
 
@@ -210,7 +210,7 @@ class AddressGetUseCaseImplTest {
                 "Casa",
                 "Centro",
                 "Salvador",
-                AddressStates.BA,
+                AddressState.BA,
                 "40020-030");
         address3.setId(3);
 
@@ -257,7 +257,7 @@ class AddressGetUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
         address1.setId(1);
 
@@ -272,7 +272,7 @@ class AddressGetUseCaseImplTest {
                 "Bloco C, Sala 45",
                 "Parque Industrial",
                 "Curitiba",
-                AddressStates.PR,
+                AddressState.PR,
                 "81200-200");
         address2.setId(2);
 
@@ -285,7 +285,7 @@ class AddressGetUseCaseImplTest {
                 "Casa",
                 "Centro",
                 "Salvador",
-                AddressStates.BA,
+                AddressState.BA,
                 "40020-030");
         address3.setId(3);
 

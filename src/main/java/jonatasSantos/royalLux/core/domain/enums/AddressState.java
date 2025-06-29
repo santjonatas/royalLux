@@ -3,7 +3,7 @@ package jonatasSantos.royalLux.core.domain.enums;
 import java.util.Arrays;
 import java.util.List;
 
-public enum AddressStates {
+public enum AddressState {
     AC("Acre"),
     AL("Alagoas"),
     AP("Amapá"),
@@ -34,9 +34,9 @@ public enum AddressStates {
 
     private final String name;
 
-    public static final List<AddressStates> STATES = Arrays.asList(AddressStates.values());
+    public static final List<AddressState> STATES = Arrays.asList(AddressState.values());
 
-    AddressStates(String name) {
+    AddressState(String name) {
         this.name = name;
     }
 

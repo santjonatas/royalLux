@@ -1,13 +1,13 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.enums.AddressStates;
+import jonatasSantos.royalLux.core.domain.enums.AddressState;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "addresses")
 public class Address{
-    public Address(User user, String street, String houseNumber, String complement, String neighborhood, String city, AddressStates state, String cep) {
+    public Address(User user, String street, String houseNumber, String complement, String neighborhood, String city, AddressState state, String cep) {
         this.user = user;
         this.setStreet(street);
         this.setHouseNumber(houseNumber);
@@ -48,7 +48,7 @@ public class Address{
     protected String city;
 
     @Column(name = "state", length = 2)
-    protected AddressStates state;
+    protected AddressState state;
 
     @Column(name = "cep", length = 9)
     protected String cep;
@@ -146,11 +146,11 @@ public class Address{
         this.city = city;
     }
 
-    public AddressStates getState() {
+    public AddressState getState() {
         return this.state;
     }
 
-    public void setState(AddressStates state) { this.state = state; }
+    public void setState(AddressState state) { this.state = state; }
 
     public String getCep() {
         return this.cep;

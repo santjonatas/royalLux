@@ -1,6 +1,8 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
+import jonatasSantos.royalLux.core.domain.enums.PaymentMethod;
+import jonatasSantos.royalLux.core.domain.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
 
@@ -8,12 +10,17 @@ import java.time.LocalDateTime;
 @Table(name = "payments")
 public class Payment {
 
-    public Payment(CustomerService customerService, String status, LocalDateTime time, String method, String description) {
+    public Payment(Integer id, CustomerService customerService, PaymentStatus status, LocalDateTime time, PaymentMethod method, String description, String transactionId, String paymentToken, String paymentUrl, String payerName) {
+        this.id = id;
         this.customerService = customerService;
         this.status = status;
         this.time = time;
         this.method = method;
         this.description = description;
+        this.transactionId = transactionId;
+        this.paymentToken = paymentToken;
+        this.paymentUrl = paymentUrl;
+        this.payerName = payerName;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -24,23 +31,35 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected Integer id;
 
     @OneToOne
     @JoinColumn(name = "customerServiceId", nullable = false)
     protected CustomerService customerService;
 
     @Column(name = "status", nullable = false, length = 50)
-    protected String status;
+    protected PaymentStatus status;
 
     @Column(name = "time", nullable = false)
     protected LocalDateTime time;
 
     @Column(name = "method", nullable = false, length = 15)
-    protected String method;
+    protected PaymentMethod method;
 
     @Column(name = "description", length = 500)
     protected String description;
+
+    @Column(name = "transactionId", nullable = true)
+    protected String transactionId;
+
+    @Column(name = "paymentToken", nullable = true)
+    protected String paymentToken;
+
+    @Column(name = "paymentUrl", nullable = true)
+    protected String paymentUrl;
+
+    @Column(name = "payerName", length = 255, nullable = true)
+    protected String payerName;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
@@ -48,11 +67,11 @@ public class Payment {
     @Column(name = "updatedAt")
     protected LocalDateTime updatedAt;
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -64,11 +83,11 @@ public class Payment {
         this.customerService = customerService;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 
@@ -80,11 +99,11 @@ public class Payment {
         this.time = time;
     }
 
-    public String getMethod() {
+    public PaymentMethod getMethod() {
         return this.method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(PaymentMethod method) {
         this.method = method;
     }
 

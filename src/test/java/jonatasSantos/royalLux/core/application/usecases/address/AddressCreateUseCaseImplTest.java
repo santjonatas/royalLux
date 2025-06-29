@@ -8,7 +8,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreate
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.enums.AddressStates;
+import jonatasSantos.royalLux.core.domain.enums.AddressState;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +51,7 @@ class AddressCreateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -84,7 +84,7 @@ class AddressCreateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -120,7 +120,7 @@ class AddressCreateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -156,7 +156,7 @@ class AddressCreateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -192,7 +192,7 @@ class AddressCreateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))

@@ -1,13 +1,14 @@
 package jonatasSantos.royalLux.core.domain.enums;
 
-public enum PaymentMethods {
+public enum PaymentMethod {
     DEBITO("DÉBITO"),
     CREDITO("CRÉDITO"),
-    PIX("PIX");
+    PIX("PIX"),
+    DINHEIRO("DINHEIRO");
 
     private final String description;
 
-    PaymentMethods(String description) {
+    PaymentMethod(String description) {
         this.description = description;
     }
 

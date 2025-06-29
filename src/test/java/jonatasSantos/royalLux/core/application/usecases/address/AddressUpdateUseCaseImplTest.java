@@ -8,7 +8,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.address.AddressUpdate
 import jonatasSantos.royalLux.core.application.models.dtos.address.AddressUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Address;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.enums.AddressStates;
+import jonatasSantos.royalLux.core.domain.enums.AddressState;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +52,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -83,7 +83,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -120,7 +120,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         Address address = new Address(
@@ -130,7 +130,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -167,7 +167,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         Address address = new Address(
@@ -177,7 +177,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
@@ -214,7 +214,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         Address address = new Address(
@@ -224,7 +224,7 @@ class AddressUpdateUseCaseImplTest {
                 " ",
                 "Alegria",
                 "Porto Alegre",
-                AddressStates.RS,
+                AddressState.RS,
                 "15910-000");
 
         address.setId(2);
