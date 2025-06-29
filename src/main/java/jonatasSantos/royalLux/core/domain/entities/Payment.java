@@ -10,10 +10,9 @@ import java.time.LocalDateTime;
 @Table(name = "payments")
 public class Payment {
 
-    public Payment(CustomerService customerService, PaymentStatus status, LocalDateTime time, PaymentMethod method, String description, String transactionId, String paymentToken, String paymentUrl, String payerName) {
+    public Payment(CustomerService customerService, PaymentStatus status, PaymentMethod method, String description, String transactionId, String paymentToken, String paymentUrl, String payerName) {
         this.customerService = customerService;
         this.status = status;
-        this.time = time;
         this.method = method;
         this.description = description;
         this.transactionId = transactionId;
@@ -38,9 +37,6 @@ public class Payment {
 
     @Column(name = "status", nullable = false, length = 50)
     protected PaymentStatus status;
-
-    @Column(name = "time", nullable = false)
-    protected LocalDateTime time;
 
     @Column(name = "method", nullable = false, length = 15)
     protected PaymentMethod method;
@@ -88,14 +84,6 @@ public class Payment {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
-    }
-
-    public LocalDateTime getTime() {
-        return this.time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
     }
 
     public PaymentMethod getMethod() {
