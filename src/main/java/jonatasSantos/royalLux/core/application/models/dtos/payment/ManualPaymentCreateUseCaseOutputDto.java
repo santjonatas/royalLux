@@ -1,4 +1,4 @@
 package jonatasSantos.royalLux.core.application.models.dtos.payment;
 
-public record PaymentCreateUseCaseOutputDto(Integer paymentId) {
+public record ManualPaymentCreateUseCaseOutputDto(Integer paymentId) {
 }

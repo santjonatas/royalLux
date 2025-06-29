@@ -47,6 +47,7 @@ public class Address{
     @Column(name = "city", length = 100)
     protected String city;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "state", length = 2)
     protected AddressState state;
 

@@ -39,6 +39,7 @@ public class CustomerService{
     @JoinColumn(name = "clientId", nullable = false, updatable = false)
     protected Client client;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
     protected CustomerServiceStatus status;
 
