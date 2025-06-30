@@ -44,7 +44,9 @@ public class CustomerServiceUpdateUseCaseImpl implements CustomerServiceUpdateUs
         customerServiceToBeUpdated.setFinishingTime(input.finishingTime());
         customerServiceToBeUpdated.setDetails(input.details());
         customerServiceToBeUpdated.setUpdatedAt(LocalDateTime.now());
+
         this.customerServiceRepository.save(customerServiceToBeUpdated);
+
         return new CustomerServiceUpdateUseCaseOutputDto(true, warningList);
     }
 }

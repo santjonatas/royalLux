@@ -57,4 +57,12 @@ public enum PaymentStatus {
             PaymentStatus.CANCELADO,
             PaymentStatus.REEMBOLSADO
     );
+
+    public static final List<PaymentStatus> FINISHING_STATUSES = Arrays.asList(
+            PaymentStatus.PAGO,
+            PaymentStatus.CANCELADO,
+            PaymentStatus.EXTORNADO,
+            PaymentStatus.REEMBOLSADO,
+            PaymentStatus.FALHOU
+    );
 }
