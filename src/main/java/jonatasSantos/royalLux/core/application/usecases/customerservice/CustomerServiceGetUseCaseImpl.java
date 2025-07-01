@@ -196,13 +196,13 @@ public class CustomerServiceGetUseCaseImpl implements CustomerServiceGetUseCase 
             typedQuery.setMaxResults(setSize);
         }
 
-        var customerService = typedQuery.getResultList();
+        var customerServices = typedQuery.getResultList();
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
-            customerService = customerService.stream().filter(customerServiceFound -> customerServiceFound.getClient().getUser().getId() == userLogged.getId()).toList();
+            customerServices = customerServices.stream().filter(customerServiceFound -> customerServiceFound.getClient().getUser().getId() == userLogged.getId()).toList();
         }
 
-        return customerService.stream()
+        return customerServices.stream()
                 .map(customerServiceFound -> new CustomerServiceGetUseCaseOutputDto(
                         customerServiceFound.getId(),
                         customerServiceFound.getCreatedByUser().getId(),
