@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface CustomerServiceRepository extends JpaRepository<CustomerService, String> {
     List<CustomerService> findByCreatedByUserId(Integer userId);
+
+    List<CustomerService> findByClientId(Integer clientId);
 }

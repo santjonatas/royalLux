@@ -2,6 +2,7 @@ package jonatasSantos.royalLux.core.application.usecases.client;
 
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.ClientRepository;
+import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientDeleteUseCaseOutputDto;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,22 @@ import org.springframework.stereotype.Service;
 public class ClientDeleteUseCaseImpl implements ClientDeleteUseCase {
 
     private final ClientRepository clientRepository;
+    private final CustomerServiceRepository customerServiceRepository;
 
-    public ClientDeleteUseCaseImpl(ClientRepository clientRepository) {
+    public ClientDeleteUseCaseImpl(ClientRepository clientRepository, CustomerServiceRepository customerServiceRepository) {
         this.clientRepository = clientRepository;
+        this.customerServiceRepository = customerServiceRepository;
     }
 
     @Override
     public ClientDeleteUseCaseOutputDto execute(Integer id) {
         var client = this.clientRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente inexistente"));
+
+        var customerServices = this.customerServiceRepository.findByClientId(client.getId());
+
+        if (!customerServices.isEmpty())
+            throw new IllegalStateException("Cliente não pode ser deletado pois ainda possui atendimentos vinculados");
 
         this.clientRepository.delete(client);
 
