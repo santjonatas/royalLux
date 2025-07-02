@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.ManualPaymentCreateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
@@ -36,6 +37,9 @@ public class PaymentController {
 
     @Autowired
     private PaymentGetUseCase paymentGetUseCase;
+
+    @Autowired
+    private PaymentDeleteUseCase paymentDeleteUseCase;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
@@ -116,5 +120,12 @@ public class PaymentController {
         return ResponseEntity.ok(responsePresenter);
     }
 
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity deletePayment(@RequestParam(required = true) Integer id) throws AuthenticationException {
+        var response = paymentDeleteUseCase.execute(id);
+        var responsePresenter = new ResponsePresenter(response);
 
+        return ResponseEntity.ok(responsePresenter);
+    }
 }
