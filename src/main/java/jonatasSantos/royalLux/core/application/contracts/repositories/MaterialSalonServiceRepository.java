@@ -11,4 +11,6 @@ public interface MaterialSalonServiceRepository extends JpaRepository<MaterialSa
     boolean existsByMaterialIdAndSalonServiceId(Integer materialId, Integer salonServiceId);
 
     List<MaterialSalonService> findBySalonServiceId(Integer salonServiceId);
+
+    List<MaterialSalonService> findByMaterialId(Integer materialId);
 }

@@ -1,6 +1,8 @@
 package jonatasSantos.royalLux.core.application.usecases.salonservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialSalonServiceRepository;
+import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceDeleteUseCaseOutputDto;
@@ -11,15 +13,29 @@ import org.springframework.stereotype.Service;
 public class SalonServiceDeleteUseCaseImpl implements SalonServiceDeleteUseCase {
 
     private final SalonServiceRepository salonServiceRepository;
+    private final MaterialSalonServiceRepository materialSalonServiceRepository;
+    private final SalonServiceCustomerServiceRepository salonServiceCustomerServiceRepository;
 
-    public SalonServiceDeleteUseCaseImpl(SalonServiceRepository salonServiceRepository) {
+    public SalonServiceDeleteUseCaseImpl(SalonServiceRepository salonServiceRepository, MaterialSalonServiceRepository materialSalonServiceRepository, SalonServiceCustomerServiceRepository salonServiceCustomerServiceRepository) {
         this.salonServiceRepository = salonServiceRepository;
+        this.materialSalonServiceRepository = materialSalonServiceRepository;
+        this.salonServiceCustomerServiceRepository = salonServiceCustomerServiceRepository;
     }
 
     @Override
     public SalonServiceDeleteUseCaseOutputDto execute(Integer id) {
         var salonService = this.salonServiceRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Serviço inexistente"));
+
+        var materialsSalonServices = this.materialSalonServiceRepository.findBySalonServiceId(salonService.getId());
+
+        if (!materialsSalonServices.isEmpty())
+            throw new IllegalStateException("Serviço não pode ser deletado pois ainda possui materiais vinculados");
+
+        var salonServicesCustomerServices = this.salonServiceCustomerServiceRepository.findBySalonServiceId(salonService.getId());
+
+        if (!salonServicesCustomerServices.isEmpty())
+            throw new IllegalStateException("Serviço não pode ser deletado pois ainda possui serviços de atendimentos vinculados");
 
         this.salonServiceRepository.delete(salonService);
 

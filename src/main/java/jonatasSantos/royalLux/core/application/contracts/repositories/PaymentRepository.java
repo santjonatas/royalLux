@@ -11,4 +11,6 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
     boolean existsByCustomerServiceId(Integer customerServiceId);
 
     List<Payment> findByCreatedByUserId(Integer userId);
+
+    Payment deleteByCustomerServiceId(Integer customerServiceId);
 }

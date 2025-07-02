@@ -21,4 +21,6 @@ public interface SalonServiceCustomerServiceRepository extends JpaRepository<Sal
     List<SalonServiceCustomerService> findByCustomerServiceId(Integer customerServiceId);
 
     List<SalonServiceCustomerService> findByEmployeeId(Integer employeeId);
+
+    List<SalonServiceCustomerService> findBySalonServiceId(Integer salonServiceId);
 }

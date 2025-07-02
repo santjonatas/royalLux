@@ -11,4 +11,6 @@ public interface EmployeeRoleRepository extends JpaRepository<EmployeeRole, Stri
     boolean existsByEmployeeIdAndRoleId(Integer employeeId, Integer roleId);
 
     List<EmployeeRole> findByEmployeeId(Integer employeeId);
+
+    List<EmployeeRole> findByRoleId(Integer roleId);
 }
