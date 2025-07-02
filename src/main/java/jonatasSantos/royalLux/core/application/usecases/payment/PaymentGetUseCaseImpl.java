@@ -111,6 +111,8 @@ public class PaymentGetUseCaseImpl implements PaymentGetUseCase {
 
         var payments = typedQuery.getResultList();
 
+
+
         return payments.stream()
                 .map(paymentFound -> new PaymentGetUseCaseOutputDto(
                         paymentFound.getId(),

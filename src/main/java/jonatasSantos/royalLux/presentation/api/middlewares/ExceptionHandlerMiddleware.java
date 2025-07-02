@@ -45,7 +45,7 @@ public class ExceptionHandlerMiddleware  {
         return buildErrorResponse(exception, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({ConflictException.class, EntityExistsException.class})
+    @ExceptionHandler({ConflictException.class, EntityExistsException.class, IllegalStateException.class})
     public ResponseEntity<ErrorResponsePresenter> handleConflict(Exception exception) {
         return buildErrorResponse(exception, HttpStatus.CONFLICT);
     }
