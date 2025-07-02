@@ -1,6 +1,5 @@
 package jonatasSantos.royalLux.core.application.contracts.repositories;
 
-import jonatasSantos.royalLux.core.domain.entities.CustomerService;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +19,6 @@ public interface SalonServiceCustomerServiceRepository extends JpaRepository<Sal
     List<SalonServiceCustomerService> findByEmployeeIdAndDate(Integer employeeId, LocalDate date);
 
     List<SalonServiceCustomerService> findByCustomerServiceId(Integer customerServiceId);
+
+    List<SalonServiceCustomerService> findByEmployeeId(Integer employeeId);
 }
