@@ -16,6 +16,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.payment.PaymentGetUse
 import jonatasSantos.royalLux.core.application.models.dtos.payment.PaymentGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Payment;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -111,7 +112,19 @@ public class PaymentGetUseCaseImpl implements PaymentGetUseCase {
 
         var payments = typedQuery.getResultList();
 
+        if (userLogged.getRole().equals(UserRole.CLIENT)) {
+            payments = payments.stream()
+                    .filter(paymentFound -> {
+                        var customerService = this.customerServiceRepository
+                                .findById(String.valueOf(paymentFound.getCustomerService().getId()));
 
+                        return customerService
+                                .map(customerServiceFound ->
+                                        customerServiceFound.getClient().getUser().getId() == userLogged.getId()
+                                ).orElse(false);
+                    })
+                    .toList();
+        }
 
         return payments.stream()
                 .map(paymentFound -> new PaymentGetUseCaseOutputDto(

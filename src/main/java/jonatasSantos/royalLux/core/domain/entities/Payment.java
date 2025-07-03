@@ -46,7 +46,7 @@ public class Payment {
     @JoinColumn(name = "customerServiceId", nullable = false)
     protected CustomerService customerService;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "createdByUserId", nullable = true)
     protected User createdByUser;
 
