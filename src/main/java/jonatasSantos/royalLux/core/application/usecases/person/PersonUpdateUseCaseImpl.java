@@ -32,7 +32,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         var personToBeUpdated = this.personRepository.findById(String.valueOf(personId))
-                .orElseThrow(() -> new EntityNotFoundException("Pessoa é inexistente"));
+                .orElseThrow(() -> new EntityNotFoundException("Dados pessoais inexistentes"));
 
         if(this.personRepository.existsByCpfAndIdNot(input.cpf(), personToBeUpdated.getId()))
             throw new ConflictException("CPF já vinculado a um usuário");
@@ -55,7 +55,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
 
         else if(userLogged.getRole().equals(UserRole.EMPLOYEE)){
             if(personToBeUpdated.getUser().getId() != userLogged.getId())
-                throw new UnauthorizedException("Você não possui autorização para atualizar outra pessoa");
+                throw new UnauthorizedException("Você não possui autorização para atualizar dados pessoais de outro usuário");
 
             personToBeUpdated.setPhone(input.phone());
             personToBeUpdated.setEmail(input.email());
@@ -72,7 +72,7 @@ public class PersonUpdateUseCaseImpl implements PersonUpdateUseCase {
 
         else if(userLogged.getRole().equals(UserRole.CLIENT)){
             if(personToBeUpdated.getUser().getId() != userLogged.getId())
-                throw new UnauthorizedException("Você não possui autorização para atualizar outra pessoa");
+                throw new UnauthorizedException("Você não possui autorização para atualizar dados pessoais de outro usuário");
 
             personToBeUpdated.setName(input.name());
             personToBeUpdated.setDateBirth(input.dateBirth());

@@ -36,14 +36,14 @@ public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
 
         if(userLogged.getRole().equals(UserRole.CLIENT)){
             if(!existingUser.getRole().equals(UserRole.CLIENT))
-                throw new UnauthorizedException("Você não possui autorização para criar pessoa com outra permissão");
+                throw new UnauthorizedException("Você não possui autorização para criar dados pessoais de usuário com outra permissão");
 
             if(existingUser.getId() != userLogged.getId())
-                throw new UnauthorizedException("Você não possui autorização para criar outra pessoa");
+                throw new UnauthorizedException("Você não possui autorização para criar dados pessoais de outro usuário");
         }
 
         if(this.personRepository.existsByUserId(existingUser.getId()))
-            throw new ConflictException("Pessoa já vinculada a um usuário");
+            throw new ConflictException("Dados pessoais já vinculados a um usuário");
 
         if(this.personRepository.existsByCpf(input.cpf()))
             throw new ConflictException("CPF já vinculado a um usuário");

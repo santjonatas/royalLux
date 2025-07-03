@@ -29,7 +29,7 @@ public class EmployeeDeleteUseCaseImpl implements EmployeeDeleteUseCase {
         var employeesRoles = this.employeeRoleRepository.findByEmployeeId(employee.getId());
 
         if (!employeesRoles.isEmpty())
-            throw new IllegalStateException("Funcionário não pode ser deletado pois ainda possui cargos vinculados");
+            throw new IllegalStateException("Funcionário não pode ser deletado pois ainda possui funções vinculados");
 
         var salonServicesCustomerServices = this.salonServiceCustomerServiceRepository.findByEmployeeId(employee.getId());
 

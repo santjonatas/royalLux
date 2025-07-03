@@ -26,7 +26,7 @@ public class RoleDeleteUseCaseImpl implements RoleDeleteUseCase {
         var employeesRoles = this.employeeRoleRepository.findByRoleId(role.getId());
 
         if (!employeesRoles.isEmpty())
-            throw new IllegalStateException("Cargo não pode ser deletado pois ainda possui funcionários vinculados");
+            throw new IllegalStateException("Função não pode ser deletado pois ainda possui funcionários vinculados");
 
         this.roleRepository.delete(role);
 
