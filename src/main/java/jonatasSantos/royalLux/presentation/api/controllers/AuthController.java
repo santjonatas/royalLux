@@ -40,6 +40,8 @@ public class AuthController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).sendPasswordRecoveryCode(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).resetPassword(null)).withRel("post"));
 
         return ResponseEntity.ok(responsePresenter);
     }
@@ -51,22 +53,34 @@ public class AuthController {
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).sendPasswordRecoveryCode(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).resetPassword(null)).withRel("post"));
 
         return ResponseEntity.ok(responsePresenter);
     }
 
     @PostMapping("/sendPasswordRecoveryCode")
-    public ResponseEntity sendPasswordRecoveryCode(@RequestBody UserSendPasswordRecoveryCodeUseCaseInputDto body){
+    public ResponseEntity sendPasswordRecoveryCode(@RequestBody UserSendPasswordRecoveryCodeUseCaseInputDto body) throws AuthenticationException {
         var response = userSendPasswordRecoveryCodeUseCase.execute(body);
         var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).sendPasswordRecoveryCode(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).resetPassword(null)).withRel("post"));
 
         return ResponseEntity.ok(responsePresenter);
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity resetPassword(@RequestBody UserResetPasswordUseCaseInputDto body){
+    public ResponseEntity resetPassword(@RequestBody UserResetPasswordUseCaseInputDto body) throws AuthenticationException {
         var response = userResetPasswordUseCase.execute(body);
         var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).login(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).register(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).sendPasswordRecoveryCode(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AuthController.class).resetPassword(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);
     }

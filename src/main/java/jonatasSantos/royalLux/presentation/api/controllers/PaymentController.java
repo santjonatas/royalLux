@@ -4,8 +4,6 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.payment.Manual
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentDeleteUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentGetUseCase;
 import jonatasSantos.royalLux.core.application.contracts.usecases.payment.PaymentUpdateUseCase;
-import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.payment.ManualPaymentCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.payment.PaymentGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.payment.PaymentUpdateUseCaseInputDto;
@@ -43,22 +41,16 @@ public class PaymentController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
-    public ResponseEntity createPayment(@RequestBody ManualPaymentCreateUseCaseInputDto body){
+    public ResponseEntity createPayment(@RequestBody ManualPaymentCreateUseCaseInputDto body) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         var response = paymentCreateUseCase.execute(user, body);
         var responsePresenter = new ResponsePresenter(response);
 
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).createRole(null)).withSelfRel());
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).getRoles(null, null, null, null, null, null)).withRel("get"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).updateRole(null, null)).withRel("put"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).deleteRole(null)).withRel("delete"));
-//
-//        URI location = WebMvcLinkBuilder.linkTo(
-//                WebMvcLinkBuilder.methodOn(RoleController.class).getRoles(response.roleId(), null, null, null, null, null)
-//        ).toUri();
-//
-//        return ResponseEntity.created(location).body(responsePresenter);
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).createPayment(null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).getPayment(null, null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).updatePayment(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).deletePayment(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
     }
@@ -94,10 +86,10 @@ public class PaymentController {
         var response = paymentGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).createCustomerService(null)).withRel("post"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).getCustomerService(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)).withSelfRel());
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).updateCustomerService(null, null)).withRel("patch"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).deleteCustomerService(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).createPayment(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).getPayment(null, null, null, null, null, null, null, null, null, null, null, null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).updatePayment(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).deletePayment(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
     }
@@ -112,10 +104,10 @@ public class PaymentController {
         var response = paymentUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).createCustomerService(null)).withRel("post"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).getCustomerService(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).updateCustomerService(null, null)).withSelfRel());
-//        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CustomerServiceController.class).deleteCustomerService(null)).withRel("delete"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).createPayment(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).getPayment(null, null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).updatePayment(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).deletePayment(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
     }
@@ -125,6 +117,11 @@ public class PaymentController {
     public ResponseEntity deletePayment(@RequestParam(required = true) Integer id) throws AuthenticationException {
         var response = paymentDeleteUseCase.execute(id);
         var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).createPayment(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).getPayment(null, null, null, null, null, null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).updatePayment(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PaymentController.class).deletePayment(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);
     }
