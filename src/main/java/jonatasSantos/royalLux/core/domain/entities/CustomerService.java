@@ -147,6 +147,10 @@ public class CustomerService{
         this.totalValue = this.totalValue.add(value);
     }
 
+    public void decrementTotalValue(BigDecimal value){
+        this.totalValue = this.totalValue.subtract(value);
+    }
+
     public String getDetails() {
         return this.details;
     }

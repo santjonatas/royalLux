@@ -10,6 +10,7 @@ import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
     }
 
     @Override
+    @Transactional
     public SalonServiceCustomerServiceCreateUseCaseOutputDto execute(User user, SalonServiceCustomerServiceCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
