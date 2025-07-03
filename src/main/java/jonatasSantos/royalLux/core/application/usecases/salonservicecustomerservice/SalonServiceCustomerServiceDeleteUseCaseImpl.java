@@ -6,8 +6,11 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServi
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
 
 @Service
 public class SalonServiceCustomerServiceDeleteUseCaseImpl implements SalonServiceCustomerServiceDeleteUseCase {
@@ -37,6 +40,16 @@ public class SalonServiceCustomerServiceDeleteUseCaseImpl implements SalonServic
         customerService.decrementTotalValue(salonService.getValue());
 
         this.salonServiceCustomerServiceRepository.delete(salonServiceCustomerService);
+
+        var salonServicesCustomerServicesByCustomerService = this.salonServiceCustomerServiceRepository.findByCustomerServiceId(customerService.getId());
+
+        var maxTime = salonServicesCustomerServicesByCustomerService.stream()
+                .map(SalonServiceCustomerService::getEstimatedFinishingTime)
+                .max(Comparator.naturalOrder())
+                .orElse(null);
+
+        customerService.setEstimatedFinishingTime(maxTime.atDate(customerService.getStartTime().toLocalDate()));
+
         this.customerServiceRepository.save(customerService);
 
         return new SalonServiceCustomerServiceDeleteUseCaseOutputDto(true);
