@@ -63,7 +63,7 @@ class PersonUpdateUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Quando não existir pessoa a ser atualizada, estourar exceção EntityNotFoundException com mensagem 'Pessoa é inexistente'")
+    @DisplayName("Quando não existir pessoa a ser atualizada, estourar exceção EntityNotFoundException com mensagem 'Dados pessoais inexistentes'")
     void deveLancarExcecaoQuandoPessoaASerAtualizadaNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
@@ -84,7 +84,7 @@ class PersonUpdateUseCaseImplTest {
             );
         });
 
-        assertEquals("Pessoa é inexistente", exception.getMessage());
+        assertEquals("Dados pessoais inexistentes", exception.getMessage());
     }
 
     @Test
@@ -187,7 +187,7 @@ class PersonUpdateUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Quando usuário logado for funcionário e tentar atualizar outra pessoa, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para atualizar outra pessoa'")
+    @DisplayName("Quando usuário logado for funcionário e tentar atualizar outra pessoa, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para atualizar dados pessoais de outro usuário'")
     void deveLancarExcecaoQuandoUsuarioLogadoForFuncionarioETentarAtualizarOutraPessoa() {
         // Arrange
         User userLogged = new User("marcos_3", UserRole.EMPLOYEE, true);
@@ -221,11 +221,11 @@ class PersonUpdateUseCaseImplTest {
             );
         });
 
-        assertEquals("Você não possui autorização para atualizar outra pessoa", exception.getMessage());
+        assertEquals("Você não possui autorização para atualizar dados pessoais de outro usuário", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Quando usuário logado for cliente e tentar atualizar outra pessoa, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para atualizar outra pessoa'")
+    @DisplayName("Quando usuário logado for cliente e tentar atualizar outra pessoa, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para atualizar dados pessoais de outro usuário'")
     void deveLancarExcecaoQuandoUsuarioLogadoForClienteETentarAtualizarOutraPessoa() {
         // Arrange
         User userLogged = new User("vitor_4", UserRole.CLIENT, true);
@@ -259,7 +259,7 @@ class PersonUpdateUseCaseImplTest {
             );
         });
 
-        assertEquals("Você não possui autorização para atualizar outra pessoa", exception.getMessage());
+        assertEquals("Você não possui autorização para atualizar dados pessoais de outro usuário", exception.getMessage());
     }
 
     @Test

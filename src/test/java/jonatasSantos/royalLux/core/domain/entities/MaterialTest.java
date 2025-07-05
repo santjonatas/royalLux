@@ -71,7 +71,7 @@ class MaterialTest {
     }
 
     @Test
-    @DisplayName("Quando atribuir valor nulo a quantidade, estourar exceção IllegalArgumentException com mensagem 'Quantidade não pode ser nula'")
+    @DisplayName("Quando atribuir valor nulo a quantidade, estourar exceção IllegalArgumentException com mensagem 'Quantidade disponível não pode ser nula'")
     void deveLancarExcecaoQuandoAtribuirValorNuloAQuantidade(){
         // Arrange
         Material material = new Material();
@@ -81,7 +81,7 @@ class MaterialTest {
             material.setAvailableQuantity(null);
         });
 
-        assertEquals("Quantidade não pode ser nula", exception.getMessage());
+        assertEquals("Quantidade disponível não pode ser nula", exception.getMessage());
     }
 
     @Test

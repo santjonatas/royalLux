@@ -1,9 +1,11 @@
 package jonatasSantos.royalLux.core.application.usecases.role;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Client;
+import jonatasSantos.royalLux.core.domain.entities.EmployeeRole;
 import jonatasSantos.royalLux.core.domain.entities.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +26,9 @@ class RoleDeleteUseCaseImplTest {
 
     @Mock
     private RoleRepository roleRepository;
+
+    @Mock
+    EmployeeRoleRepository employeeRoleRepository;
 
     @InjectMocks
     private RoleDeleteUseCaseImpl roleDeleteUseCase;
@@ -47,21 +54,39 @@ class RoleDeleteUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Deve deletar função com sucesso e retornar true em propriedade success do output")
-    void deveDeletarFuncaoComSucesso() {
+    @DisplayName("Quando função possuir vínculos com funcionários, deve lançar IllegalStateException com mensagem específica")
+    void deveLancarExcecaoQuandoFuncaoPossuirFuncionariosVinculados() {
+        // Arrange
+        Role role = new Role("Designer", "Responsável por design gráfico");
+        role.setId(4);
+
+        when(roleRepository.findById("4")).thenReturn(Optional.of(role));
+        when(employeeRoleRepository.findByRoleId(4)).thenReturn(List.of(mock(EmployeeRole.class)));
+
+        // Act + Assert
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            roleDeleteUseCase.execute(4);
+        });
+
+        assertEquals("Função não pode ser deletada pois ainda possui funcionários vinculados", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Quando função não possuir vínculos, deve excluir com sucesso e retornar true no output")
+    void deveDeletarFuncaoComSucessoQuandoNaoPossuirVinculos() {
         // Arrange
         Role role = new Role("Barbeiro", "Atuar cortando cabelo e fazendo barba");
+        role.setId(3);
 
-        when(roleRepository.findById(String.valueOf(3)))
-                .thenReturn(Optional.of(role));
+        when(roleRepository.findById("3")).thenReturn(Optional.of(role));
+        when(employeeRoleRepository.findByRoleId(3)).thenReturn(Collections.emptyList());
 
         // Act
         RoleDeleteUseCaseOutputDto output = roleDeleteUseCase.execute(3);
 
         // Assert
         assertNotNull(output);
-        assertEquals(true, output.success());
-        verify(roleRepository).delete(any(Role.class));
+        assertTrue(output.success());
         verify(roleRepository, times(1)).delete(role);
     }
 }

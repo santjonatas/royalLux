@@ -80,7 +80,7 @@ class PersonCreateUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Quando usuário logado for cliente e role de pessoa a ser criada não for cliente, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para criar pessoa com outra permissão'")
+    @DisplayName("Quando usuário logado for cliente e role de pessoa a ser criada não for cliente, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para criar dados pessoais de usuário com outra permissão'")
     void deveLancarExcecaoQuandoUsuarioLogadoForClienteERoleDePessoaASerCriadaNaoForCliente() {
         // Arrange
         User userLogged = new User("mateus_2", UserRole.CLIENT, true);
@@ -98,11 +98,11 @@ class PersonCreateUseCaseImplTest {
             personCreateUseCase.execute(userLogged, input);
         });
 
-        assertEquals("Você não possui autorização para criar pessoa com outra permissão", exception.getMessage());
+        assertEquals("Você não possui autorização para criar dados pessoais de usuário com outra permissão", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Quando usuário logado for cliente e id de usuário de pessoa a ser criada for diferente de usuário logado, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para criar outra pessoa'")
+    @DisplayName("Quando usuário logado for cliente e id de usuário de pessoa a ser criada for diferente de usuário logado, estourar exceção UnauthorizedException com mensagem 'Você não possui autorização para criar dados pessoais de outro usuário'")
     void deveLancarExcecaoQuandoUsuarioLogadoForClienteEIdDeUsuarioLogadoForDiferenteDeIdDeUsuarioDePessoaASerCriada() {
         // Arrange
         User userLogged = new User("mateus_2", UserRole.CLIENT, true);
@@ -121,11 +121,11 @@ class PersonCreateUseCaseImplTest {
             personCreateUseCase.execute(userLogged, input);
         });
 
-        assertEquals("Você não possui autorização para criar outra pessoa", exception.getMessage());
+        assertEquals("Você não possui autorização para criar dados pessoais de outro usuário", exception.getMessage());
     }
 
     @Test
-    @DisplayName("Quando já existir pessoa vinculada a usuário, estourar exceção ConflictException com mensagem 'Pessoa já vinculada a um usuário'")
+    @DisplayName("Quando já existir pessoa vinculada a usuário, estourar exceção ConflictException com mensagem 'Dados pessoais já vinculados a um usuário'")
     void deveLancarExcecaoQuandoUsuarioJaEstiverVinculadoAOutraPessoa() {
         // Arrange
         User userLogged = new User("mateus_2", UserRole.CLIENT, true);
@@ -147,7 +147,7 @@ class PersonCreateUseCaseImplTest {
             personCreateUseCase.execute(userLogged, input);
         });
 
-        assertEquals("Pessoa já vinculada a um usuário", exception.getMessage());
+        assertEquals("Dados pessoais já vinculados a um usuário", exception.getMessage());
     }
 
     @Test

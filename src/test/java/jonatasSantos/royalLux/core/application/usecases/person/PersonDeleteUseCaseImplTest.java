@@ -35,7 +35,7 @@ class PersonDeleteUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Quando não existir pessoa a ser deletada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Pessoa inexistente'")
+    @DisplayName("Quando não existir pessoa a ser deletada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Dados pessoais inexistentes'")
     void deveLancarExcecaoQuandoNaoExistirPessoaASerDeletada() {
         // Arrange
         when(personRepository.findById(String.valueOf(3)))
@@ -46,7 +46,7 @@ class PersonDeleteUseCaseImplTest {
             personDeleteUseCase.execute(3);
         });
 
-        assertEquals("Pessoa inexistente", exception.getMessage());
+        assertEquals("Dados pessoais inexistentes", exception.getMessage());
     }
 
     @Test

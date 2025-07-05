@@ -17,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +41,9 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private MaterialSalonServiceRepository materialSalonServiceRepository;
+
     @InjectMocks
     private SalonServiceCustomerServiceCreateUseCaseImpl salonServiceCustomerServiceCreateUseCase;
 
@@ -52,7 +57,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoUsuarioLogadoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
@@ -70,7 +75,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoAtendimentoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -91,7 +96,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoServicoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -129,7 +134,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoFuncionarioNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -169,51 +174,61 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     }
 
     @Test
-    @DisplayName("Deve criar vínculo entre atendimento e serviço com sucesso e retornar id de vínculo cadastrado")
+    @DisplayName("Quando dados forem válidos, deve criar vínculo entre atendimento e serviço com sucesso e retornar ID do vínculo criado")
     void deveCriarVinculoEntreAtendimentoEServicoComSucesso() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalDateTime.now(), LocalDateTime.now(), false);
+        userLogged.setId(99);
 
-        when(userRepository.findById(String.valueOf(userLogged.getId())))
-                .thenReturn(Optional.of(userLogged));
+        LocalDateTime atendimentoInicio = LocalDateTime.of(2025, 7, 5, 10, 0);
+        LocalTime inicioServico = LocalTime.of(10, 15);
 
-        User user = new User("mateus_2", UserRole.CLIENT, true);
-        Client client = new Client(user);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input =
+                new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, inicioServico, false);
+
+        when(userRepository.findById("99")).thenReturn(Optional.of(userLogged));
+
+        User userClient = new User("mateus_2", UserRole.CLIENT, true);
+        Client client = new Client(userClient);
 
         CustomerService customerService = new CustomerService(
                 userLogged,
                 client,
-                CustomerServiceStatus.FINALIZADO,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                CustomerServiceStatus.EM_ANDAMENTO,
+                atendimentoInicio,
+                atendimentoInicio,
+                atendimentoInicio,
                 BigDecimal.valueOf(40),
                 ""
         );
 
-        when(customerServiceRepository.findById(String.valueOf(1)))
-                .thenReturn(Optional.of(customerService));
+        when(customerServiceRepository.findById("1")).thenReturn(Optional.of(customerService));
 
-        SalonService salonService = new SalonService("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
+        SalonService salonService = new SalonService("Corte de cabelo", "", LocalTime.of(0, 45), BigDecimal.valueOf(40));
         salonService.setId(1);
+        when(salonServiceRepository.findById("1")).thenReturn(Optional.of(salonService));
+        when(materialSalonServiceRepository.findBySalonServiceId(1)).thenReturn(Collections.emptyList());
 
-        when(salonServiceRepository.findById(String.valueOf(1)))
-                .thenReturn(Optional.of(salonService));
-
-        User user3 = new User("vitor_2", UserRole.EMPLOYEE, true);
-        user.setId(3);
-        Employee employee = new Employee(user, "Cabelereiro", BigDecimal.valueOf(2000));
+        User userEmployee = new User("vitor_2", UserRole.EMPLOYEE, true);
+        userEmployee.setId(3);
+        Employee employee = new Employee(userEmployee, "Cabelereiro", BigDecimal.valueOf(2000));
         employee.setId(1);
+        when(employeeRepository.findById("1")).thenReturn(Optional.of(employee));
+        when(salonServiceCustomerServiceRepository.findByEmployeeIdAndDate(1, atendimentoInicio.toLocalDate()))
+                .thenReturn(Collections.emptyList());
 
-        when(employeeRepository.findById(String.valueOf(1)))
-                .thenReturn(Optional.of(employee));
+        when(salonServiceCustomerServiceRepository.save(any(SalonServiceCustomerService.class)))
+                .thenAnswer(invocation -> {
+                    SalonServiceCustomerService service = invocation.getArgument(0);
+                    service.setId(1);
+                    return service;
+                });
 
-        when(salonServiceCustomerServiceRepository.save(any(SalonServiceCustomerService.class))).thenAnswer(invocation -> {
-            SalonServiceCustomerService salonServiceCustomerServiceCreated = invocation.getArgument(0);
-            salonServiceCustomerServiceCreated.setId(1);
-            return salonServiceCustomerServiceCreated;
-        });
+        SalonServiceCustomerService vinculoExistente = mock(SalonServiceCustomerService.class);
+        when(vinculoExistente.getEstimatedFinishingTime()).thenReturn(LocalTime.of(11, 0));
+
+        when(salonServiceCustomerServiceRepository.findByCustomerServiceId(customerService.getId()))
+                .thenReturn(List.of(vinculoExistente));
 
         // Act
         SalonServiceCustomerServiceCreateUseCaseOutputDto output = salonServiceCustomerServiceCreateUseCase.execute(userLogged, input);
@@ -221,10 +236,12 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
         // Assert
         assertNotNull(output);
         assertEquals(1, output.salonServiceCustomerServiceId());
-        verify(salonServiceCustomerServiceRepository).save(any(SalonServiceCustomerService.class));
-        verify(userRepository, times(1)).findById(any(String.class));
-        verify(customerServiceRepository, times(1)).findById(any(String.class));
-        verify(salonServiceRepository, times(1)).findById(any(String.class));
-        verify(employeeRepository, times(1)).findById(any(String.class));
+
+        verify(userRepository, times(1)).findById("99");
+        verify(customerServiceRepository, times(1)).findById("1");
+        verify(salonServiceRepository, times(1)).findById("1");
+        verify(employeeRepository, times(1)).findById("1");
+        verify(salonServiceCustomerServiceRepository, times(1)).save(any(SalonServiceCustomerService.class));
+        verify(customerServiceRepository, times(1)).save(any(CustomerService.class));
     }
 }

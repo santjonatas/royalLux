@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -152,13 +153,13 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
 
         SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(
                 customerService1, salonService, employee,
-                LocalDateTime.now(), LocalDateTime.now(), false
+                LocalDate.now(), LocalTime.now(), false
         );
         salonServiceCustomerService1.setId(1);
 
         SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(
                 customerService2, salonService, employee,
-                LocalDateTime.now(), LocalDateTime.now(), false
+                LocalDate.now(), LocalTime.now(), false
         );
         salonServiceCustomerService2.setId(2);
 
@@ -234,7 +235,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         Employee employee = new Employee(user, "Cabelereiro", BigDecimal.valueOf(2000));
         employee.setId(1);
 
-        SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(customerService1, salonService, employee, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(customerService1, salonService, employee, LocalDate.now(), LocalTime.now(), false);
         salonServiceCustomerService1.setId(1);
 
         CustomerService customerService2 = new CustomerService(
@@ -249,7 +250,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         );
         customerService2.setId(2);
 
-        SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(customerService2, salonService, employee, LocalDateTime.now(), LocalDateTime.now(), false);
+        SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(customerService2, salonService, employee, LocalDate.now(), LocalTime.now(), false);
         salonServiceCustomerService2.setId(2);
 
         var salonServicesCustomerServicesFromDb = List.of(salonServiceCustomerService1, salonServiceCustomerService2);
