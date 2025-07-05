@@ -47,6 +47,8 @@ public class UserResetPasswordUseCaseImpl implements UserResetPasswordUseCase {
         user.setPassword(passwordEncoder.encode(input.newPassword()));
         this.userRepository.save(user);
 
+        redisTemplate.delete(redisKey);
+
         return new UserResetPasswordUseCaseOutputDto(true);
     }
 }
