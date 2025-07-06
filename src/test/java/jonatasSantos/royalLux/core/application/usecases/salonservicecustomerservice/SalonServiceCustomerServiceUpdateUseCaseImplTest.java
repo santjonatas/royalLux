@@ -4,10 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
-import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
-import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

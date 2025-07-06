@@ -19,7 +19,6 @@ import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class ClientGetUseCaseImpl implements ClientGetUseCase {

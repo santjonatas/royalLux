@@ -12,7 +12,6 @@ import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 

@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jonatasSantos.royalLux.core.application.contracts.repositories.*;
-import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.*;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;

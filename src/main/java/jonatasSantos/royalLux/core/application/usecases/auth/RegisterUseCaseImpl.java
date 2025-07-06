@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.auth;
 
 import jakarta.persistence.EntityExistsException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.RegisterUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.auth.RegisterUseCaseInputDto;
@@ -23,6 +24,7 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @AuditLogAnnotation
     @Override
     public RegisterUseCaseOutputDto execute(RegisterUseCaseInputDto input) {
         Optional<User> user = this.userRepository.findByUsername(input.username());

@@ -4,8 +4,6 @@ import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCas
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 
-import javax.management.relation.RoleNotFoundException;
-
 public interface UserUpdateUseCase {
     public UserUpdateUseCaseOutputDto execute (User user, Integer id, UserUpdateUseCaseInputDto input);
 }

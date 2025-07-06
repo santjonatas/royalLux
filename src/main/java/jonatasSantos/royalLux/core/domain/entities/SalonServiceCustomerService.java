@@ -1,7 +1,6 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
-import jonatasSantos.royalLux.core.domain.entities.common.Base;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

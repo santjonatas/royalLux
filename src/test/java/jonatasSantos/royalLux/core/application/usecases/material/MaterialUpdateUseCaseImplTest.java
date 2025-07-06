@@ -5,9 +5,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialRe
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseOutputDto;
-import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
-import jonatasSantos.royalLux.core.domain.entities.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

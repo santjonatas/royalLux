@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.infra.services.messagebroker.consumers;
+package jonatasSantos.royalLux.infra.messagebroker.consumers;
 
 import jonatasSantos.royalLux.core.application.contracts.repositories.PersonRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;

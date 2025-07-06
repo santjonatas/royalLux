@@ -13,8 +13,6 @@ import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleNotFoundException;
-
 @Service
 public class PersonCreateUseCaseImpl implements PersonCreateUseCase {
 

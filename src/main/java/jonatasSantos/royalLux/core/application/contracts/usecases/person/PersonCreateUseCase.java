@@ -4,8 +4,6 @@ import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUs
 import jonatasSantos.royalLux.core.application.models.dtos.person.PersonCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 
-import javax.management.relation.RoleNotFoundException;
-
 public interface PersonCreateUseCase {
     public PersonCreateUseCaseOutputDto execute(User user, PersonCreateUseCaseInputDto input);
 }

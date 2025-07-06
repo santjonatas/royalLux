@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleDeleteUseCaseOutputDto;
-import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.EmployeeRole;
 import jonatasSantos.royalLux.core.domain.entities.Role;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package jonatasSantos.royalLux.infra.services.messagebroker.publishers;
+package jonatasSantos.royalLux.infra.messagebroker.publishers;
 
 import jonatasSantos.royalLux.core.application.contracts.services.messagebroker.publishers.MessagePublisher;
 import jonatasSantos.royalLux.infra.config.RabbitMQConfig;
