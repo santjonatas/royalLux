@@ -126,6 +126,13 @@ public class PaymentGetUseCaseImpl implements PaymentGetUseCase {
                     .toList();
         }
 
+        if(!userLogged.getRole().equals(UserRole.ADMIN))
+            payments.forEach(payment -> {
+                payment.setPaymentToken(null);
+                payment.setPaymentUrl(null);
+                payment.setTransactionId(null);
+            });
+
         return payments.stream()
                 .map(paymentFound -> new PaymentGetUseCaseOutputDto(
                         paymentFound.getId(),
