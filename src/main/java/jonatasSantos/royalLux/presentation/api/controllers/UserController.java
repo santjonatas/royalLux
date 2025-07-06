@@ -1,5 +1,6 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.*;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserGetUseCaseInputDto;
@@ -40,7 +41,9 @@ public class UserController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity createUser(@RequestBody UserCreateUseCaseInputDto body) throws AuthenticationException{
-        var response = userCreateUseCase.execute(body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = userCreateUseCase.execute(user, body);
 
         var responsePresenter = new ResponsePresenter(response);
 
