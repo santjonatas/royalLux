@@ -73,7 +73,9 @@ public class ClientController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteClient(@RequestParam(required = true) Integer id) throws AuthenticationException {
-        var response = clientDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = clientDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ClientController.class).createClient(null)).withRel("post"));

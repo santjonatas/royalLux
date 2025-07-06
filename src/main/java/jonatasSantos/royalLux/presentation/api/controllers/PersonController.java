@@ -102,7 +102,9 @@ public class PersonController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deletePerson(@RequestParam(required = true) Integer id){
-        var response = personDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = personDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).createPerson(null)).withRel("post"));

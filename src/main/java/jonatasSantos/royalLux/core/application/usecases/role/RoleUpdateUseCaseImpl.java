@@ -1,12 +1,14 @@
 package jonatasSantos.royalLux.core.application.usecases.role;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleUpdateUseCase;
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,8 +24,9 @@ public class RoleUpdateUseCaseImpl implements RoleUpdateUseCase {
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public RoleUpdateUseCaseOutputDto execute(Integer roleId, RoleUpdateUseCaseInputDto input) {
+    public RoleUpdateUseCaseOutputDto execute(User user, Integer roleId, RoleUpdateUseCaseInputDto input) {
         var roleToBeUpdated = this.roleRepository.findById(String.valueOf(roleId))
                 .orElseThrow(() -> new EntityNotFoundException("Função é inexistente"));
 

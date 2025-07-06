@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.employee;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeUpdateUseCase;
@@ -24,6 +25,7 @@ public class EmployeeUpdateUseCaseImpl implements EmployeeUpdateUseCase {
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public EmployeeUpdateUseCaseOutputDto execute(User user, Integer employeeId, EmployeeUpdateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

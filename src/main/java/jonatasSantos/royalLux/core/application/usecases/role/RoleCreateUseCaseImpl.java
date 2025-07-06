@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.role;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleCreateUseCase;
@@ -22,6 +23,7 @@ public class RoleCreateUseCaseImpl implements RoleCreateUseCase {
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public RoleCreateUseCaseOutputDto execute(User user, RoleCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

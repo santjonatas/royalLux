@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.address;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.AddressRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressDeleteUseCase;
@@ -21,6 +22,7 @@ public class AddressDeleteUseCaseImpl implements AddressDeleteUseCase {
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public AddressDeleteUseCaseOutputDto execute(User user, Integer id) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

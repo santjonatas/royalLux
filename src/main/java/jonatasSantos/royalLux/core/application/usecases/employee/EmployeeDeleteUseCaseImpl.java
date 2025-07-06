@@ -1,11 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.employee;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.employee.EmployeeDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +23,9 @@ public class EmployeeDeleteUseCaseImpl implements EmployeeDeleteUseCase {
         this.salonServiceCustomerServiceRepository = salonServiceCustomerServiceRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public EmployeeDeleteUseCaseOutputDto execute(Integer id) {
+    public EmployeeDeleteUseCaseOutputDto execute(User user, Integer id) {
         var employee = this.employeeRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário inexistente"));
 

@@ -83,7 +83,9 @@ public class MaterialSalonServiceController {
     public ResponseEntity updateMaterialSalonService(
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialSalonServiceUpdateUseCaseInputDto body){
-        var response = materialSalonServiceUpdateUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialSalonServiceUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialSalonServiceController.class).createMaterialSalonService(null)).withRel("post"));

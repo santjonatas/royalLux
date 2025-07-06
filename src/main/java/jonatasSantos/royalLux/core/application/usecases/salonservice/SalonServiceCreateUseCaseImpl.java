@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.salonservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceCreateUseCase;
@@ -22,6 +23,7 @@ public class SalonServiceCreateUseCaseImpl implements SalonServiceCreateUseCase 
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public SalonServiceCreateUseCaseOutputDto execute(User user, SalonServiceCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

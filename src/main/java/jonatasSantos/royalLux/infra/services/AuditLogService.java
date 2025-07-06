@@ -49,7 +49,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
             log.setResult(result != null ? mapper.writeValueAsString(result) : null);
 
-            logger.info("Sucesso no método [{}] | Resultado: {}", log.getMethod(), log.getResult());
+            logger.info("Sucesso no método [{}] | Resultado: {}", log.getOrigin() + "." + log.getMethod(), log.getResult());
             return result;
 
         } catch (Exception e) {
@@ -66,12 +66,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
                 log.setStatus(AuditLogStatus.ERRO_NEGOCIO);
                 log.setStackTrace(Arrays.toString(e.getStackTrace()));
-                logger.warn("Erro de negócio no método [{}]: {}", log.getMethod(), e.getMessage());
+                logger.warn("Erro de negócio no método [{}]: {}", log.getOrigin() + "." + log.getMethod(), e.getMessage());
 
             } else {
                 log.setStatus(AuditLogStatus.ERRO);
                 log.setStackTrace(Arrays.toString(e.getStackTrace()));
-                logger.error(" Erro técnico no método [{}]: {}", log.getMethod(), e.getMessage(), e);
+                logger.error(" Erro técnico no método [{}]: {}", log.getOrigin() + "." + log.getMethod(), e.getMessage(), e);
             }
 
             log.setDescription(e.getMessage());

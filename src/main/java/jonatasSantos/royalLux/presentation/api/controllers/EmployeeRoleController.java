@@ -73,7 +73,9 @@ public class EmployeeRoleController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteEmployeeRole(@RequestParam(required = true) Integer id){
-        var response = employeeRoleDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = employeeRoleDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EmployeeRoleController.class).createEmployeeRole(null)).withRel("post"));

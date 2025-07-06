@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.materialsalonservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialSalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceDeleteUseCase;
@@ -19,6 +20,7 @@ public class MaterialSalonServiceDeleteUseCaseImpl implements MaterialSalonServi
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public MaterialSalonServiceDeleteUseCaseOutputDto execute(User user, Integer id) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

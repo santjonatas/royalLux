@@ -1,11 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.customerservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.PaymentRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // Importante: Adicione este import
 
@@ -22,9 +24,10 @@ public class CustomerServiceDeleteUseCaseImpl implements CustomerServiceDeleteUs
         this.paymentRepository = paymentRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     @Transactional
-    public CustomerServiceDeleteUseCaseOutputDto execute(Integer id) {
+    public CustomerServiceDeleteUseCaseOutputDto execute(User user, Integer id) {
         var customerService = this.customerServiceRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Atendimento inexistente"));
 

@@ -95,7 +95,9 @@ public class SalonServiceController {
     public ResponseEntity updateSalonService(
             @RequestParam(required = true) Integer id,
             @RequestBody SalonServiceUpdateUseCaseInputDto body) throws AuthenticationException {
-        var response = salonServiceUpdateUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = salonServiceUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).createSalonService(null)).withRel("post"));
@@ -109,7 +111,9 @@ public class SalonServiceController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteSalonService(@RequestParam(required = true) Integer id) throws AuthenticationException {
-        var response = salonServiceDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = salonServiceDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceController.class).createSalonService(null)).withRel("post"));

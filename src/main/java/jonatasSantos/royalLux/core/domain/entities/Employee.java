@@ -76,9 +76,6 @@ public class Employee{
 
     public void setSalary(BigDecimal salary) {
         if (salary != null) {
-            if (BigDecimal.ZERO.compareTo(salary) == 0)
-                throw new IllegalArgumentException("Salário não pode ser zero");
-
             if (salary.compareTo(BigDecimal.ZERO) < 0)
                 throw new IllegalArgumentException("Salário não pode ser menor que zero");
         }

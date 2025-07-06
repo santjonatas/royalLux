@@ -90,7 +90,9 @@ public class MaterialController {
     public ResponseEntity updateMaterial(
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialUpdateUseCaseInputDto body){
-        var response = materialUpdateUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).createMaterial(null)).withRel("post"));
@@ -108,7 +110,9 @@ public class MaterialController {
     public ResponseEntity incrementQuantityMaterial(
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialIncrementQuantityUseCaseInputDto body){
-        var response = materialIncrementQuantityUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialIncrementQuantityUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).createMaterial(null)).withRel("post"));
@@ -126,7 +130,9 @@ public class MaterialController {
     public ResponseEntity decrementQuantityMaterial(
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialDecrementQuantityUseCaseInputDto body){
-        var response = materialDecrementQuantityUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialDecrementQuantityUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).createMaterial(null)).withRel("post"));
@@ -142,7 +148,9 @@ public class MaterialController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteMaterial(@RequestParam(required = true) Integer id){
-        var response = materialDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = materialDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(MaterialController.class).createMaterial(null)).withRel("post"));

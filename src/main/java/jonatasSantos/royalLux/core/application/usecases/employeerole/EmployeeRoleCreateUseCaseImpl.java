@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.employeerole;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.EmployeeRoleRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.RoleRepository;
@@ -28,6 +29,7 @@ public class EmployeeRoleCreateUseCaseImpl implements EmployeeRoleCreateUseCase 
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public EmployeeRoleCreateUseCaseOutputDto execute(User user, EmployeeRoleCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

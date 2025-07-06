@@ -82,7 +82,9 @@ public class RoleController {
     public ResponseEntity updateRole(
             @RequestParam(required = true) Integer id,
             @RequestBody RoleUpdateUseCaseInputDto body){
-        var response = roleUpdateUseCase.execute(id, body);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = roleUpdateUseCase.execute(user, id, body);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).createRole(null)).withRel("post"));
@@ -96,7 +98,9 @@ public class RoleController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteRole(@RequestParam(required = true) Integer id){
-        var response = roleDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = roleDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RoleController.class).createRole(null)).withRel("post"));

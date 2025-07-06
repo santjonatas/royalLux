@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.customerservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.ClientRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
@@ -25,6 +26,7 @@ public class CustomerServiceCreateUseCaseImpl implements CustomerServiceCreateUs
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public CustomerServiceCreateUseCaseOutputDto execute(User user, CustomerServiceCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

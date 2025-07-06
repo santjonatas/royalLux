@@ -1,11 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.salonservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialSalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 
@@ -22,8 +24,9 @@ public class SalonServiceDeleteUseCaseImpl implements SalonServiceDeleteUseCase 
         this.salonServiceCustomerServiceRepository = salonServiceCustomerServiceRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public SalonServiceDeleteUseCaseOutputDto execute(Integer id) {
+    public SalonServiceDeleteUseCaseOutputDto execute(User user, Integer id) {
         var salonService = this.salonServiceRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Serviço inexistente"));
 

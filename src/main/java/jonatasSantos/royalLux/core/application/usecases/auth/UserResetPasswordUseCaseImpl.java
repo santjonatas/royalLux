@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.auth;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.services.AuthCodeService;
 import jonatasSantos.royalLux.core.application.contracts.usecases.auth.UserResetPasswordUseCase;
@@ -30,6 +31,7 @@ public class UserResetPasswordUseCaseImpl implements UserResetPasswordUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @AuditLogAnnotation
     @Override
     public UserResetPasswordUseCaseOutputDto execute(UserResetPasswordUseCaseInputDto input) {
 

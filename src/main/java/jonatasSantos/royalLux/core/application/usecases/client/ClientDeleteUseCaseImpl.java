@@ -1,10 +1,12 @@
 package jonatasSantos.royalLux.core.application.usecases.client;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.ClientRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +20,9 @@ public class ClientDeleteUseCaseImpl implements ClientDeleteUseCase {
         this.customerServiceRepository = customerServiceRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public ClientDeleteUseCaseOutputDto execute(Integer id) {
+    public ClientDeleteUseCaseOutputDto execute(User user, Integer id) {
         var client = this.clientRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente inexistente"));
 

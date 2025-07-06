@@ -102,7 +102,9 @@ public class SalonServiceCustomerServiceController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity deleteSalonServiceCustomerService(@RequestParam(required = true) Integer id) throws AuthenticationException {
-        var response = salonServiceCustomerServiceDeleteUseCase.execute(id);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = salonServiceCustomerServiceDeleteUseCase.execute(user, id);
         var responsePresenter = new ResponsePresenter(response);
 
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withRel("post"));

@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.address;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.AddressRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.address.AddressCreateUseCase;
@@ -26,6 +27,7 @@ public class AddressCreateUseCaseImpl implements AddressCreateUseCase {
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public AddressCreateUseCaseOutputDto execute(User user, AddressCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

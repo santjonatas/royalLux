@@ -1,11 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.materialsalonservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialSalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.materialsalonservice.MaterialSalonServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.MaterialSalonServiceUpdateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,8 +23,9 @@ public class MaterialSalonServiceUpdateUseCaseImpl implements MaterialSalonServi
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public MaterialSalonServiceUpdateUseCaseOutputDto execute(Integer materialSalonServiceId, MaterialSalonServiceUpdateUseCaseInputDto input) {
+    public MaterialSalonServiceUpdateUseCaseOutputDto execute(User user, Integer materialSalonServiceId, MaterialSalonServiceUpdateUseCaseInputDto input) {
         var materialSalonServiceToBeUpdated = this.materialSalonServiceRepository.findById(String.valueOf(materialSalonServiceId))
                 .orElseThrow(() -> new EntityNotFoundException("Vínculo entre material e serviço é inexistente"));
 

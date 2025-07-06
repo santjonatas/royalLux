@@ -1,12 +1,14 @@
 package jonatasSantos.royalLux.core.application.usecases.salonservicecustomerservice;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +27,10 @@ public class SalonServiceCustomerServiceDeleteUseCaseImpl implements SalonServic
         this.customerServiceRepository = customerServiceRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     @Transactional
-    public SalonServiceCustomerServiceDeleteUseCaseOutputDto execute(Integer id) {
+    public SalonServiceCustomerServiceDeleteUseCaseOutputDto execute(User user, Integer id) {
         var salonServiceCustomerService = this.salonServiceCustomerServiceRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Vínculo entre serviço, atendimento e funcionário é inexistente"));
 

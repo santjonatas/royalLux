@@ -1,11 +1,13 @@
 package jonatasSantos.royalLux.core.application.usecases.material;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.material.MaterialIncrementQuantityUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialIncrementQuantityUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialIncrementQuantityUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,8 +23,9 @@ public class MaterialIncrementQuantityUseCaseImpl implements MaterialIncrementQu
         this.userRepository = userRepository;
     }
 
+    @AuditLogAnnotation
     @Override
-    public MaterialIncrementQuantityUseCaseOutputDto execute(Integer materialId, MaterialIncrementQuantityUseCaseInputDto input) {
+    public MaterialIncrementQuantityUseCaseOutputDto execute(User user, Integer materialId, MaterialIncrementQuantityUseCaseInputDto input) {
         var materialToBeUpdated = this.materialRepository.findById(String.valueOf(materialId))
                 .orElseThrow(() -> new EntityNotFoundException("Material é inexistente"));
 

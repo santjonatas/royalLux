@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.payment;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.PaymentRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
@@ -28,6 +29,7 @@ public class ManualPaymentCreateUseCaseImpl implements ManualPaymentCreateUseCas
         this.customerServiceRepository = customerServiceRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public ManualPaymentCreateUseCaseOutputDto execute(User user, ManualPaymentCreateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
