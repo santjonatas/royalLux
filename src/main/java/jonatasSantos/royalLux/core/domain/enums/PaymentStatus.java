@@ -8,7 +8,7 @@ public enum PaymentStatus {
     EM_PROCESSAMENTO("EM PROCESSAMENTO"),
     PAGO("PAGO"),
     CANCELADO("CANCELADO"),
-    EXTORNADO("EXTORNADO"),
+    ESTORNADO("ESTORNADO"),
     REEMBOLSADO("REEMBOLSADO"),
     FALHOU("FALHOU");
 
@@ -27,7 +27,7 @@ public enum PaymentStatus {
             PaymentStatus.EM_PROCESSAMENTO,
             PaymentStatus.PAGO,
             PaymentStatus.CANCELADO,
-            PaymentStatus.EXTORNADO,
+            PaymentStatus.ESTORNADO,
             PaymentStatus.REEMBOLSADO,
             PaymentStatus.FALHOU
     );
@@ -37,7 +37,7 @@ public enum PaymentStatus {
             PaymentStatus.EM_PROCESSAMENTO,
             PaymentStatus.PAGO,
             PaymentStatus.CANCELADO,
-            PaymentStatus.EXTORNADO,
+            PaymentStatus.ESTORNADO,
             PaymentStatus.REEMBOLSADO,
             PaymentStatus.FALHOU
     );
@@ -61,7 +61,7 @@ public enum PaymentStatus {
     public static final List<PaymentStatus> FINISHING_STATUSES = Arrays.asList(
             PaymentStatus.PAGO,
             PaymentStatus.CANCELADO,
-            PaymentStatus.EXTORNADO,
+            PaymentStatus.ESTORNADO,
             PaymentStatus.REEMBOLSADO,
             PaymentStatus.FALHOU
     );
