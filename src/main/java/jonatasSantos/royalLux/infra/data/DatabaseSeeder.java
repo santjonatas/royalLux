@@ -5,6 +5,8 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.UserReposi
 import jonatasSantos.royalLux.core.domain.entities.Person;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
+import jonatasSantos.royalLux.core.domain.entities.AuditLogSchedulerConfig;
+import jonatasSantos.royalLux.core.application.contracts.repositories.AuditLogSchedulerConfigRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,11 +40,13 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuditLogSchedulerConfigRepository auditLogSchedulerConfigRepository;
 
-    public DatabaseSeeder(UserRepository userRepository, PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+    public DatabaseSeeder(UserRepository userRepository, PersonRepository personRepository, PasswordEncoder passwordEncoder, AuditLogSchedulerConfigRepository auditLogSchedulerConfigRepository) {
         this.userRepository = userRepository;
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
+        this.auditLogSchedulerConfigRepository = auditLogSchedulerConfigRepository;
     }
 
     @Override
@@ -52,15 +56,26 @@ public class DatabaseSeeder implements CommandLineRunner {
 
             System.out.println("✅ Seed de usuários inserido com sucesso!");
         }
+
+        if (auditLogSchedulerConfigRepository.count() == 0) {
+            this.createAuditLogSchedulerConfig();
+
+            System.out.println("✅ Seed de configurações de scheduler Log Auditoria inserido com sucesso!");
+        }
     }
 
     public void createAdmin(){
         User userAdmin = new User(this.adminUsername, UserRole.ADMIN, true);
         userAdmin.validatePassword(this.adminPassword);
         userAdmin.setPassword(passwordEncoder.encode(this.adminPassword));
-        userRepository.save(userAdmin);
+        this.userRepository.save(userAdmin);
 
         Person personAdmin = new Person(userAdmin, this.adminName, LocalDate.parse(this.adminBirth), this.adminCpf, this.adminPhone, this.adminEmail);
-        personRepository.save(personAdmin);
+        this.personRepository.save(personAdmin);
+    }
+
+    public void createAuditLogSchedulerConfig(){
+        AuditLogSchedulerConfig auditLogSchedulerConfig = new AuditLogSchedulerConfig(null, false);
+        this.auditLogSchedulerConfigRepository.save(auditLogSchedulerConfig);
     }
 }
