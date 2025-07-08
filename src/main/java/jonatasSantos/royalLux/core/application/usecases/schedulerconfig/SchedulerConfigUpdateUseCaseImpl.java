@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.application.usecases.schedulerconfig;
 
 import jakarta.persistence.EntityNotFoundException;
+import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.SchedulerConfigRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.schedulerconfig.SchedulerConfigUpdateUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.schedulerconfig.SchedulerConfigUpdateUseCaseInputDto;
@@ -19,6 +20,7 @@ public class SchedulerConfigUpdateUseCaseImpl implements SchedulerConfigUpdateUs
         this.schedulerConfigRepository = schedulerConfigRepository;
     }
 
+    @AuditLogAnnotation
     @Override
     public SchedulerConfigUpdateUseCaseOutputDto execute(User user, Integer schedulerConfigId, SchedulerConfigUpdateUseCaseInputDto input) {
         var schedulerConfigToBeUpdated = this.schedulerConfigRepository.findById(String.valueOf(schedulerConfigId))
