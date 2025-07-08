@@ -39,7 +39,9 @@ class UserCreateUseCaseImplTest {
     @Test
     @DisplayName("Quando já existir usuário com o mesmo username, estourar exceção EntityExistsException com mensagem 'Usuário já existe'")
     void deveLancarExcecaoQuandoUsernameJaExistir() {
-        // Arrange
+        //
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.ADMIN, true);
         User existingUser = new User("joao_1", UserRole.CLIENT, true);
 
@@ -48,7 +50,7 @@ class UserCreateUseCaseImplTest {
 
         // Act + Assert
         EntityExistsException exception = assertThrows(EntityExistsException.class, () -> {
-            userCreateUseCase.execute(input);
+            userCreateUseCase.execute(userLogged, input);
         });
 
         assertEquals("Usuário já existe", exception.getMessage());
@@ -58,13 +60,15 @@ class UserCreateUseCaseImplTest {
     @DisplayName("Quando role passada como input pelo usuário for ADMIN, estourar exceção IllegalArgumentException com mensagem 'Apenas um usuário pode ser Admin'")
     void deveLancarExcecaoQuandoRoleForAdmin(){
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.ADMIN, true);
 
         when(userRepository.findByUsername(input.username())).thenReturn(Optional.empty());
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            userCreateUseCase.execute(input);
+            userCreateUseCase.execute(userLogged, input);
         });
 
         assertEquals("Apenas um usuário pode ser Admin", exception.getMessage());
@@ -74,6 +78,8 @@ class UserCreateUseCaseImplTest {
     @DisplayName("Deve criar usuário com sucesso e retornar id de usuário cadastrado")
     void deveCriarUsuarioComSucesso(){
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         var input = new UserCreateUseCaseInputDto("joao_1", "Teste123@", UserRole.EMPLOYEE, true);
 
         when(userRepository.findByUsername(input.username())).thenReturn(Optional.empty());
@@ -85,7 +91,7 @@ class UserCreateUseCaseImplTest {
         });
 
         // Act
-        UserCreateUseCaseOutputDto output = userCreateUseCase.execute(input);
+        UserCreateUseCaseOutputDto output = userCreateUseCase.execute(userLogged, input);
 
         // Assert
         assertNotNull(output);

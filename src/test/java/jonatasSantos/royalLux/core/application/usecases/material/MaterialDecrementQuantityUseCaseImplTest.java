@@ -5,6 +5,8 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialRe
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialDecrementQuantityUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialDecrementQuantityUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,8 @@ class MaterialDecrementQuantityUseCaseImplTest {
     @DisplayName("Quando não existir material a ser decrementado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Material é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirMaterialASerDecrementado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialDecrementQuantityUseCaseInputDto input = new MaterialDecrementQuantityUseCaseInputDto(3);
 
         when(materialRepository.findById(String.valueOf(1)))
@@ -43,7 +47,7 @@ class MaterialDecrementQuantityUseCaseImplTest {
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            materialDecrementQuantityUseCase.execute(1, input);
+            materialDecrementQuantityUseCase.execute(userLogged, 1, input);
         });
 
         assertEquals("Material é inexistente", exception.getMessage());
@@ -53,6 +57,8 @@ class MaterialDecrementQuantityUseCaseImplTest {
     @DisplayName("Deve decrementar material com sucesso e retornar quantidade atual em propriedade currentQuantity do output'")
     void deveDecrementarMaterialComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialDecrementQuantityUseCaseInputDto input = new MaterialDecrementQuantityUseCaseInputDto(3);
 
         Material material = new Material("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40), 5);
@@ -61,7 +67,7 @@ class MaterialDecrementQuantityUseCaseImplTest {
                 .thenReturn(Optional.of(material));
 
         // Act
-        MaterialDecrementQuantityUseCaseOutputDto output = materialDecrementQuantityUseCase.execute(1, input);
+        MaterialDecrementQuantityUseCaseOutputDto output = materialDecrementQuantityUseCase.execute(userLogged, 1, input);
 
         // Assert
         assertNotNull(output);

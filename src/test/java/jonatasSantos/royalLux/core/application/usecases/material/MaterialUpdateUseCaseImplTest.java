@@ -6,6 +6,8 @@ import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,8 @@ class MaterialUpdateUseCaseImplTest {
     @DisplayName("Quando não existir material a ser atualizado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Material é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirMaterialASerAtualizado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialUpdateUseCaseInputDto input = new MaterialUpdateUseCaseInputDto("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40));
 
         when(materialRepository.findById(String.valueOf(3)))
@@ -44,7 +48,7 @@ class MaterialUpdateUseCaseImplTest {
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            materialUpdateUseCase.execute(3, input);
+            materialUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Material é inexistente", exception.getMessage());
@@ -54,6 +58,8 @@ class MaterialUpdateUseCaseImplTest {
     @DisplayName("Quando já existir material com o mesmo nome, estourar exceção ConflictException com mensagem 'Material já existente com este nome'")
     void deveLancarExcecaoQuandoJaExistirMaterialComOMesmoNome() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialUpdateUseCaseInputDto input = new MaterialUpdateUseCaseInputDto("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40));
         Material material = new Material(input.name(), input.description(), input.value(), 5);
         material.setId(3);
@@ -66,7 +72,7 @@ class MaterialUpdateUseCaseImplTest {
 
         // Act + Assert
         ConflictException exception = assertThrows(ConflictException.class, () -> {
-            materialUpdateUseCase.execute(3, input);
+            materialUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Material já existente com este nome", exception.getMessage());
@@ -76,6 +82,8 @@ class MaterialUpdateUseCaseImplTest {
     @DisplayName("Deve atualizar material com sucesso e retornar true em propriedade success do output")
     void deveAtualizarMaterialComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialUpdateUseCaseInputDto input = new MaterialUpdateUseCaseInputDto("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40));
         Material material = new Material(input.name(), input.description(), input.value(), 5);
         material.setId(3);
@@ -87,7 +95,7 @@ class MaterialUpdateUseCaseImplTest {
                 .thenReturn(false);
 
         // Act
-        MaterialUpdateUseCaseOutputDto output = materialUpdateUseCase.execute(3, input);
+        MaterialUpdateUseCaseOutputDto output = materialUpdateUseCase.execute(userLogged, 3, input);
 
         // Assert
         assertNotNull(output);

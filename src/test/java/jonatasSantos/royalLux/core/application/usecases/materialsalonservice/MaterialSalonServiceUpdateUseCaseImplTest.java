@@ -7,6 +7,8 @@ import jonatasSantos.royalLux.core.application.models.dtos.materialsalonservice.
 import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.MaterialSalonService;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,8 @@ class MaterialSalonServiceUpdateUseCaseImplTest {
     @DisplayName("Quando não existir vínculo entre material e serviço a ser atualizado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Vínculo entre material e serviço é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirVinculoEntreMaterialEServico() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialSalonServiceUpdateUseCaseInputDto input = new MaterialSalonServiceUpdateUseCaseInputDto(1);
 
         when(materialSalonServiceRepository.findById(String.valueOf(1)))
@@ -46,7 +50,7 @@ class MaterialSalonServiceUpdateUseCaseImplTest {
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            materialSalonServiceUpdateUseCase.execute(3, input);
+            materialSalonServiceUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Vínculo entre material e serviço é inexistente", exception.getMessage());
@@ -56,6 +60,8 @@ class MaterialSalonServiceUpdateUseCaseImplTest {
     @DisplayName("Deve atualizar vínculo entre material e serviço com sucesso e retornar true em propriedade success do output")
     void deveAtualizarVinculoEntreMaterialEServicoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         MaterialSalonServiceUpdateUseCaseInputDto input = new MaterialSalonServiceUpdateUseCaseInputDto(1);
 
         Material material = new Material("Tinta de cabelo", "Tinta vermelha", BigDecimal.valueOf(40), 5);
@@ -70,7 +76,7 @@ class MaterialSalonServiceUpdateUseCaseImplTest {
                 .thenReturn(Optional.of(materialSalonService));
 
         // Act
-        MaterialSalonServiceUpdateUseCaseOutputDto output = materialSalonServiceUpdateUseCase.execute(1, input);
+        MaterialSalonServiceUpdateUseCaseOutputDto output = materialSalonServiceUpdateUseCase.execute(userLogged, 1, input);
 
         // Assert
         assertNotNull(output);

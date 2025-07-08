@@ -43,12 +43,14 @@ class ClientDeleteUseCaseImplTest {
     @DisplayName("Quando não existir cliente a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Cliente inexistente'")
     void deveLancarExcecaoQuandoNaoExistirClienteASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(clientRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            clientDeleteUseCase.execute(3);
+            clientDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Cliente inexistente", exception.getMessage());
@@ -58,6 +60,8 @@ class ClientDeleteUseCaseImplTest {
     @DisplayName("Quando cliente possuir atendimentos vinculados, deve lançar IllegalStateException com mensagem apropriada")
     void deveLancarExcecaoQuandoClientePossuirAtendimentosVinculados() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("joana_cli", UserRole.CLIENT, true);
         Client client = new Client(user);
         client.setId(7);
@@ -68,7 +72,7 @@ class ClientDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            clientDeleteUseCase.execute(7);
+            clientDeleteUseCase.execute(userLogged, 7);
         });
 
         assertEquals("Cliente não pode ser deletado pois ainda possui atendimentos vinculados", exception.getMessage());
@@ -78,6 +82,8 @@ class ClientDeleteUseCaseImplTest {
     @DisplayName("Quando cliente não possuir vínculos, deve deletar com sucesso e retornar true no output")
     void deveDeletarClienteComSucessoQuandoNaoPossuirVinculos() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("lucas_cli", UserRole.CLIENT, true);
         Client client = new Client(user);
         client.setId(8);
@@ -86,7 +92,7 @@ class ClientDeleteUseCaseImplTest {
         when(customerServiceRepository.findByClientId(8)).thenReturn(Collections.emptyList());
 
         // Act
-        ClientDeleteUseCaseOutputDto output = clientDeleteUseCase.execute(8);
+        ClientDeleteUseCaseOutputDto output = clientDeleteUseCase.execute(userLogged, 8);
 
         // Assert
         assertNotNull(output);

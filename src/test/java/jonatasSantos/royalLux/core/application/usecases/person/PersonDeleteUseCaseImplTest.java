@@ -38,12 +38,14 @@ class PersonDeleteUseCaseImplTest {
     @DisplayName("Quando não existir pessoa a ser deletada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Dados pessoais inexistentes'")
     void deveLancarExcecaoQuandoNaoExistirPessoaASerDeletada() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(personRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            personDeleteUseCase.execute(3);
+            personDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Dados pessoais inexistentes", exception.getMessage());
@@ -53,6 +55,8 @@ class PersonDeleteUseCaseImplTest {
     @DisplayName("Quando pessoa a ser deletada for ADMIN, estourar exceção UnauthorizedException com mensagem 'Admin não pode ser deletado'")
     void deveLancarExcecaoQuandoPessoaASerDeletadaForAdmin() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("joao_1", UserRole.ADMIN, true);
         Person person = new Person(user, "João Gomes", LocalDate.of(2003, 8, 16), "46543661054", "11985633657", "joao.gomes@gmail.com");
 
@@ -61,7 +65,7 @@ class PersonDeleteUseCaseImplTest {
 
         // Act + Assert
         UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
-            personDeleteUseCase.execute(3);
+            personDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Admin não pode ser deletado", exception.getMessage());
@@ -71,6 +75,8 @@ class PersonDeleteUseCaseImplTest {
     @DisplayName("Deve deletar pessoa com sucesso e retornar true em propriedade success do output")
     void deveDeletarPessoaComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("mateus_2", UserRole.CLIENT, true);
         Person person = new Person(user, "Mateus Souza", LocalDate.of(2003, 8, 16), "46543661054", "11985633657", "mateus.souza@gmail.com");
 
@@ -78,7 +84,7 @@ class PersonDeleteUseCaseImplTest {
                 .thenReturn(Optional.of(person));
 
         // Act
-        PersonDeleteUseCaseOutputDto output = personDeleteUseCase.execute(3);
+        PersonDeleteUseCaseOutputDto output = personDeleteUseCase.execute(userLogged, 3);
 
         // Assert
         assertNotNull(output);

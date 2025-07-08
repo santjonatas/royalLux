@@ -48,12 +48,14 @@ class SalonServiceCustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando não existir vínculo entre atendimento e serviço a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Vínculo entre serviço, atendimento e funcionário é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirVinculoEntreAtendimentoEServicoASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(salonServiceCustomerServiceRepository.findById(String.valueOf(1)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            salonServiceCustomerServiceDeleteUseCase.execute(1);
+            salonServiceCustomerServiceDeleteUseCase.execute(userLogged, 1);
         });
 
         assertEquals("Vínculo entre serviço, atendimento e funcionário é inexistente", exception.getMessage());
@@ -63,6 +65,8 @@ class SalonServiceCustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando vínculo for válido, deve deletar com sucesso e retornar true no output")
     void deveDeletarVinculoEntreAtendimentoEServicoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User userCliente = new User("mateus_2", UserRole.CLIENT, true);
         Client client = new Client(userCliente);
 
@@ -105,7 +109,7 @@ class SalonServiceCustomerServiceDeleteUseCaseImplTest {
                 .thenReturn(List.of(outroServico));
 
         // Act
-        SalonServiceCustomerServiceDeleteUseCaseOutputDto output = salonServiceCustomerServiceDeleteUseCase.execute(1);
+        SalonServiceCustomerServiceDeleteUseCaseOutputDto output = salonServiceCustomerServiceDeleteUseCase.execute(userLogged, 1);
 
         // Assert
         assertNotNull(output);

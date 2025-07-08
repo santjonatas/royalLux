@@ -8,6 +8,8 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonSer
 import jonatasSantos.royalLux.core.domain.entities.MaterialSalonService;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,12 +50,14 @@ class SalonServiceDeleteUseCaseImplTest {
     @DisplayName("Quando não existir serviço a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Serviço inexistente'")
     void deveLancarExcecaoQuandoNaoExistirServicoASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(salonServiceRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            salonServiceDeleteUseCase.execute(3);
+            salonServiceDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Serviço inexistente", exception.getMessage());
@@ -63,6 +67,8 @@ class SalonServiceDeleteUseCaseImplTest {
     @DisplayName("Quando serviço possuir materiais vinculados, deve lançar IllegalStateException com mensagem apropriada")
     void deveLancarExcecaoQuandoServicoPossuirMateriaisVinculados() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonService salonService = new SalonService("Hidratação", "", LocalTime.of(0, 30), BigDecimal.valueOf(50));
         salonService.setId(1);
 
@@ -72,7 +78,7 @@ class SalonServiceDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            salonServiceDeleteUseCase.execute(1);
+            salonServiceDeleteUseCase.execute(userLogged, 1);
         });
 
         assertEquals("Serviço não pode ser deletado pois ainda possui materiais vinculados", exception.getMessage());
@@ -82,6 +88,8 @@ class SalonServiceDeleteUseCaseImplTest {
     @DisplayName("Quando serviço possuir atendimentos vinculados, deve lançar IllegalStateException com mensagem apropriada")
     void deveLancarExcecaoQuandoServicoPossuirAtendimentosVinculados() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonService salonService = new SalonService("Coloração", "", LocalTime.of(1, 0), BigDecimal.valueOf(120));
         salonService.setId(2);
 
@@ -92,7 +100,7 @@ class SalonServiceDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            salonServiceDeleteUseCase.execute(2);
+            salonServiceDeleteUseCase.execute(userLogged,2);
         });
 
         assertEquals("Serviço não pode ser deletado pois ainda possui serviços de atendimentos vinculados", exception.getMessage());
@@ -102,6 +110,8 @@ class SalonServiceDeleteUseCaseImplTest {
     @DisplayName("Quando serviço não possuir vínculos, deve deletar com sucesso e retornar true no output")
     void deveDeletarServicoComSucessoQuandoNaoPossuirVinculos() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonService salonService = new SalonService("Corte de cabelo", "", LocalTime.of(0, 45), BigDecimal.valueOf(40));
         salonService.setId(3);
 
@@ -110,7 +120,7 @@ class SalonServiceDeleteUseCaseImplTest {
         when(salonServiceCustomerServiceRepository.findBySalonServiceId(3)).thenReturn(Collections.emptyList());
 
         // Act
-        SalonServiceDeleteUseCaseOutputDto output = salonServiceDeleteUseCase.execute(3);
+        SalonServiceDeleteUseCaseOutputDto output = salonServiceDeleteUseCase.execute(userLogged, 3);
 
         // Assert
         assertNotNull(output);

@@ -4,6 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.PaymentRepository;
 import jonatasSantos.royalLux.core.application.models.dtos.payment.PaymentDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Payment;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,11 +35,13 @@ class PaymentDeleteUseCaseImplTest {
     @DisplayName("Quando pagamento não existir com o ID informado, deve lançar EntityNotFoundException com mensagem 'Pagamento inexistente'")
     void deveLancarExcecaoQuandoPagamentoNaoExistir() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(paymentRepository.findById("1")).thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            paymentDeleteUseCase.execute(1);
+            paymentDeleteUseCase.execute(userLogged, 1);
         });
 
         assertEquals("Pagamento inexistente", exception.getMessage());
@@ -47,13 +51,15 @@ class PaymentDeleteUseCaseImplTest {
     @DisplayName("Quando pagamento existir, deve excluir com sucesso e retornar true no output")
     void deveDeletarPagamentoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         Payment pagamento = new Payment();
         pagamento.setId(1);
 
         when(paymentRepository.findById("1")).thenReturn(Optional.of(pagamento));
 
         // Act
-        PaymentDeleteUseCaseOutputDto output = paymentDeleteUseCase.execute(1);
+        PaymentDeleteUseCaseOutputDto output = paymentDeleteUseCase.execute(userLogged, 1);
 
         // Assert
         assertNotNull(output);

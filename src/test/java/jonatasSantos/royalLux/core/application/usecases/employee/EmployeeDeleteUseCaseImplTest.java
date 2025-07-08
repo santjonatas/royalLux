@@ -49,12 +49,14 @@ class EmployeeDeleteUseCaseImplTest {
     @DisplayName("Quando não existir funcionário a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Funcionário inexistente'")
     void deveLancarExcecaoQuandoNaoExistirFuncionarioASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(employeeRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            employeeDeleteUseCase.execute(3);
+            employeeDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Funcionário inexistente", exception.getMessage());
@@ -64,6 +66,8 @@ class EmployeeDeleteUseCaseImplTest {
     @DisplayName("Quando funcionário possuir funções vinculadas, estourar exceção IllegalStateException com mensagem específica")
     void deveLancarExcecaoQuandoFuncionarioPossuirFuncoesVinculadas() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("aninha", UserRole.EMPLOYEE, true);
         Employee employee = new Employee(user, "Recepcionista", BigDecimal.valueOf(1500));
         employee.setId(5);
@@ -73,7 +77,7 @@ class EmployeeDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            employeeDeleteUseCase.execute(5);
+            employeeDeleteUseCase.execute(userLogged, 5);
         });
 
         assertEquals("Funcionário não pode ser deletado pois ainda possui funções vinculados", exception.getMessage());
@@ -83,6 +87,8 @@ class EmployeeDeleteUseCaseImplTest {
     @DisplayName("Quando funcionário possuir serviços de atendimentos vinculados, estourar exceção IllegalStateException com mensagem específica")
     void deveLancarExcecaoQuandoFuncionarioPossuirServicosAtendimentosVinculados() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("carolina", UserRole.EMPLOYEE, true);
         Employee employee = new Employee(user, "Manicure", BigDecimal.valueOf(1800));
         employee.setId(7);
@@ -94,7 +100,7 @@ class EmployeeDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            employeeDeleteUseCase.execute(7);
+            employeeDeleteUseCase.execute(userLogged, 7);
         });
 
         assertEquals("Funcionário não pode ser deletado pois ainda possui serviços de atendimentos vinculados", exception.getMessage());
@@ -104,6 +110,8 @@ class EmployeeDeleteUseCaseImplTest {
     @DisplayName("Deve deletar funcionário com sucesso e retornar true em propriedade success do output")
     void deveDeletarFuncionarioComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("mateus_2", UserRole.EMPLOYEE, true);
         Employee employee = new Employee(user, "Barbeiro", BigDecimal.valueOf(2000));
         employee.setId(3);
@@ -113,7 +121,7 @@ class EmployeeDeleteUseCaseImplTest {
         when(salonServiceCustomerServiceRepository.findByEmployeeId(3)).thenReturn(Collections.emptyList());
 
         // Act
-        EmployeeDeleteUseCaseOutputDto output = employeeDeleteUseCase.execute(3);
+        EmployeeDeleteUseCaseOutputDto output = employeeDeleteUseCase.execute(userLogged, 3);
 
         // Assert
         assertNotNull(output);

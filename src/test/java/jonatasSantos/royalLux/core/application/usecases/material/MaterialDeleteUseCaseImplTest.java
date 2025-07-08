@@ -6,6 +6,8 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.MaterialSa
 import jonatasSantos.royalLux.core.application.models.dtos.material.MaterialDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.MaterialSalonService;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,12 +43,14 @@ class MaterialDeleteUseCaseImplTest {
     @DisplayName("Quando não existir material a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Material inexistente'")
     void deveLancarExcecaoQuandoNaoExistirMaterialASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(materialRepository.findById(String.valueOf(1)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            materialDeleteUseCase.execute(1);
+            materialDeleteUseCase.execute(userLogged, 1);
         });
 
         assertEquals("Material inexistente", exception.getMessage());
@@ -56,6 +60,8 @@ class MaterialDeleteUseCaseImplTest {
     @DisplayName("Quando material possuir serviços vinculados, deve lançar IllegalStateException com mensagem apropriada")
     void deveLancarExcecaoQuandoMaterialPossuirServicosVinculados() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         Material material = new Material("Tinta loira", "Para descoloração", BigDecimal.valueOf(55), 8);
         material.setId(2);
 
@@ -64,7 +70,7 @@ class MaterialDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            materialDeleteUseCase.execute(2);
+            materialDeleteUseCase.execute(userLogged, 2);
         });
 
         assertEquals("Material não pode ser deletado pois ainda possui serviços vinculados", exception.getMessage());
@@ -74,6 +80,8 @@ class MaterialDeleteUseCaseImplTest {
     @DisplayName("Quando material não possuir vínculos, deve deletar com sucesso e retornar true no output")
     void deveDeletarMaterialComSucessoQuandoNaoPossuirVinculos() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         Material material = new Material("Shampoo neutro", "Uso profissional", BigDecimal.valueOf(20), 10);
         material.setId(3);
 
@@ -81,7 +89,7 @@ class MaterialDeleteUseCaseImplTest {
         when(materialSalonServiceRepository.findByMaterialId(3)).thenReturn(Collections.emptyList());
 
         // Act
-        MaterialDeleteUseCaseOutputDto output = materialDeleteUseCase.execute(3);
+        MaterialDeleteUseCaseOutputDto output = materialDeleteUseCase.execute(userLogged, 3);
 
         // Assert
         assertNotNull(output);

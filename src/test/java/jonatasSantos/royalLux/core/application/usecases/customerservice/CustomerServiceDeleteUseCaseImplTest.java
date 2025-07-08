@@ -46,12 +46,14 @@ class CustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando não existir atendimento a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Atendimento inexistente'")
     void deveLancarExcecaoQuandoNaoExistirAtendimentoASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(customerServiceRepository.findById(String.valueOf(3)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            customerServiceDeleteUseCase.execute(3);
+            customerServiceDeleteUseCase.execute(userLogged, 3);
         });
 
         assertEquals("Atendimento inexistente", exception.getMessage());
@@ -61,6 +63,8 @@ class CustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando atendimento não tiver vínculos, deve excluir atendimento com sucesso e retornar sucesso no output")
     void deveDeletarAtendimentoSemVinculosComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("mateus_2", UserRole.CLIENT, true);
         Client client = new Client(user);
 
@@ -83,7 +87,7 @@ class CustomerServiceDeleteUseCaseImplTest {
         when(paymentRepository.existsByCustomerServiceId(1)).thenReturn(false);
 
         // Act
-        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(1);
+        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(userLogged, 1);
 
         // Assert
         assertNotNull(output);
@@ -95,6 +99,8 @@ class CustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando atendimento possuir vínculos e pagamentos, deve excluí-los antes de excluir o atendimento")
     void deveDeletarVinculosEPagamentosAntesDeletarAtendimento() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("ana_maria", UserRole.CLIENT, true);
         Client client = new Client(user);
 
@@ -117,7 +123,7 @@ class CustomerServiceDeleteUseCaseImplTest {
         when(paymentRepository.existsByCustomerServiceId(9)).thenReturn(true);
 
         // Act
-        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(9);
+        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(userLogged, 9);
 
         // Assert
         assertNotNull(output);
@@ -132,6 +138,8 @@ class CustomerServiceDeleteUseCaseImplTest {
     @DisplayName("Quando atendimento existir e não houver vínculos, deve excluir com sucesso e retornar true no output")
     void deveExecutarComSucessoQuandoNaoHouverVinculos() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("felipe_2", UserRole.CLIENT, true);
         Client client = new Client(user);
 
@@ -154,7 +162,7 @@ class CustomerServiceDeleteUseCaseImplTest {
         when(paymentRepository.existsByCustomerServiceId(8)).thenReturn(false);
 
         // Act
-        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(8);
+        CustomerServiceDeleteUseCaseOutputDto output = customerServiceDeleteUseCase.execute(userLogged, 8);
 
         // Assert
         assertNotNull(output);

@@ -36,12 +36,14 @@ class EmployeeRoleDeleteUseCaseImplTest {
     @DisplayName("Quando não existir vínculo entre funcionário e função a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Vínculo entre funcionário e função inexistente'")
     void deveLancarExcecaoQuandoNaoExistirVinculoEntreFuncionarioEFuncaoASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         when(employeeRoleRepository.findById(String.valueOf(1)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            employeeRoleDeleteUseCase.execute(1);
+            employeeRoleDeleteUseCase.execute(userLogged, 1);
         });
 
         assertEquals("Vínculo entre funcionário e função inexistente", exception.getMessage());
@@ -51,6 +53,8 @@ class EmployeeRoleDeleteUseCaseImplTest {
     @DisplayName("Deve deletar vínculo entre funcionário e função com sucesso e retornar true em propriedade success do output")
     void deveDeletarVinculoEntreFuncionarioEFuncaoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         User user = new User("mateus_2", UserRole.EMPLOYEE, true);
         Employee employee = new Employee(user, "Barbeiro", BigDecimal.valueOf(2000));
         Role role = new Role("Barbeiro", "Atuar cortando cabelo e fazendo barba");
@@ -60,7 +64,7 @@ class EmployeeRoleDeleteUseCaseImplTest {
                 .thenReturn(Optional.of(employeeRole));
 
         // Act
-        EmployeeRoleDeleteUseCaseOutputDto output = employeeRoleDeleteUseCase.execute(1);
+        EmployeeRoleDeleteUseCaseOutputDto output = employeeRoleDeleteUseCase.execute(userLogged, 1);
 
         // Assert
         assertNotNull(output);

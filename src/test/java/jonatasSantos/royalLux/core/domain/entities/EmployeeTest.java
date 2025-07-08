@@ -66,20 +66,6 @@ class EmployeeTest {
     }
 
     @Test
-    @DisplayName("Quando atribuir valor zero ao salário, estourar exceção IllegalArgumentException com mensagem 'Salário não pode ser zero'")
-    void deveLancarExcecaoQuandoAtribuirValorZeroAoSalario(){
-        // Arrange
-        Employee employee = new Employee();
-
-        // Act + Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            employee.setSalary(BigDecimal.ZERO);
-        });
-
-        assertEquals("Salário não pode ser zero", exception.getMessage());
-    }
-
-    @Test
     @DisplayName("Quando atribuir valor abaixo de zero ao salário, estourar exceção IllegalArgumentException com mensagem 'Salário não pode ser menor que zero'")
     void deveLancarExcecaoQuandoAtribuirValorMenorQueZeroAoSalario(){
         // Arrange

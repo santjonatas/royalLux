@@ -6,6 +6,8 @@ import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Role;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,8 @@ class RoleUpdateUseCaseImplTest {
     @DisplayName("Quando não existir função a ser atualizada com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Função é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirClienteASerDeletado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         RoleUpdateUseCaseInputDto input = new RoleUpdateUseCaseInputDto("Barbeiro", "Atuar cortando cabelo e fazendo barba");
 
         when(roleRepository.findById(String.valueOf(3)))
@@ -42,7 +46,7 @@ class RoleUpdateUseCaseImplTest {
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            roleUpdateUseCase.execute(3, input);
+            roleUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Função é inexistente", exception.getMessage());
@@ -52,6 +56,8 @@ class RoleUpdateUseCaseImplTest {
     @DisplayName("Quando já existir função a ser atualizada com o mesmo nome, estourar exceção ConflictException com mensagem 'Função já existente com este nome'")
     void deveLancarExcecaoQuandoNaoExistirFuncaoASerAtualizada() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         RoleUpdateUseCaseInputDto input = new RoleUpdateUseCaseInputDto("Barbeiro", "Atuar cortando cabelo e fazendo barba");
         Role role = new Role("Barbeiro", "Atuar cortando cabelo e fazendo barba");
 
@@ -63,7 +69,7 @@ class RoleUpdateUseCaseImplTest {
 
         // Act + Assert
         ConflictException exception = assertThrows(ConflictException.class, () -> {
-            roleUpdateUseCase.execute(3, input);
+            roleUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Função já existente com este nome", exception.getMessage());
@@ -73,6 +79,8 @@ class RoleUpdateUseCaseImplTest {
     @DisplayName("Deve atualizar função com sucesso e retornar true em propriedade success do output")
     void deveAtualizarFuncaoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         RoleUpdateUseCaseInputDto input = new RoleUpdateUseCaseInputDto("Barbeiro", "Atuar cortando cabelo e fazendo barba");
         Role role = new Role("Barbeiro", "Atuar cortando cabelo e fazendo barba");
 
@@ -83,7 +91,7 @@ class RoleUpdateUseCaseImplTest {
                 .thenReturn(false);
 
         // Act
-        RoleUpdateUseCaseOutputDto output = roleUpdateUseCase.execute(3, input);
+        RoleUpdateUseCaseOutputDto output = roleUpdateUseCase.execute(userLogged, 3, input);
 
         // Assert
         assertNotNull(output);

@@ -6,6 +6,8 @@ import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
+import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,8 @@ class SalonServiceUpdateUseCaseImplTest {
     @DisplayName("Quando não existir material a ser atualizado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Serviço é inexistente'")
     void deveLancarExcecaoQuandoNaoExistirServicoASerAtualizado() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonServiceUpdateUseCaseInputDto input = new SalonServiceUpdateUseCaseInputDto("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
 
         when(salonServiceRepository.findById(String.valueOf(3)))
@@ -45,7 +49,7 @@ class SalonServiceUpdateUseCaseImplTest {
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            salonServiceUpdateUseCase.execute(3, input);
+            salonServiceUpdateUseCase.execute(userLogged, 3, input);
         });
 
         assertEquals("Serviço é inexistente", exception.getMessage());
@@ -55,6 +59,8 @@ class SalonServiceUpdateUseCaseImplTest {
     @DisplayName("Quando já existir serviço com o mesmo nome, estourar exceção ConflictException com mensagem 'Serviço já existente com este nome'")
     void deveLancarExcecaoQuandoJaExistirServicoComOMesmoNome() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonServiceUpdateUseCaseInputDto input = new SalonServiceUpdateUseCaseInputDto("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
         SalonService salonService = new SalonService("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
         salonService.setId(1);
@@ -67,7 +73,7 @@ class SalonServiceUpdateUseCaseImplTest {
 
         // Act + Assert
         ConflictException exception = assertThrows(ConflictException.class, () -> {
-            salonServiceUpdateUseCase.execute(1, input);
+            salonServiceUpdateUseCase.execute(userLogged, 1, input);
         });
 
         assertEquals("Serviço já existente com este nome", exception.getMessage());
@@ -77,6 +83,8 @@ class SalonServiceUpdateUseCaseImplTest {
     @DisplayName("Deve atualizar serviço com sucesso e retornar true em propriedade success do output")
     void deveAtualizarServicoComSucesso() {
         // Arrange
+        User userLogged = new User("maicon", UserRole.ADMIN, true);
+
         SalonServiceUpdateUseCaseInputDto input = new SalonServiceUpdateUseCaseInputDto("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
         SalonService salonService = new SalonService("Corte de cabelo", "", LocalTime.parse("00:45:00"), BigDecimal.valueOf(40));
         salonService.setId(1);
@@ -88,7 +96,7 @@ class SalonServiceUpdateUseCaseImplTest {
                 .thenReturn(false);
 
         // Act
-        SalonServiceUpdateUseCaseOutputDto output = salonServiceUpdateUseCase.execute(1, input);
+        SalonServiceUpdateUseCaseOutputDto output = salonServiceUpdateUseCase.execute(userLogged, 1, input);
 
         // Assert
         assertNotNull(output);
