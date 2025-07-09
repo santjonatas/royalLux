@@ -19,6 +19,9 @@ public class EmailQueueConsumer {
     @Value("${redis.db.key.token.reset.password}")
     private String tokenResetPasswordKey;
 
+    @Value("${folder.assets.path}")
+    private String folderAssetsPath;
+
     private final EmailGateway emailGateway;
     private final UserRepository userRepository;
     private final PersonRepository personRepository;
@@ -50,7 +53,12 @@ public class EmailQueueConsumer {
 
                     redisTemplate.opsForValue().set(redisKey, userAuthCode.getCode(), Duration.ofMinutes(5));
 
-                    this.emailGateway.sendEmail(person.getEmail(), "Código de Recuperação de Senha", userAuthCode.getCode());
+                    this.emailGateway.sendOtpCodeResetPassword(
+                            person.getEmail(),
+                            "Código de Recuperação de Senha",
+                            userAuthCode.getCode(),
+                            userAuthCode.getUsername(),
+                            folderAssetsPath + "/OtpCodeTemplate.html");
                 }
             }
         }

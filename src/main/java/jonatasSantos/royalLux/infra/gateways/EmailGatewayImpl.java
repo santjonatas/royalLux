@@ -8,6 +8,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @Service
 public class EmailGatewayImpl implements EmailGateway {
 
@@ -52,5 +57,20 @@ public class EmailGatewayImpl implements EmailGateway {
     @Override
     public void handle(String messageContent) {
         System.out.println("Recebido da fila de email: " + messageContent);
+    }
+
+    public String loadTemplate(String path) throws IOException {
+        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+    }
+
+    public void sendOtpCodeResetPassword(String to, String subject, String otpCode, String username, String body) throws IOException {
+        String htmlTemplate = loadTemplate(body);
+
+        htmlTemplate = htmlTemplate
+                .replace("{{MOTIVO_ENVIO}}", "redefinição de senha")
+                .replace("{{OTP_CODE}}", otpCode)
+                .replace("{{NOME_USUARIO}}", username);
+
+        sendEmailHtml(to, subject, htmlTemplate);
     }
 }

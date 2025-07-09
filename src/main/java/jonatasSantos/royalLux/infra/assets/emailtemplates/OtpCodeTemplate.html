@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Seu Código OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 32px 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            text-align: center;
+        }
+        .otp-code {
+            font-size: 2.2em;
+            letter-spacing: 8px;
+            font-weight: bold;
+            color: #2d7ef7;
+            margin: 24px 0;
+        }
+        .footer {
+            margin-top: 32px;
+            font-size: 0.95em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Olá, {{NOME_USUARIO}}, este é seu código de {{MOTIVO_ENVIO}}</h2>
+    <p>Use o código abaixo para concluir sua verificação:</p>
+    <div class="otp-code">{{OTP_CODE}}</div>
+    <p>Este código é válido por alguns minutos. Não compartilhe com ninguém.</p>
+    <div class="footer">
+        Se você não solicitou este código, ignore este e-mail.
+    </div>
+</div>
+</body>
+</html>
