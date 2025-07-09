@@ -65,8 +65,5 @@ public class EmailQueueConsumer {
         catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-
-        }
     }
 }
