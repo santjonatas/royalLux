@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import jonatasSantos.royalLux.core.application.contracts.services.SensitiveDataMasker;
 import org.springframework.stereotype.Service;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -49,14 +47,4 @@ public class SensitiveDataMaskerImpl implements SensitiveDataMasker {
             return null;
         }
     }
-
-    public String formatStackTrace(Throwable throwable) {
-        if (throwable == null) return "";
-
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace(pw);
-        return sw.toString();
-    }
-
 }
