@@ -16,6 +16,7 @@ public class SensitiveDataMaskerImpl implements SensitiveDataMasker {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(jsonStr);
 
+            List<String> sensitiveKeys = Arrays.asList("password", "code");
             List<ObjectNode> objectsToMask = new ArrayList<>();
 
             if (root.isArray()) {
@@ -30,11 +31,14 @@ public class SensitiveDataMaskerImpl implements SensitiveDataMasker {
 
             for (ObjectNode obj : objectsToMask) {
                 obj.fieldNames().forEachRemaining(key -> {
-                    if (key.toLowerCase().contains("password")) {
-                        JsonNode valueNode = obj.get(key);
-                        if (valueNode != null && valueNode.isTextual()) {
-                            String original = valueNode.asText();
-                            obj.put(key, "*".repeat(original.length()));
+                    for (String sensitive : sensitiveKeys) {
+                        if (key.toLowerCase().contains(sensitive)) {
+                            JsonNode valueNode = obj.get(key);
+                            if (valueNode != null && valueNode.isTextual()) {
+                                String original = valueNode.asText();
+                                obj.put(key, "*".repeat(original.length()));
+                            }
+                            break;
                         }
                     }
                 });
