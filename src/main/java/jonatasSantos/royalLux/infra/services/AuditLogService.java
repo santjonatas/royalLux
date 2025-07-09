@@ -2,6 +2,7 @@ package jonatasSantos.royalLux.infra.services;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jonatasSantos.royalLux.core.application.contracts.services.SensitiveDataMasker;
 import jonatasSantos.royalLux.core.domain.entities.AuditLog;
 import jonatasSantos.royalLux.core.domain.enums.AuditLogStatus;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -21,9 +22,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
     private static final Logger logger = LoggerFactory.getLogger(AuditLogService.class);
 
     private final jonatasSantos.royalLux.core.application.contracts.repositories.AuditLogRepository auditLogRepository;
+    private final SensitiveDataMasker sensitiveDataMasker;
 
-    public AuditLogService(jonatasSantos.royalLux.core.application.contracts.repositories.AuditLogRepository auditLogRepository) {
+    public AuditLogService(jonatasSantos.royalLux.core.application.contracts.repositories.AuditLogRepository auditLogRepository, SensitiveDataMasker sensitiveDataMasker) {
         this.auditLogRepository = auditLogRepository;
+        this.sensitiveDataMasker = sensitiveDataMasker;
     }
 
     @Around("@annotation(jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation)")
@@ -47,7 +50,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-            log.setResult(result != null ? mapper.writeValueAsString(result) : null);
+            String resultJson = mapper.writeValueAsString(result);
+            log.setResult(result != null ? sensitiveDataMasker.maskSensitiveFields(resultJson) : null);
 
             logger.info("Sucesso no método [{}] | Resultado: {}", log.getOrigin() + "." + log.getMethod(), log.getResult());
             return result;
@@ -92,7 +96,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             try {
                 String parametersJson = mapper.writeValueAsString(joinPoint.getArgs());
-                log.setParameters(parametersJson);
+                log.setParameters(sensitiveDataMasker.maskSensitiveFields(parametersJson));
             } catch (JsonProcessingException ex) {
                 log.setParameters("Erro ao serializar parâmetros");
             }
