@@ -8,6 +8,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.customerservice.Custo
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class CustomerServiceController {
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) Integer createdByUserId,
             @RequestParam(required = false) Integer clientId,
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) CustomerServiceStatus status,
             @RequestParam(required = false) Integer startTimeYear,
             @RequestParam(required = false) Integer startTimeMonth,
             @RequestParam(required = false) Integer startTimeDay,

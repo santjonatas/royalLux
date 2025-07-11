@@ -1,12 +1,14 @@
 package jonatasSantos.royalLux.core.application.models.dtos.customerservice;
 
+import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record CustomerServiceGetUseCaseInputDto(Integer id,
                                                 Integer createdByUserId,
                                                 Integer clientId,
-                                                String status,
+                                                CustomerServiceStatus status,
                                                 Integer startTimeYear,
                                                 Integer startTimeMonth,
                                                 Integer startTimeDay,
