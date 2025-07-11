@@ -49,15 +49,8 @@ public class AuditLogGetUseCaseImpl implements AuditLogGetUseCase {
         if (input.id() != null)
             predicates.add(cb.equal(root.get("id"), input.id()));
 
-        if (input.userId() != null) {
-            var userFound = userRepository.findById(input.userId().toString()).orElse(null);
-
-            if (userFound != null) {
-                predicates.add(cb.equal(root.get("user"), userFound));
-            } else {
-                predicates.add(cb.isNull(root.get("user")));
-            }
-        }
+        if (input.userId() != null)
+            predicates.add(cb.equal(root.get("userId"), input.userId()));
 
         if (input.origin() != null)
             predicates.add(cb.like(root.get("origin"), "%" + input.origin() + "%"));
@@ -80,8 +73,7 @@ public class AuditLogGetUseCaseImpl implements AuditLogGetUseCase {
         if (input.status() != null)
             predicates.add(cb.like(root.get("status"), "%" + input.status() + "%"));
 
-        // startTime
-
+        // createdAt
         if (input.year() != null) {
             predicates.add(cb.equal(
                     cb.function("TO_CHAR", String.class, root.get("createdAt"), cb.literal("YYYY")),

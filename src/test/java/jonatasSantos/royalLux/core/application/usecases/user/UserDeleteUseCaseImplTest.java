@@ -56,12 +56,15 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando não existir usuário a ser deletado com o mesmo id, estourar exceção EntityNotFoundException com mensagem 'Usuário inexistente'")
     void deveLancarExcecaoQuandoUsuarioASerDeletadoNaoExistir() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         when(userRepository.findById(String.valueOf(2)))
                 .thenReturn(Optional.empty());
 
         // Act + Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             userDeleteUseCase.execute(
+                    userLogged,
                     2
             );
         });
@@ -81,6 +84,7 @@ class UserDeleteUseCaseImplTest {
         // Act + Assert
         UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
             userDeleteUseCase.execute(
+                    userLogged,
                     1
             );
         });
@@ -92,6 +96,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário possuir dados pessoais vinculados, deve lançar IllegalStateException com mensagem específica")
     void deveLancarExcecaoQuandoUsuarioPossuirDadosPessoais() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("marcos_2", UserRole.CLIENT, true);
         user.setId(4);
 
@@ -100,7 +106,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(4);
+            userDeleteUseCase.execute(userLogged, 4);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui dados pessoais vinculados", exception.getMessage());
@@ -110,6 +116,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário possuir endereço vinculado, deve lançar IllegalStateException com mensagem específica")
     void deveLancarExcecaoQuandoUsuarioPossuirEndereco() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("bruna_2", UserRole.CLIENT, true);
         user.setId(5);
 
@@ -119,7 +127,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(5);
+            userDeleteUseCase.execute(userLogged, 5);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui endereço vinculado", exception.getMessage());
@@ -129,6 +137,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário for funcionário e possuir dados vinculados, deve lançar IllegalStateException")
     void deveLancarExcecaoQuandoUsuarioFuncionarioPossuirDados() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("lucas_func", UserRole.EMPLOYEE, true);
         user.setId(6);
 
@@ -139,7 +149,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(6);
+            userDeleteUseCase.execute(userLogged, 6);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui dados de funcionário vinculados", exception.getMessage());
@@ -149,6 +159,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário for cliente e possuir dados vinculados, deve lançar IllegalStateException")
     void deveLancarExcecaoQuandoUsuarioClientePossuirDados() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("bianca_cli", UserRole.CLIENT, true);
         user.setId(7);
 
@@ -159,7 +171,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(7);
+            userDeleteUseCase.execute(userLogged, 7);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui dados de cliente vinculados", exception.getMessage());
@@ -169,6 +181,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário possuir atendimentos criados vinculados, deve lançar IllegalStateException")
     void deveLancarExcecaoQuandoUsuarioPossuirAtendimentosCriados() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("roberta_gestora", UserRole.EMPLOYEE, true);
         user.setId(8);
 
@@ -181,7 +195,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(8);
+            userDeleteUseCase.execute(userLogged, 8);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui atendimentos criados vinculados", exception.getMessage());
@@ -191,6 +205,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário possuir pagamentos vinculados, deve lançar IllegalStateException")
     void deveLancarExcecaoQuandoUsuarioPossuirPagamentos() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("carla_pg", UserRole.EMPLOYEE, true);
         user.setId(9);
 
@@ -204,7 +220,7 @@ class UserDeleteUseCaseImplTest {
 
         // Act + Assert
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            userDeleteUseCase.execute(9);
+            userDeleteUseCase.execute(userLogged, 9);
         });
 
         assertEquals("Usuário não pode ser deletado pois ainda possui pagamentos vinculados", exception.getMessage());
@@ -214,6 +230,8 @@ class UserDeleteUseCaseImplTest {
     @DisplayName("Quando usuário não possuir nenhum vínculo, deve deletar com sucesso e retornar true no output")
     void deveDeletarUsuarioComSucesso() {
         // Arrange
+        User userLogged = new User("joao_1", UserRole.ADMIN, true);
+
         User user = new User("ana_libera", UserRole.EMPLOYEE, true);
         user.setId(10);
 
@@ -225,7 +243,7 @@ class UserDeleteUseCaseImplTest {
         when(paymentRepository.findByCreatedByUserId(10)).thenReturn(Collections.emptyList());
 
         // Act
-        UserDeleteUseCaseOutputDto output = userDeleteUseCase.execute(10);
+        UserDeleteUseCaseOutputDto output = userDeleteUseCase.execute(userLogged, 10);
 
         // Assert
         assertNotNull(output);
