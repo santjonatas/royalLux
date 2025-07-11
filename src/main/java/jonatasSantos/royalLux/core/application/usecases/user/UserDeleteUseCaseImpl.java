@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.*;
 import jonatasSantos.royalLux.core.application.contracts.usecases.user.UserDeleteUseCase;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.user.UserDeleteUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 
@@ -32,44 +33,44 @@ public class UserDeleteUseCaseImpl implements UserDeleteUseCase {
 
     @AuditLogAnnotation
     @Override
-    public UserDeleteUseCaseOutputDto execute(Integer id) {
-        var user = this.userRepository.findById(id.toString())
+    public UserDeleteUseCaseOutputDto execute(User user, Integer id) {
+        var userToBeDeleted = this.userRepository.findById(id.toString())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário inexistente"));
 
-        if(user.getRole().equals(UserRole.ADMIN))
+        if(userToBeDeleted.getRole().equals(UserRole.ADMIN))
             throw new UnauthorizedException("Admin não pode ser deletado");
 
-        var person = this.personRepository.findByUserId(user.getId());
+        var person = this.personRepository.findByUserId(userToBeDeleted.getId());
         if(person != null)
             throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui dados pessoais vinculados");
 
-        var addresses = this.addressRepository.findByUserId(user.getId());
+        var addresses = this.addressRepository.findByUserId(userToBeDeleted.getId());
         if(!addresses.isEmpty())
             throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui endereço vinculado");
 
-        if(user.getRole().equals(UserRole.EMPLOYEE)){
-            var employee = this.employeeRepository.findByUserId(user.getId());
+        if(userToBeDeleted.getRole().equals(UserRole.EMPLOYEE)){
+            var employee = this.employeeRepository.findByUserId(userToBeDeleted.getId());
             if(employee != null)
                 throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui dados de funcionário vinculados");
 
-        } else if (user.getRole().equals(UserRole.CLIENT)) {
-            var client = this.clientRepository.findByUserId(user.getId());
+        } else if (userToBeDeleted.getRole().equals(UserRole.CLIENT)) {
+            var client = this.clientRepository.findByUserId(userToBeDeleted.getId());
             if(client != null)
                 throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui dados de cliente vinculados");
         }
 
-        if (!user.getRole().equals(UserRole.CLIENT)){
-            var customerServices = this.customerServiceRepository.findByCreatedByUserId(user.getId());
+        if (!userToBeDeleted.getRole().equals(UserRole.CLIENT)){
+            var customerServices = this.customerServiceRepository.findByCreatedByUserId(userToBeDeleted.getId());
 
             if(!customerServices.isEmpty())
                 throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui atendimentos criados vinculados");
         }
 
-        var payments = this.paymentRepository.findByCreatedByUserId(user.getId());
+        var payments = this.paymentRepository.findByCreatedByUserId(userToBeDeleted.getId());
         if(!payments.isEmpty())
             throw new IllegalStateException("Usuário não pode ser deletado pois ainda possui pagamentos vinculados");
 
-        this.userRepository.delete(user);
+        this.userRepository.delete(userToBeDeleted);
 
         return new UserDeleteUseCaseOutputDto(true);
     }
