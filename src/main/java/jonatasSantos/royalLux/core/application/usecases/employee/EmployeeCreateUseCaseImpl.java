@@ -11,6 +11,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeCrea
 import jonatasSantos.royalLux.core.domain.entities.Employee;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +25,7 @@ public class EmployeeCreateUseCaseImpl implements EmployeeCreateUseCase {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "employeeList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public EmployeeCreateUseCaseOutputDto execute(User user, EmployeeCreateUseCaseInputDto input) {

@@ -10,6 +10,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpda
 import jonatasSantos.royalLux.core.application.models.dtos.employee.EmployeeUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class EmployeeUpdateUseCaseImpl implements EmployeeUpdateUseCase {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "employeeList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public EmployeeUpdateUseCaseOutputDto execute(User user, Integer employeeId, EmployeeUpdateUseCaseInputDto input) {
