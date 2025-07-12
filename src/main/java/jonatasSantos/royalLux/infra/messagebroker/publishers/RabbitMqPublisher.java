@@ -17,8 +17,4 @@ public class RabbitMqPublisher implements MessagePublisher {
     public void sendToEmailQueue(String message) {
         amqpTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DELIVERY_CHANNEL, RabbitMQConfig.ROUTING_KEY_EMAIL, message);
     }
-
-    public void sendToWhatsappQueue(String message) {
-        amqpTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DELIVERY_CHANNEL, RabbitMQConfig.ROUTING_KEY_WHATSAPP, message);
-    }
 }
