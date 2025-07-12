@@ -25,7 +25,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30)) // ⏱ Expira em 30 minutos
+                .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues();
 
         return RedisCacheManager.builder(connectionFactory)

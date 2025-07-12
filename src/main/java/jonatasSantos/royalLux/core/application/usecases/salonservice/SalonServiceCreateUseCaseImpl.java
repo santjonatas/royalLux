@@ -10,6 +10,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonSer
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.SalonService;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,7 @@ public class SalonServiceCreateUseCaseImpl implements SalonServiceCreateUseCase 
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "salonServiceList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public SalonServiceCreateUseCaseOutputDto execute(User user, SalonServiceCreateUseCaseInputDto input) {

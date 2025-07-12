@@ -8,6 +8,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServi
 import jonatasSantos.royalLux.core.application.contracts.usecases.salonservice.SalonServiceDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 
@@ -24,6 +25,7 @@ public class SalonServiceDeleteUseCaseImpl implements SalonServiceDeleteUseCase 
         this.salonServiceCustomerServiceRepository = salonServiceCustomerServiceRepository;
     }
 
+    @CacheEvict(value = "salonServiceList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public SalonServiceDeleteUseCaseOutputDto execute(User user, Integer id) {

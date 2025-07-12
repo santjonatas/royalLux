@@ -9,6 +9,7 @@ import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservice.SalonServiceUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class SalonServiceUpdateUseCaseImpl implements SalonServiceUpdateUseCase 
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "salonServiceList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public SalonServiceUpdateUseCaseOutputDto execute(User user, Integer salonServiceId, SalonServiceUpdateUseCaseInputDto input) {
