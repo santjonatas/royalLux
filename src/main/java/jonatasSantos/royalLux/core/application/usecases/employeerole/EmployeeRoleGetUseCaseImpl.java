@@ -17,6 +17,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.employeerole.Employee
 import jonatasSantos.royalLux.core.application.models.dtos.employeerole.EmployeeRoleGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.EmployeeRole;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,11 @@ public class EmployeeRoleGetUseCaseImpl implements EmployeeRoleGetUseCase {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(
+            value = "employeeRoleList",
+            key = "'noFilter_page_' + #page",
+            condition = "#input.filterIsEmpty() && #page >= 0 && #page <= 2 && #size == 10 && (#ascending == null || #ascending == false)"
+    )
     @Override
     public List<EmployeeRoleGetUseCaseOutputDto> execute(User user, EmployeeRoleGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

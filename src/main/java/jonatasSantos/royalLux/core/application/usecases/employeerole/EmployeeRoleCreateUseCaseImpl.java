@@ -12,6 +12,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.employeerole.Employee
 import jonatasSantos.royalLux.core.application.models.dtos.employeerole.EmployeeRoleCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.EmployeeRole;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,7 @@ public class EmployeeRoleCreateUseCaseImpl implements EmployeeRoleCreateUseCase 
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "employeeRoleList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public EmployeeRoleCreateUseCaseOutputDto execute(User user, EmployeeRoleCreateUseCaseInputDto input) {
