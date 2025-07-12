@@ -10,6 +10,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCas
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Role;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,7 @@ public class RoleCreateUseCaseImpl implements RoleCreateUseCase {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "roleList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public RoleCreateUseCaseOutputDto execute(User user, RoleCreateUseCaseInputDto input) {

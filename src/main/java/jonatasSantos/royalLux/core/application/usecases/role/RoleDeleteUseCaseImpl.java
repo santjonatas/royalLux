@@ -7,6 +7,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.RoleReposi
 import jonatasSantos.royalLux.core.application.contracts.usecases.role.RoleDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class RoleDeleteUseCaseImpl implements RoleDeleteUseCase {
         this.employeeRoleRepository = employeeRoleRepository;
     }
 
+    @CacheEvict(value = "roleList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public RoleDeleteUseCaseOutputDto execute(User user, Integer id) {

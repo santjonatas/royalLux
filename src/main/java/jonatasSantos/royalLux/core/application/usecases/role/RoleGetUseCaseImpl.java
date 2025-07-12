@@ -15,6 +15,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseIn
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleGetUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Role;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,11 @@ public class RoleGetUseCaseImpl implements RoleGetUseCase {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(
+            value = "roleList",
+            key = "'noFilter_page_' + #page",
+            condition = "#input.filterIsEmpty() && #page >= 0 && #page <= 2 && #size == 10 && (#ascending == null || #ascending == false)"
+    )
     @Override
     public List<RoleGetUseCaseOutputDto> execute(User user, RoleGetUseCaseInputDto input, Integer page, Integer size, Boolean ascending) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))

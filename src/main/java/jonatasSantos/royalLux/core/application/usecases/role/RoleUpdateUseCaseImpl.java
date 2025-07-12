@@ -9,6 +9,7 @@ import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.role.RoleUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class RoleUpdateUseCaseImpl implements RoleUpdateUseCase {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "roleList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public RoleUpdateUseCaseOutputDto execute(User user, Integer roleId, RoleUpdateUseCaseInputDto input) {
