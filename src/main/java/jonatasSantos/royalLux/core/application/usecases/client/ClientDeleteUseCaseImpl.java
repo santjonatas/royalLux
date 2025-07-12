@@ -7,6 +7,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerSe
 import jonatasSantos.royalLux.core.application.contracts.usecases.client.ClientDeleteUseCase;
 import jonatasSantos.royalLux.core.application.models.dtos.client.ClientDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class ClientDeleteUseCaseImpl implements ClientDeleteUseCase {
         this.customerServiceRepository = customerServiceRepository;
     }
 
+    @CacheEvict(value = "clientList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public ClientDeleteUseCaseOutputDto execute(User user, Integer id) {

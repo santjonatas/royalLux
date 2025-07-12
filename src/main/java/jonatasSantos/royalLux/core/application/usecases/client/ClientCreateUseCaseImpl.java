@@ -12,6 +12,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.client.ClientCreateUs
 import jonatasSantos.royalLux.core.domain.entities.Client;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,7 @@ public class ClientCreateUseCaseImpl implements ClientCreateUseCase {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "clientList", allEntries = true)
     @AuditLogAnnotation
     @Override
     public ClientCreateUseCaseOutputDto execute(User user, ClientCreateUseCaseInputDto input) {
