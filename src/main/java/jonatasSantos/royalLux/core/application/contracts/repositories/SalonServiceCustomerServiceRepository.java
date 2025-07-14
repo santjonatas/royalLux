@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,6 @@ public interface SalonServiceCustomerServiceRepository extends JpaRepository<Sal
     List<SalonServiceCustomerService> findByEmployeeId(Integer employeeId);
 
     List<SalonServiceCustomerService> findBySalonServiceId(Integer salonServiceId);
+
+    List<SalonServiceCustomerService> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
