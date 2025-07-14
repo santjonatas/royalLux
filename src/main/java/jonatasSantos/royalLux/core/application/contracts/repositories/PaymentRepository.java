@@ -4,6 +4,8 @@ import jonatasSantos.royalLux.core.domain.entities.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -13,4 +15,7 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
     List<Payment> findByCreatedByUserId(Integer userId);
 
     Payment deleteByCustomerServiceId(Integer customerServiceId);
+
+    List<Payment> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
 }
