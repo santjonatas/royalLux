@@ -32,9 +32,9 @@ public class DashboardGetUseCaseImpl implements DashboardGetUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
 
         if(userLogged.getRole().equals(UserRole.ADMIN)){
-            LocalDate date = LocalDate.now();
-
             if(input.period().equals(DashboardPeriod.DIARIO)){
+                LocalDate date = LocalDate.now();
+                
                 var payments = this.paymentRepository.findAllByCreatedAtBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
 
             }
