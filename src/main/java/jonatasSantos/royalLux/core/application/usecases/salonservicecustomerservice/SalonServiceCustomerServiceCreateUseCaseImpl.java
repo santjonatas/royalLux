@@ -7,6 +7,7 @@ import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecu
 import jonatasSantos.royalLux.core.application.exceptions.ConflictException;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.SalonServiceCustomerService;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServiceCustomerServiceCreateUseCase {
@@ -52,19 +55,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
         var employee = this.employeeRepository.findById(String.valueOf(input.employeeId()))
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário é inexistente"));
 
-        var materialsSalonService = this.materialSalonServiceRepository.findBySalonServiceId(salonService.getId());
-
-        if(!materialsSalonService.isEmpty())
-            materialsSalonService.forEach((materialSalonService) -> {
-                var material = this.materialRepository.findById(materialSalonService.getMaterial().getId().toString());
-
-                if(material.get().getAvailableQuantity() < materialSalonService.getQuantityMaterial())
-                    throw new IllegalArgumentException("A quantidade de "
-                    + material.get().getName() + " necessária para realizar este serviço é " + materialSalonService.getQuantityMaterial()
-                    + ", mas seu estoque só possui " + material.get().getAvailableQuantity());
-            });
-
-        if(CustomerServiceStatus.FINISHED_STATUSES.contains(customerService.getStatus()))
+        if(CustomerServiceStatus.FINISHED_STATUS.contains(customerService.getStatus()))
             throw new IllegalArgumentException("Não é possível criar um novo serviço para este atendimento pois ele já foi finalizado");
 
         if(input.startTime().isBefore(customerService.getStartTime().toLocalTime()))
@@ -99,6 +90,38 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
                             " já está vinculado a um serviço do atendimento " + service.getCustomerService().getId() + " neste horário");
             });
 
+        var materialsSalonService = this.materialSalonServiceRepository.findBySalonServiceId(input.salonServiceId());
+
+        Map<Material, Integer> materialsAvailableQuantityMap = new HashMap<>();
+        Map<Material, Integer> materialsReservedQuantityToBeIncrementedMap = new HashMap<>();
+
+        materialsSalonService.forEach(materialSalonService -> {
+            var material = this.materialRepository.findById(materialSalonService.getMaterial().getId().toString());
+
+            materialsAvailableQuantityMap.put(material.get(), material.get().getAvailableQuantity());
+        });
+
+        materialsAvailableQuantityMap.forEach((material, availableQuantity) -> {
+            var materialFound = this.materialRepository.findById(material.getId().toString());
+
+            var materialSalonServiceFound = this.materialSalonServiceRepository.findBySalonServiceIdAndMaterialId(salonService.getId(), material.getId());
+            materialsReservedQuantityToBeIncrementedMap.put(material, materialSalonServiceFound.getQuantityMaterial());
+
+            if(materialFound.get().getReservedQuantity() >= availableQuantity)
+                throw new IllegalArgumentException("A quantidade atual de " + materialFound.get().getName()
+                        + " em seu estoque já foi reservada para outros serviços");
+
+            if(materialsReservedQuantityToBeIncrementedMap.get(material) + materialFound.get().getReservedQuantity() > availableQuantity)
+                throw new IllegalArgumentException("A quantidade de " + materialFound.get().getName()
+                        + " a ser reservada é maior que a quantidade disponível em estoque");
+        });
+
+        materialsReservedQuantityToBeIncrementedMap.forEach((material, reservedQuantityToBeIncremented) -> {
+            material.incrementReservedQuantity(reservedQuantityToBeIncremented);
+
+            this.materialRepository.save(material);
+        });
+
         this.salonServiceCustomerServiceRepository.save(salonServiceCustomerService);
 
         var salonServicesCustomerServicesByCustomerService = this.salonServiceCustomerServiceRepository.findByCustomerServiceId(customerService.getId());
@@ -108,7 +131,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
                 .max(Comparator.naturalOrder())
                 .orElse(null);
 
-        customerService.setEstimatedFinishingTime(maxTime.atDate(customerService.getStartTime().toLocalDate()));
+        customerService.setEstimatedFinishingTime(maxTime != null ? maxTime.atDate(customerService.getStartTime().toLocalDate()) : null);
 
         this.customerServiceRepository.save(customerService);
 

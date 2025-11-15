@@ -51,7 +51,7 @@ public class SalonServiceCustomerServiceDeleteUseCaseImpl implements SalonServic
                 .max(Comparator.naturalOrder())
                 .orElse(null);
 
-        customerService.setEstimatedFinishingTime(maxTime.atDate(customerService.getStartTime().toLocalDate()));
+        customerService.setEstimatedFinishingTime(maxTime != null ? maxTime.atDate(customerService.getStartTime().toLocalDate()) : null);
 
         this.customerServiceRepository.save(customerService);
 

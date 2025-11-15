@@ -23,7 +23,7 @@ public enum CustomerServiceStatus {
         return descricao;
     }
 
-    public static final Set<CustomerServiceStatus> FINISHED_STATUSES = EnumSet.of(
+    public static final Set<CustomerServiceStatus> FINISHED_STATUS = EnumSet.of(
             NAO_COMPARECEU,
             FINALIZADO,
             CANCELADO_PELO_CLIENTE,

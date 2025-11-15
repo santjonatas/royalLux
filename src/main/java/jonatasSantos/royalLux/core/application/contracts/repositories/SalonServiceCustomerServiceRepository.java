@@ -24,4 +24,6 @@ public interface SalonServiceCustomerServiceRepository extends JpaRepository<Sal
     List<SalonServiceCustomerService> findBySalonServiceId(Integer salonServiceId);
 
     List<SalonServiceCustomerService> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    List<SalonServiceCustomerService> findByCompleted(Boolean completed);
 }

@@ -13,4 +13,6 @@ public interface MaterialSalonServiceRepository extends JpaRepository<MaterialSa
     List<MaterialSalonService> findBySalonServiceId(Integer salonServiceId);
 
     List<MaterialSalonService> findByMaterialId(Integer materialId);
+
+    MaterialSalonService findBySalonServiceIdAndMaterialId(Integer salonServiceId, Integer materialId);
 }

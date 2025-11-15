@@ -14,13 +14,14 @@ public class Material {
         this.setDescription(description);
         this.value = value;
         this.setAvailableQuantity(quantity);
+        this.setReservedQuantity(0);
         this.createdAt = LocalDateTime.now();
     }
 
     public Material() {
 
     }
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -37,6 +38,9 @@ public class Material {
 
     @Column(name = "availableQuantity", nullable = false)
     protected Integer availableQuantity;
+
+    @Column(name = "reservedQuantity", nullable = false)
+    protected Integer reservedQuantity;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
@@ -108,6 +112,21 @@ public class Material {
             throw new IllegalArgumentException("Quantidade a ser removida não pode ser maior que a atual");
 
         this.availableQuantity -= quantity;
+    }
+
+    public Integer getReservedQuantity() { return reservedQuantity; }
+
+    public void setReservedQuantity(Integer reservedQuantity) { this.reservedQuantity = reservedQuantity; }
+
+    public void incrementReservedQuantity(Integer quantity){
+        this.reservedQuantity += quantity;
+    }
+
+    public void decrementReservedQuantity(Integer quantity){
+        if(quantity > this.reservedQuantity)
+            throw new IllegalArgumentException("Quantidade reservada a ser removida não pode ser maior que a atual");
+
+        this.reservedQuantity -= quantity;
     }
 
     public LocalDateTime getCreatedAt() {

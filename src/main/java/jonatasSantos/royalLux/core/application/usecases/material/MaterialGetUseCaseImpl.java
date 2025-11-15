@@ -56,8 +56,11 @@ public class MaterialGetUseCaseImpl implements MaterialGetUseCase {
         if (input.value() != null)
             predicates.add(cb.equal(root.get("value"), input.value()));
 
-        if (input.quantity() != null)
-            predicates.add(cb.equal(root.get("quantity"), input.quantity()));
+        if (input.availableQuantity() != null)
+            predicates.add(cb.equal(root.get("availableQuantity"), input.availableQuantity()));
+
+        if (input.reservedQuantity() != null)
+            predicates.add(cb.equal(root.get("reservedQuantity"), input.reservedQuantity()));
 
         query.where(predicates.toArray(new Predicate[0]));
 
@@ -92,6 +95,7 @@ public class MaterialGetUseCaseImpl implements MaterialGetUseCase {
                         materialFound.getDescription(),
                         materialFound.getValue(),
                         materialFound.getAvailableQuantity(),
+                        materialFound.getReservedQuantity(),
                         materialFound.getCreatedAt(),
                         materialFound.getUpdatedAt()
                 )).toList();
