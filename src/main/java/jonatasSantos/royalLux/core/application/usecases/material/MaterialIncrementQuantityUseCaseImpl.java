@@ -29,7 +29,7 @@ public class MaterialIncrementQuantityUseCaseImpl implements MaterialIncrementQu
         var materialToBeUpdated = this.materialRepository.findById(String.valueOf(materialId))
                 .orElseThrow(() -> new EntityNotFoundException("Material é inexistente"));
 
-        materialToBeUpdated.incrementQuantity(input.quantity());
+        materialToBeUpdated.incrementAvailableQuantity(input.quantity());
         materialToBeUpdated.setUpdatedAt(LocalDateTime.now());
 
         this.materialRepository.save(materialToBeUpdated);

@@ -29,7 +29,7 @@ public class MaterialDecrementQuantityUseCaseImpl implements MaterialDecrementQu
         var materialToBeUpdated = this.materialRepository.findById(String.valueOf(materialId))
                 .orElseThrow(() -> new EntityNotFoundException("Material é inexistente"));
 
-        materialToBeUpdated.decrementQuantity(input.quantity());
+        materialToBeUpdated.decrementAvailableQuantity(input.quantity());
         materialToBeUpdated.setUpdatedAt(LocalDateTime.now());
 
         this.materialRepository.save(materialToBeUpdated);

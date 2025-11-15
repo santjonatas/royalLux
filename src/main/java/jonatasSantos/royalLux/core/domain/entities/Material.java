@@ -21,7 +21,7 @@ public class Material {
     public Material() {
 
     }
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -103,15 +103,15 @@ public class Material {
         this.availableQuantity = availableQuantity;
     }
 
-    public void incrementQuantity(Integer quantity){
-        this.availableQuantity += quantity;
+    public void incrementAvailableQuantity(Integer availableQuantity){
+        this.availableQuantity += availableQuantity;
     }
 
-    public void decrementQuantity(Integer quantity){
-        if(quantity > this.availableQuantity)
+    public void decrementAvailableQuantity(Integer availableQuantity){
+        if(availableQuantity > this.availableQuantity)
             throw new IllegalArgumentException("Quantidade a ser removida não pode ser maior que a atual");
 
-        this.availableQuantity -= quantity;
+        this.availableQuantity -= availableQuantity;
     }
 
     public Integer getReservedQuantity() { return reservedQuantity; }

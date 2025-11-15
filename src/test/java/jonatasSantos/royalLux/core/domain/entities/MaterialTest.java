@@ -93,7 +93,7 @@ class MaterialTest {
 
         // Act + Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            material.decrementQuantity(10);
+            material.decrementAvailableQuantity(10);
         });
 
         assertEquals("Quantidade a ser removida não pode ser maior que a atual", exception.getMessage());
