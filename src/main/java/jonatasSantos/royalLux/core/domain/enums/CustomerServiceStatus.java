@@ -9,7 +9,7 @@ public enum CustomerServiceStatus {
     EM_ANDAMENTO("EM ANDAMENTO"),
     AGUARDANDO_CLIENTE("AGUARDANDO CLIENTE"),
     NAO_COMPARECEU("NÃO COMPARECEU"),
-    FINALIZADO("FINALIZADO"),
+    REALIZADO("REALIZADO"),
     CANCELADO_PELO_CLIENTE("CANCELADO PELO CLIENTE"),
     CANCELADO_PELO_SALAO("CANCELADO PELO SALÃO");
 
@@ -25,7 +25,7 @@ public enum CustomerServiceStatus {
 
     public static final Set<CustomerServiceStatus> FINISHED_STATUS = EnumSet.of(
             NAO_COMPARECEU,
-            FINALIZADO,
+            REALIZADO,
             CANCELADO_PELO_CLIENTE,
             CANCELADO_PELO_SALAO
     );

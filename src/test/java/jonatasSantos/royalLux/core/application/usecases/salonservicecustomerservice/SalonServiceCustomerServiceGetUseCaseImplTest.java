@@ -123,7 +123,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         CustomerService customerService1 = new CustomerService(
                 user3,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -135,7 +135,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         CustomerService customerService2 = new CustomerService(
                 user3,
                 client2,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -219,7 +219,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         CustomerService customerService1 = new CustomerService(
                 user3,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -240,7 +240,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         CustomerService customerService2 = new CustomerService(
                 user3,
                 client2,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),

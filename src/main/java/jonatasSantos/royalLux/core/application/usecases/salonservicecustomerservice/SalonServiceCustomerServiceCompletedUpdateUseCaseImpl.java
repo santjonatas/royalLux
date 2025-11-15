@@ -11,6 +11,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomers
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -40,13 +41,13 @@ public class SalonServiceCustomerServiceCompletedUpdateUseCaseImpl implements Sa
         var salonServiceCustomerServiceToBeUpdated = this.salonServiceCustomerServiceRepository.findById(String.valueOf(salonServiceCustomerServiceId))
                 .orElseThrow(() -> new EntityNotFoundException("Vínculo entre serviço e atendimento é inexistente"));
 
-        if(!input.completed().equals(true))
-            throw new IllegalArgumentException("O status só pode ser atualizado para concluído");
+        if(!SalonServicesCustomerServiceStatus.FINISHED_STATUS.contains(input.status()))
+            throw new IllegalStateException("O status só pode ser atualizado para um dos status finalizados");
 
-        if(salonServiceCustomerServiceToBeUpdated.isCompleted())
-            throw new IllegalArgumentException("O status não pode ser alterado, uma vez que o serviço já foi concluído");
+        if(SalonServicesCustomerServiceStatus.FINISHED_STATUS.contains(salonServiceCustomerServiceToBeUpdated.getStatus()))
+            throw new IllegalStateException("O status não pode ser alterado, uma vez que o serviço já foi finalizado");
 
-        salonServiceCustomerServiceToBeUpdated.setCompleted(input.completed());
+        salonServiceCustomerServiceToBeUpdated.setStatus(input.status());
         this.salonServiceCustomerServiceRepository.save(salonServiceCustomerServiceToBeUpdated);
 
         var materialsSalonService = this.materialSalonServiceRepository.findBySalonServiceId(salonServiceCustomerServiceToBeUpdated.getSalonService().getId());
@@ -69,11 +70,13 @@ public class SalonServiceCustomerServiceCompletedUpdateUseCaseImpl implements Sa
 
         materialsReservedQuantityToBeDecrementedMap.forEach((material, reservedQuantityToBeDecremented) -> {
             material.decrementReservedQuantity(reservedQuantityToBeDecremented);
-            material.decrementAvailableQuantity(reservedQuantityToBeDecremented);
+
+            if(input.status().equals(SalonServicesCustomerServiceStatus.REALIZADO))
+                material.decrementAvailableQuantity(reservedQuantityToBeDecremented);
 
             this.materialRepository.save(material);
         });
 
-        return new SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto(salonServiceCustomerServiceToBeUpdated.isCompleted());
+        return new SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto(salonServiceCustomerServiceToBeUpdated.getStatus());
     }
 }

@@ -107,7 +107,7 @@ class CustomerServiceUpdateUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 user2,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -149,7 +149,7 @@ class CustomerServiceUpdateUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 user2,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),

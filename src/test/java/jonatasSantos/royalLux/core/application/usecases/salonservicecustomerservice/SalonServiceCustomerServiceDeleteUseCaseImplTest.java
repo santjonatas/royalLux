@@ -74,7 +74,7 @@ class SalonServiceCustomerServiceDeleteUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 userFuncionario,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.of(2025, 7, 5, 10, 0),
                 LocalDateTime.of(2025, 7, 5, 10, 0),
                 LocalDateTime.of(2025, 7, 5, 11, 0),

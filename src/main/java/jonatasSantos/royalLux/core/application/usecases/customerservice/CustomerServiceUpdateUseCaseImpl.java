@@ -11,6 +11,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.customerservice.Custo
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -41,14 +42,14 @@ public class CustomerServiceUpdateUseCaseImpl implements CustomerServiceUpdateUs
         var salonServicesCustomerService = this.salonServiceCustomerServiceRepository.findBySalonServiceId(customerServiceId);
 
         salonServicesCustomerService.forEach(salonServiceCustomerService -> {
-            if(CustomerServiceStatus.FINISHED_STATUS.contains(input.status()) && salonServiceCustomerService.isCompleted().equals(false))
+            if(CustomerServiceStatus.FINISHED_STATUS.contains(input.status()) && !SalonServicesCustomerServiceStatus.FINISHED_STATUS.contains(salonServiceCustomerService.getStatus()))
                 throw new IllegalStateException("Todos os serviços deste atendimento devem ter sido finalizados antes alterar o status do atendimento para " + input.status().getDescricao());
         });
 
         ArrayList<String> warningList = new ArrayList<>();
 
         if(userLogged.getRole().equals(UserRole.EMPLOYEE)
-                && customerServiceToBeUpdated.getStatus().equals(CustomerServiceStatus.FINALIZADO)){
+                && customerServiceToBeUpdated.getStatus().equals(CustomerServiceStatus.REALIZADO)){
             throw new UnauthorizedException("Você não possui autorização para atualizar um atendimento que já foi finalizado");
         }
 

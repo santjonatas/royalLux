@@ -100,7 +100,7 @@ class ManualPaymentCreateUseCaseImplTest {
         CustomerService atendimento = new CustomerService(
                 user,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 now,
                 now,
                 now,
@@ -170,7 +170,7 @@ class ManualPaymentCreateUseCaseImplTest {
         CustomerService atendimento = new CustomerService(
                 user,
                 new Client(new User("cliente_3", UserRole.CLIENT, true)),
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 data,
                 data,
                 data,

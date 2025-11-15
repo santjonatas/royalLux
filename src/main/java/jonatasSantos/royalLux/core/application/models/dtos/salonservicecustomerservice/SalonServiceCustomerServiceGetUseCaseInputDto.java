@@ -1,5 +1,7 @@
 package jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice;
 
-public record SalonServiceCustomerServiceGetUseCaseInputDto(Integer id, Integer customerServiceId, Integer salonServiceId, Integer employeeId, Boolean completed) {
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
+
+public record SalonServiceCustomerServiceGetUseCaseInputDto(Integer id, Integer customerServiceId, Integer salonServiceId, Integer employeeId, SalonServicesCustomerServiceStatus status) {
 
 }

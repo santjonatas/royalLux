@@ -154,7 +154,7 @@ class CustomerServiceGetUseCaseImplTest {
         CustomerService customerService1 = new CustomerService(
                 user2,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -249,7 +249,7 @@ class CustomerServiceGetUseCaseImplTest {
         CustomerService customerService1 = new CustomerService(
                 user2,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),

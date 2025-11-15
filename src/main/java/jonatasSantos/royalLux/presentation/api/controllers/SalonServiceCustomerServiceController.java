@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomers
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.User;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import jonatasSantos.royalLux.presentation.api.presenters.ResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,13 +66,13 @@ public class SalonServiceCustomerServiceController {
             @RequestParam(required = false) Integer customerServiceId,
             @RequestParam(required = false) Integer salonServiceId,
             @RequestParam(required = false) Integer employeeId,
-            @RequestParam(required = false) Boolean completed,
+            @RequestParam(required = false) SalonServicesCustomerServiceStatus status,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
             @RequestParam(required = false) Boolean ascending) throws AuthenticationException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        var input = new SalonServiceCustomerServiceGetUseCaseInputDto(id, customerServiceId, salonServiceId, employeeId, completed);
+        var input = new SalonServiceCustomerServiceGetUseCaseInputDto(id, customerServiceId, salonServiceId, employeeId, status);
         var response = salonServiceCustomerServiceGetUseCase.execute(user, input, page, size, ascending);
         var responsePresenter = new ResponsePresenter(response);
 

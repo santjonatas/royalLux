@@ -107,7 +107,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 userLogged,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
@@ -145,7 +145,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 userLogged,
                 client,
-                CustomerServiceStatus.FINALIZADO,
+                CustomerServiceStatus.REALIZADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),

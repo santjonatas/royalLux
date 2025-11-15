@@ -1,6 +1,7 @@
 package jonatasSantos.royalLux.core.domain.entities;
 
 import jakarta.persistence.*;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,24 +11,24 @@ import java.time.LocalTime;
 @Table(name = "salonServicesCustomerService")
 public class SalonServiceCustomerService {
 
-    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, LocalTime estimatedFinishingTime, Boolean completed) {
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, LocalTime estimatedFinishingTime, SalonServicesCustomerServiceStatus status) {
         this.setCustomerService(customerService);
         this.setSalonService(salonService);
         this.setEmployee(employee);
         this.setDate(date);
         this.startTime = startTime;
         this.estimatedFinishingTime = estimatedFinishingTime;
-        this.setCompleted(completed);
+        this.setStatus(status);
         this.createdAt = LocalDateTime.now();
     }
 
-    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, Boolean completed) {
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime, SalonServicesCustomerServiceStatus status) {
         this.setCustomerService(customerService);
         this.setSalonService(salonService);
         this.setEmployee(employee);
         this.setDate(date);
         this.startTime = startTime;
-        this.setCompleted(completed);
+        this.setStatus(status);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -37,7 +38,7 @@ public class SalonServiceCustomerService {
         this.setEmployee(employee);
         this.setDate(date);
         this.startTime = startTime;
-        this.setCompleted(false);
+        this.setStatus(SalonServicesCustomerServiceStatus.PENDENTE);
         this.createdAt = LocalDateTime.now();
     }
 
@@ -71,8 +72,8 @@ public class SalonServiceCustomerService {
     @Column(name = "estimatedFinishingTime")
     protected LocalTime estimatedFinishingTime;
 
-    @Column(name = "completed", nullable = false)
-    protected Boolean completed;
+    @Column(name = "status", nullable = false)
+    protected SalonServicesCustomerServiceStatus status;
 
     @Column(name = "createdAt", nullable = false, updatable = false)
     protected LocalDateTime createdAt;
@@ -152,16 +153,11 @@ public class SalonServiceCustomerService {
                 .plusMinutes(estimatedTime.getMinute());
     }
 
-    public Boolean isCompleted() {
-        return this.completed;
+    public SalonServicesCustomerServiceStatus getStatus() {
+        return this.status;
     }
 
-    public void setCompleted(Boolean completed) {
-        if(completed == null)
-            throw new IllegalArgumentException("Completo não pode ser nulo");
-
-        this.completed = completed;
-    }
+    public void setStatus(SalonServicesCustomerServiceStatus status) { this.status = status; }
 
     public LocalDateTime getCreatedAt() { return this.createdAt; }
 

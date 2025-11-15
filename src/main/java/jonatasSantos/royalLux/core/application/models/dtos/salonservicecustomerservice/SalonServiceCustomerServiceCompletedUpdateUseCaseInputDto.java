@@ -1,4 +1,6 @@
 package jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice;
 
-public record SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto(Boolean completed) {
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
+
+public record SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto(SalonServicesCustomerServiceStatus status) {
 }

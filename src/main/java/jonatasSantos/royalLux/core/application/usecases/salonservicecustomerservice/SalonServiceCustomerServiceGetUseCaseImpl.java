@@ -82,8 +82,8 @@ public class SalonServiceCustomerServiceGetUseCaseImpl implements SalonServiceCu
             }
         }
 
-        if (input.completed() != null)
-            predicates.add(cb.equal(root.get("completed"), input.completed()));
+        if (input.status() != null)
+            predicates.add(cb.like(root.get("status"), "%" + input.status() + "%"));
 
         query.where(predicates.toArray(new Predicate[0]));
 
@@ -128,7 +128,7 @@ public class SalonServiceCustomerServiceGetUseCaseImpl implements SalonServiceCu
                         salonServiceCustomerServiceFound.getDate(),
                         salonServiceCustomerServiceFound.getStartTime(),
                         salonServiceCustomerServiceFound.getEstimatedFinishingTime(),
-                        salonServiceCustomerServiceFound.isCompleted(),
+                        salonServiceCustomerServiceFound.getStatus(),
                         salonServiceCustomerServiceFound.getCreatedAt(),
                         salonServiceCustomerServiceFound.getUpdatedAt()
                 )).toList();
