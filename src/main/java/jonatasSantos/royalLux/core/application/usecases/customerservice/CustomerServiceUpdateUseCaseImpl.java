@@ -3,6 +3,7 @@ package jonatasSantos.royalLux.core.application.usecases.customerservice;
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.annotations.AuditLogAnnotation;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
+import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.contracts.usecases.customerservice.CustomerServiceUpdateUseCase;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
@@ -20,10 +21,12 @@ public class CustomerServiceUpdateUseCaseImpl implements CustomerServiceUpdateUs
 
     private final CustomerServiceRepository customerServiceRepository;
     private final UserRepository userRepository;
+    private final SalonServiceCustomerServiceRepository salonServiceCustomerServiceRepository;
 
-    public CustomerServiceUpdateUseCaseImpl(CustomerServiceRepository customerServiceRepository, UserRepository userRepository) {
+    public CustomerServiceUpdateUseCaseImpl(CustomerServiceRepository customerServiceRepository, UserRepository userRepository, SalonServiceCustomerServiceRepository salonServiceCustomerServiceRepository) {
         this.customerServiceRepository = customerServiceRepository;
         this.userRepository = userRepository;
+        this.salonServiceCustomerServiceRepository = salonServiceCustomerServiceRepository;
     }
 
     @AuditLogAnnotation
@@ -34,6 +37,13 @@ public class CustomerServiceUpdateUseCaseImpl implements CustomerServiceUpdateUs
 
         var customerServiceToBeUpdated = this.customerServiceRepository.findById(String.valueOf(customerServiceId))
                 .orElseThrow(() -> new EntityNotFoundException("Atendimento é inexistente"));
+
+        var salonServicesCustomerService = this.salonServiceCustomerServiceRepository.findBySalonServiceId(customerServiceId);
+
+        salonServicesCustomerService.forEach(salonServiceCustomerService -> {
+            if(CustomerServiceStatus.FINISHED_STATUS.contains(input.status()) && salonServiceCustomerService.isCompleted().equals(false))
+                throw new IllegalStateException("Todos os serviços deste atendimento devem ter sido finalizados antes alterar o status do atendimento para " + input.status().getDescricao());
+        });
 
         ArrayList<String> warningList = new ArrayList<>();
 
