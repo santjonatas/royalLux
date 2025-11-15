@@ -31,6 +31,16 @@ public class SalonServiceCustomerService {
         this.createdAt = LocalDateTime.now();
     }
 
+    public SalonServiceCustomerService(CustomerService customerService, SalonService salonService, Employee employee, LocalDate date, LocalTime startTime) {
+        this.setCustomerService(customerService);
+        this.setSalonService(salonService);
+        this.setEmployee(employee);
+        this.setDate(date);
+        this.startTime = startTime;
+        this.setCompleted(false);
+        this.createdAt = LocalDateTime.now();
+    }
+
     public SalonServiceCustomerService() {
 
     }

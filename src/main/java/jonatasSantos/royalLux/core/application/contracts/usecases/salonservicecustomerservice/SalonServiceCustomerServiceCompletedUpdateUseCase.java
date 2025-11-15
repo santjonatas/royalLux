@@ -1,0 +1,9 @@
+package jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice;
+
+import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto;
+import jonatasSantos.royalLux.core.domain.entities.User;
+
+public interface SalonServiceCustomerServiceCompletedUpdateUseCase {
+    public SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto execute(User user, Integer salonServiceCustomerServiceId, SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto input);
+}

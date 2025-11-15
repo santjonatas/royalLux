@@ -127,7 +127,7 @@ public class MaterialController {
     }
 
     @PatchMapping("/decrementQuantity")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity decrementQuantityMaterial(
             @RequestParam(required = true) Integer id,
             @RequestBody MaterialDecrementQuantityUseCaseInputDto body){

@@ -1,9 +1,7 @@
 package jonatasSantos.royalLux.presentation.api.controllers;
 
-import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCase;
-import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCase;
+import jonatasSantos.royalLux.core.application.contracts.usecases.salonservicecustomerservice.*;
+import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceUpdateUseCaseInputDto;
@@ -35,6 +33,9 @@ public class SalonServiceCustomerServiceController {
     private SalonServiceCustomerServiceUpdateUseCase salonServiceCustomerServiceUpdateUseCase;
 
     @Autowired
+    private SalonServiceCustomerServiceCompletedUpdateUseCase salonServiceCustomerServiceCompletedUpdateUseCase;
+
+    @Autowired
     private SalonServiceCustomerServiceDeleteUseCase salonServiceCustomerServiceDeleteUseCase;
 
     @PostMapping
@@ -48,6 +49,7 @@ public class SalonServiceCustomerServiceController {
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).getSalonServiceCustomerService(null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateSalonServiceCustomerService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateCompletedSalonServiceCustomerService(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).deleteSalonServiceCustomerService(null)).withRel("delete"));
 
         URI location = WebMvcLinkBuilder.linkTo(
@@ -76,6 +78,7 @@ public class SalonServiceCustomerServiceController {
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).getSalonServiceCustomerService(null, null, null, null, null, null, null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateSalonServiceCustomerService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateCompletedSalonServiceCustomerService(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).deleteSalonServiceCustomerService(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
@@ -94,6 +97,26 @@ public class SalonServiceCustomerServiceController {
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).getSalonServiceCustomerService(null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateSalonServiceCustomerService(null, null)).withSelfRel());
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateCompletedSalonServiceCustomerService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).deleteSalonServiceCustomerService(null)).withRel("delete"));
+
+        return ResponseEntity.ok(responsePresenter);
+    }
+
+    @PatchMapping("/updateCompleted")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    public ResponseEntity updateCompletedSalonServiceCustomerService(
+            @RequestParam(required = true) Integer id,
+            @RequestBody SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto body) throws AuthenticationException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        var response = salonServiceCustomerServiceCompletedUpdateUseCase.execute(user, id, body);
+        var responsePresenter = new ResponsePresenter(response);
+
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withRel("post"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).getSalonServiceCustomerService(null, null, null, null, null, null, null, null)).withRel("get"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateSalonServiceCustomerService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateCompletedSalonServiceCustomerService(null, null)).withSelfRel());
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).deleteSalonServiceCustomerService(null)).withRel("delete"));
 
         return ResponseEntity.ok(responsePresenter);
@@ -110,6 +133,7 @@ public class SalonServiceCustomerServiceController {
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).createSalonServiceCustomerService(null)).withRel("post"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).getSalonServiceCustomerService(null, null, null, null, null, null, null, null)).withRel("get"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateSalonServiceCustomerService(null, null)).withRel("patch"));
+        responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).updateCompletedSalonServiceCustomerService(null, null)).withRel("patch"));
         responsePresenter.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SalonServiceCustomerServiceController.class).deleteSalonServiceCustomerService(null)).withSelfRel());
 
         return ResponseEntity.ok(responsePresenter);

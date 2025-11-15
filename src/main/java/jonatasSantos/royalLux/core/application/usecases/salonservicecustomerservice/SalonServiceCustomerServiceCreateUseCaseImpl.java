@@ -77,8 +77,7 @@ public class SalonServiceCustomerServiceCreateUseCaseImpl implements SalonServic
                 salonService,
                 employee,
                 customerService.getStartTime().toLocalDate(),
-                input.startTime(),
-                input.completed()
+                input.startTime()
         );
 
         salonServiceCustomerService.incrementEstimatedFinishingTime(salonService.getEstimatedTime());

@@ -60,7 +60,6 @@ public class SalonServiceCustomerServiceUpdateUseCaseImpl implements SalonServic
         ArrayList<String> warningList = new ArrayList<>();
 
         salonServiceCustomerServiceToBeUpdated.setEmployee(employee);
-        salonServiceCustomerServiceToBeUpdated.setCompleted(input.completed());
         salonServiceCustomerServiceToBeUpdated.setUpdatedAt(LocalDateTime.now());
         this.salonServiceCustomerServiceRepository.save(salonServiceCustomerServiceToBeUpdated);
 
