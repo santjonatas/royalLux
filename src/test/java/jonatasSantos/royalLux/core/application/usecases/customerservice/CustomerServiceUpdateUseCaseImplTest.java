@@ -2,6 +2,7 @@ package jonatasSantos.royalLux.core.application.usecases.customerservice;
 
 import jakarta.persistence.EntityNotFoundException;
 import jonatasSantos.royalLux.core.application.contracts.repositories.CustomerServiceRepository;
+import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServiceCustomerServiceRepository;
 import jonatasSantos.royalLux.core.application.contracts.repositories.UserRepository;
 import jonatasSantos.royalLux.core.application.exceptions.UnauthorizedException;
 import jonatasSantos.royalLux.core.application.models.dtos.customerservice.CustomerServiceUpdateUseCaseInputDto;
@@ -30,6 +31,9 @@ class CustomerServiceUpdateUseCaseImplTest {
 
     @Mock
     private CustomerServiceRepository customerServiceRepository;
+
+    @Mock
+    private SalonServiceCustomerServiceRepository salonServiceCustomerServiceRepository;
 
     @Mock
     private UserRepository userRepository;
@@ -119,7 +123,7 @@ class CustomerServiceUpdateUseCaseImplTest {
                 .thenReturn(Optional.of(customerService));
 
         // Act + Assert
-        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             customerServiceUpdateUseCase.execute(
                     userLogged,
                     2,
@@ -127,7 +131,7 @@ class CustomerServiceUpdateUseCaseImplTest {
             );
         });
 
-        assertEquals("Você não possui autorização para atualizar um atendimento que já foi finalizado", exception.getMessage());
+        assertEquals("Não é possível atualizar um atendimento que já foi finalizado", exception.getMessage());
     }
 
     @Test
@@ -149,7 +153,7 @@ class CustomerServiceUpdateUseCaseImplTest {
         CustomerService customerService = new CustomerService(
                 user2,
                 client,
-                CustomerServiceStatus.REALIZADO,
+                CustomerServiceStatus.AGENDADO,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),

@@ -43,7 +43,7 @@ class SalonServiceCustomerServiceUpdateUseCaseImplTest {
     void deveLancarExcecaoQuandoUsuarioLogadoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceUpdateUseCaseInputDto input = new SalonServiceCustomerServiceUpdateUseCaseInputDto(1, true);
+        SalonServiceCustomerServiceUpdateUseCaseInputDto input = new SalonServiceCustomerServiceUpdateUseCaseInputDto(1);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
@@ -65,7 +65,7 @@ class SalonServiceCustomerServiceUpdateUseCaseImplTest {
     void deveLancarExcecaoQuandoVinculoEntreAtendimentoEServicoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceUpdateUseCaseInputDto input = new SalonServiceCustomerServiceUpdateUseCaseInputDto(1, true);
+        SalonServiceCustomerServiceUpdateUseCaseInputDto input = new SalonServiceCustomerServiceUpdateUseCaseInputDto(1);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));

@@ -48,18 +48,4 @@ class SalonServiceCustomerServiceTest {
 
         assertEquals("Funcionário não pode ser nulo", exception.getMessage());
     }
-
-    @Test
-    @DisplayName("Quando atribuir valor nulo a completo, estourar exceção IllegalArgumentException com mensagem 'Completo não pode ser nulo'")
-    void deveLancarExcecaoQuandoAtribuirValorNuloACompleto(){
-        // Arrange
-        SalonServiceCustomerService salonServiceCustomerService = new SalonServiceCustomerService();
-
-        // Act + Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            salonServiceCustomerService.setCompleted(null);
-        });
-
-        assertEquals("Completo não pode ser nulo", exception.getMessage());
-    }
 }

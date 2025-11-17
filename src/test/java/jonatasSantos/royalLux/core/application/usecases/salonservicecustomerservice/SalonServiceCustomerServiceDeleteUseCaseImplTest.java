@@ -7,6 +7,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.SalonServi
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceDeleteUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.*;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -95,7 +96,7 @@ class SalonServiceCustomerServiceDeleteUseCaseImplTest {
                 employee,
                 customerService.getStartTime().toLocalDate(),
                 LocalTime.of(10, 15),
-                false
+                SalonServicesCustomerServiceStatus.PENDENTE
         );
         vinculo.setId(1);
 

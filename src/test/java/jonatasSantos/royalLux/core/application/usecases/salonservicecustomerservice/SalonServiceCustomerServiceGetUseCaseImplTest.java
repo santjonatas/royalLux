@@ -10,6 +10,7 @@ import jonatasSantos.royalLux.core.application.contracts.repositories.*;
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceGetUseCaseInputDto;
 import jonatasSantos.royalLux.core.domain.entities.*;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -152,13 +153,13 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
 
         SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(
                 customerService1, salonService, employee,
-                LocalDate.now(), LocalTime.now(), false
+                LocalDate.now(), LocalTime.now(), SalonServicesCustomerServiceStatus.PENDENTE
         );
         salonServiceCustomerService1.setId(1);
 
         SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(
                 customerService2, salonService, employee,
-                LocalDate.now(), LocalTime.now(), false
+                LocalDate.now(), LocalTime.now(), SalonServicesCustomerServiceStatus.PENDENTE
         );
         salonServiceCustomerService2.setId(2);
 
@@ -234,7 +235,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         Employee employee = new Employee(user, "Cabelereiro", BigDecimal.valueOf(2000));
         employee.setId(1);
 
-        SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(customerService1, salonService, employee, LocalDate.now(), LocalTime.now(), false);
+        SalonServiceCustomerService salonServiceCustomerService1 = new SalonServiceCustomerService(customerService1, salonService, employee, LocalDate.now(), LocalTime.now(), SalonServicesCustomerServiceStatus.PENDENTE);
         salonServiceCustomerService1.setId(1);
 
         CustomerService customerService2 = new CustomerService(
@@ -249,7 +250,7 @@ class SalonServiceCustomerServiceGetUseCaseImplTest {
         );
         customerService2.setId(2);
 
-        SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(customerService2, salonService, employee, LocalDate.now(), LocalTime.now(), false);
+        SalonServiceCustomerService salonServiceCustomerService2 = new SalonServiceCustomerService(customerService2, salonService, employee, LocalDate.now(), LocalTime.now(), SalonServicesCustomerServiceStatus.PENDENTE);
         salonServiceCustomerService2.setId(2);
 
         var salonServicesCustomerServicesFromDb = List.of(salonServiceCustomerService1, salonServiceCustomerService2);

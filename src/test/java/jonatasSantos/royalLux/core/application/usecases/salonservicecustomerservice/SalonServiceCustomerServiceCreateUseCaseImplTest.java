@@ -6,6 +6,7 @@ import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomers
 import jonatasSantos.royalLux.core.application.models.dtos.salonservicecustomerservice.SalonServiceCustomerServiceCreateUseCaseOutputDto;
 import jonatasSantos.royalLux.core.domain.entities.*;
 import jonatasSantos.royalLux.core.domain.enums.CustomerServiceStatus;
+import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import jonatasSantos.royalLux.core.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +58,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoUsuarioLogadoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now());
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
@@ -75,7 +76,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoAtendimentoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now());
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -96,7 +97,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoServicoNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now());
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -134,7 +135,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
     void deveLancarExcecaoQuandoFuncionarioNaoExistir() {
         // Arrange
         User userLogged = new User("joao_1", UserRole.ADMIN, true);
-        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now(), false);
+        SalonServiceCustomerServiceCreateUseCaseInputDto input = new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, LocalTime.now());
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
@@ -184,7 +185,7 @@ class SalonServiceCustomerServiceCreateUseCaseImplTest {
         LocalTime inicioServico = LocalTime.of(10, 15);
 
         SalonServiceCustomerServiceCreateUseCaseInputDto input =
-                new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, inicioServico, false);
+                new SalonServiceCustomerServiceCreateUseCaseInputDto(1, 1, 1, inicioServico);
 
         when(userRepository.findById("99")).thenReturn(Optional.of(userLogged));
 

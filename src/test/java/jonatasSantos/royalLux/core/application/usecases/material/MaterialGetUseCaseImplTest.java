@@ -66,7 +66,7 @@ class MaterialGetUseCaseImplTest {
         // Arrange
         User userLogged = new User("joao_1", UserRole.CLIENT, true);
 
-        MaterialGetUseCaseInputDto input = new MaterialGetUseCaseInputDto(null, null, null, null, null);
+        MaterialGetUseCaseInputDto input = new MaterialGetUseCaseInputDto(null, null, null, null, null, null);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.empty());
@@ -91,7 +91,7 @@ class MaterialGetUseCaseImplTest {
         // Arrange
         User userLogged = new User("joao_1", UserRole.CLIENT, true);
 
-        MaterialGetUseCaseInputDto input = new MaterialGetUseCaseInputDto(null, null, null, null, null);
+        MaterialGetUseCaseInputDto input = new MaterialGetUseCaseInputDto(null, null, null, null, null, null);
 
         when(userRepository.findById(String.valueOf(userLogged.getId())))
                 .thenReturn(Optional.of(userLogged));
