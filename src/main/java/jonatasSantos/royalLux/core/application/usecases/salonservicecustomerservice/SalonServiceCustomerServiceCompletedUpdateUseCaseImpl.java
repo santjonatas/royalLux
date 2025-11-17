@@ -13,6 +13,7 @@ import jonatasSantos.royalLux.core.domain.entities.Material;
 import jonatasSantos.royalLux.core.domain.entities.User;
 import jonatasSantos.royalLux.core.domain.enums.SalonServicesCustomerServiceStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class SalonServiceCustomerServiceCompletedUpdateUseCaseImpl implements Sa
 
     @AuditLogAnnotation
     @Override
+    @Transactional
     public SalonServiceCustomerServiceCompletedUpdateUseCaseOutputDto execute(User user, Integer salonServiceCustomerServiceId, SalonServiceCustomerServiceCompletedUpdateUseCaseInputDto input) {
         var userLogged = this.userRepository.findById(String.valueOf(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Seu usuário é inexistente"));
