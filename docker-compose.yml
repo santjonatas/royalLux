@@ -1,0 +1,108 @@
+version: "3.9"
+
+services:
+
+  app:
+    build: .
+    container_name: royal-lux-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: santjonatas_
+      DB_SCHEMA: dev
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
+      RABBIT_USER: guest
+      RABBIT_PASS: guest
+
+      ADMIN_USERNAME: santjonatas_
+      ADMIN_PASSWORD: Test123@
+      ADMIN_NAME: "Jonatas Santos"
+      ADMIN_BIRTH: 2004-12-05
+      ADMIN_CPF: 75809909035
+      ADMIN_PHONE: 73999779977
+      ADMIN_EMAIL: jonatascaina100@gmail.com
+
+      JWT_SECRET: "3yd0Zz4zJm6K8qLpQ5b1Xt9RzC7wY2NfVOsl8A3eKxU"
+
+      MAIL_USER: royallux.enterprise@gmail.com
+      MAIL_PASS: "cnqi cahp sgpo lsfy"
+
+      CORS_ALLOWED_ORIGIN: "https://sua-origem.com.br"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - royal-net
+
+  db:
+    image: postgres:15
+    container_name: royal-lux-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: santjonatas_
+      POSTGRES_DB: royal_lux
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - royal-net
+
+  redis:
+    image: redis:7
+    container_name: royal-lux-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - royal-net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: royal-lux-rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - royal-net
+
+networks:
+  royal-net:
+
+volumes:
+  postgres_data:

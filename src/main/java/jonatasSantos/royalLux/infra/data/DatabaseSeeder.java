@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
@@ -78,7 +79,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         userAdmin.setPassword(passwordEncoder.encode(this.adminPassword));
         this.userRepository.save(userAdmin);
 
-        Person personAdmin = new Person(userAdmin, this.adminName, LocalDate.parse(this.adminBirth), this.adminCpf, this.adminPhone, this.adminEmail);
+        Person personAdmin = new Person(userAdmin, this.adminName, LocalDate.parse(adminBirth.replace(" 00:00:00 +0000 UTC", "")), this.adminCpf, this.adminPhone, this.adminEmail);
         this.personRepository.save(personAdmin);
     }
 
