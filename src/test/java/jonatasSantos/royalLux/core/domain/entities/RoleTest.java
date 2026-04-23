@@ -32,7 +32,7 @@ class RoleTest {
             role.setName("");
         });
 
-        assertEquals("Nome do cargo não pode ser vazio", exception.getMessage());
+        assertEquals("Nome da função não pode ser vazio", exception.getMessage());
     }
 
     @Test
@@ -46,7 +46,7 @@ class RoleTest {
             role.setName("Teste aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         });
 
-        assertEquals("Nome do cargo não deve conter mais que 50 caracteres", exception.getMessage());
+        assertEquals("Nome da função não deve conter mais que 50 caracteres", exception.getMessage());
     }
 
     @Test

@@ -45,11 +45,11 @@ public class Role{
         if(name == null)
             throw new IllegalArgumentException("Nome não pode ser nulo");
 
-        if (name.isEmpty()){
-            throw new IllegalArgumentException("Nome do cargo não pode ser vazio");
+        if (name.trim().isEmpty()){
+            throw new IllegalArgumentException("Nome da função não pode ser vazio");
         }
         if (name.length() > 50){
-            throw new IllegalArgumentException("Nome do cargo não deve conter mais que 50 caracteres");
+            throw new IllegalArgumentException("Nome da função não deve conter mais que 50 caracteres");
         }
         this.name = name;
     }

@@ -66,7 +66,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
                     e instanceof javax.naming.AuthenticationException ||
                     e instanceof org.springframework.security.access.AccessDeniedException ||
                     e instanceof org.springframework.security.authentication.DisabledException ||
-                    e instanceof org.springframework.security.authentication.CredentialsExpiredException) {
+                    e instanceof org.springframework.security.authentication.CredentialsExpiredException ||
+                    e instanceof jonatasSantos.royalLux.core.application.exceptions.ConflictException) {
 
                 log.setStatus(AuditLogStatus.ERRO_NEGOCIO);
                 log.setStackTrace(Arrays.toString(e.getStackTrace()));
